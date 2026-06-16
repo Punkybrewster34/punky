@@ -1,4 +1,5 @@
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
 import { MarketplaceData } from './types';
 
@@ -7,7 +8,26 @@ import { MarketplaceData } from './types';
 // serverless scale, swap these read/write helpers for a real database
 // (the rest of the domain layer in db.ts only talks through these).
 
-const DATA_DIR = path.join(process.cwd(), 'data');
+// Pick a writable data directory. A persistent-disk host uses the project
+// `data/` folder (data survives restarts). On a serverless/read-only
+// filesystem (e.g. Vercel) the project dir isn't writable, so fall back to
+// the OS temp dir — the demo re-seeds on each cold start.
+function resolveDataDir(): string {
+  const projectDir = path.join(process.cwd(), 'data');
+  if (process.env.DATA_DIR) return process.env.DATA_DIR;
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return path.join(os.tmpdir(), 'havenclean-data');
+  }
+  try {
+    fs.mkdirSync(projectDir, { recursive: true });
+    fs.accessSync(projectDir, fs.constants.W_OK);
+    return projectDir;
+  } catch {
+    return path.join(os.tmpdir(), 'havenclean-data');
+  }
+}
+
+const DATA_DIR = resolveDataDir();
 const FILE = path.join(DATA_DIR, 'marketplace.json');
 
 const EMPTY: MarketplaceData = {
