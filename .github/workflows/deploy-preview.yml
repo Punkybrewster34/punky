@@ -1,0 +1,58 @@
+name: Deploy DreamHaus preview
+
+# Publishes the standalone DreamHaus dream-house builder (a fully client-side
+# app under /preview) to GitHub Pages so it can be viewed at a public URL.
+on:
+  push:
+    branches:
+      - claude/dream-house-builder-app-f99kaa
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Install & build
+        working-directory: preview
+        env:
+          PAGES_BASE: ${{ steps.pages.outputs.base_path }}/
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: preview/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

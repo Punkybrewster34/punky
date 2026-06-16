@@ -15,3 +15,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /data/app.json
+/preview/node_modules
+/preview/dist
