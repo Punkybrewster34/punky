@@ -49,6 +49,14 @@ it, then —
 python haven.py leads contacted <id>
 ```
 
+**List 4 — Churn Flags.** HIGH tier = phone call today, then the script.
+MEDIUM/LOW = send the pre-written win-back SMS. Full SMS + email scripts:
+`python haven.py churn`.
+
+**List 5 — Prospect Calls.** Work the commercial call list between jobs
+this week; log every touch with `python haven.py prospects done <id>` so
+the cadence keeps scheduling itself.
+
 Update statuses as the week unfolds (`quoted`, `booked`, `recurring`,
 `lost`) — 5 seconds each, and it's what makes the CAC and funnel numbers
 on next Monday's scorecard true.

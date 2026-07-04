@@ -10,7 +10,8 @@ import glob
 import os
 from datetime import date
 
-from . import config, importers, kpi, leads, reviews
+from . import (bench, churn, compliance, config, importers, kpi, leads, lsa,
+               prospects, reviews)
 from . import html as H
 
 
@@ -64,6 +65,37 @@ def weeks_moves(con, anchor):
                            f"{t['lead_response_minutes']}-min target. First-touch "
                            "messages are pre-written below — send them now."))
 
+    at_risk = churn.scan(con, anchor)
+    high = [f for f in at_risk if f["tier"] == "HIGH"]
+    if at_risk:
+        value = sum(f["monthly_value"] for f in at_risk)
+        urgency = min(1.0, value / max(1, t["monthly_revenue"]) * 10)
+        candidates.append((urgency, f"{len(at_risk)} recurring client(s) at churn "
+                           f"risk ({len(high)} HIGH) worth {H.money(value)}/mo. "
+                           "Win-back scripts are below — HIGH tier gets a call "
+                           "today, not just a text."))
+
+    due = prospects.week_list(con)
+    if due:
+        candidates.append((0.5, f"{len(due)} commercial prospect action(s) due "
+                           "this week (calls/walk-ins/emails). One landed "
+                           "daycare or med spa is recurring revenue on a "
+                           "weekday-morning route."))
+
+    bd = bench.depth(con, anchor)
+    if bd["red_flag"]:
+        candidates.append((0.6, f"Bench is at {bd['bench_ready']} (standard: 2+) "
+                           f"with {bd['in_pipeline']} applicant(s) in the pipeline. "
+                           "Post the Indeed ad and move candidates through "
+                           "screening — no bench means no leverage on standards."))
+
+    un_lsa = lsa.unmarked(con)
+    if un_lsa:
+        candidates.append((0.45, f"{len(un_lsa)} LSA lead(s) not yet marked "
+                           "booked in the LSA app. Marking booked leads trains "
+                           "Google's matching — do it today. "
+                           "Do not touch bids before 75 reviews."))
+
     candidates.sort(key=lambda x: -x[0])
     return [c[1] for c in candidates[:3]]
 
@@ -112,15 +144,68 @@ def generate(con, today=None):
     moves_html = "".join(f'<div class="callout"><b>{i+1}.</b> {H.esc(m)}</div>'
                          for i, m in enumerate(moves))
 
-    later = ('<p class="note">Commercial prospect calls, churn flags, compliance '
-             'flags and bench status appear here when Phase 2–3 modules ship.</p>')
+    # --- churn flags (Module 6)
+    churn_html = churn.flags_html_fragment(con, anchor)
+
+    # --- this week's prospect calls (Module 4)
+    due = prospects.week_list(con, today)
+    if due:
+        prow = [[p["name"], p["next_action"], p["phone"] or "—", p["category"],
+                 p["city"], p["score"]] for p in due[:10]]
+        pros_html = H.table(["Business", "Step", "Phone", "Vertical", "City",
+                             "Score"], prow)
+        pros_html += ('<p class="note">Full sheet: <b>python haven.py prospects '
+                      'sheet</b> · log each touch with <b>prospects done '
+                      '&lt;id&gt;</b>.</p>')
+    else:
+        pros_html = ('<div class="callout">No prospect actions due. Fill the '
+                     'pipeline: <b>python haven.py prospects fetch</b>.</div>')
+
+    # --- compliance flags + bench + routes (Modules 5/7)
+    fl = compliance.flags(con, today)
+    bd = bench.depth(con, today)
+    bench_line = (f'Bench: <b>{bd["bench_ready"]}</b> qualified on bench · '
+                  f'{bd["active_cleaners"]} active · {bd["in_pipeline"]} in pipeline'
+                  + (' — ' + H.badge("BENCH < 2", "red") if bd["red_flag"] else ""))
+    if fl:
+        comp_html = "".join(
+            f'<div class="callout"><b>{H.esc(f["cleaner"])}</b> — '
+            + "; ".join(H.esc(r) for r in f["reasons"]) + "</div>" for f in fl)
+    else:
+        comp_html = '<div class="callout">All cleaners meeting standards. ✔</div>'
+    comp_html += f'<p class="note">{bench_line}. Full audit: <b>python haven.py compliance report</b>.</p>'
+    scattered = [c for c in bench.route_density(con, today) if c["scattered"]]
+    if scattered:
+        comp_html += "".join(
+            f'<div class="callout">🗺 <b>{H.esc(c["cleaner"])}</b> has a scattered '
+            f'route: {c["jobs"]} jobs across {c["zip_count"]} zips (top zip only '
+            f'{c["top_share"]}%). Route density is the #1 turnover lever — '
+            f'consolidate their schedule before it costs you the cleaner.</div>'
+            for c in scattered)
+
+    # --- LSA discipline (Module 8)
+    ls = lsa.summary(con, today)
+    if ls["unmarked"]:
+        lsa_html = (f'<div class="callout">⚠ <b>{ls["unmarked"]} LSA lead(s) not '
+                    f'marked booked</b> in the LSA app — do this today; it trains '
+                    f'Google\'s lead matching. <b>python haven.py lsa</b> for the '
+                    f'list.</div>')
+    else:
+        lsa_html = ('<div class="callout">All LSA leads marked. ✔</div>')
+    lsa_html += (f'<p class="note">{ls["leads_received"]} LSA leads logged · '
+                 f'{ls["marked_booked"]} marked booked · reviews '
+                 f'{ls["review_progress"]["total_reviews"]}/{ls["review_progress"]["target"]}. '
+                 f'<b>{H.esc(ls["bid_warning"])}</b></p>')
 
     body = f"""
 <h2>This Week's Moves</h2>{moves_html}
 <h2>Today's Review Sends ({today.isoformat()})</h2>{send_html}
 <h2>Uncontacted Leads</h2>{lead_html}
-{kpi.scorecard_body(con, anchor)}
-<h2>Coming Online</h2>{later}"""
+<h2>Churn Flags</h2>{churn_html}
+<h2>This Week's Prospect Calls</h2>{pros_html}
+<h2>Standards Audit Flags &amp; Bench</h2>{comp_html}
+<h2>LSA Discipline</h2>{lsa_html}
+{kpi.scorecard_body(con, anchor)}"""
     return H.write("monday.html", H.page("Monday", body, "The Monday Command"))
 
 
@@ -128,5 +213,9 @@ def run(con, today=None):
     """Full Monday rhythm: import inbox -> refresh dashboards -> monday.html."""
     imported = import_inbox(con)
     scorecard = kpi.generate_scorecard(con)
+    call_sheet = prospects.call_sheet_html(con, today)
+    audit = compliance.scorecard_html(con, today)
     monday_path = generate(con, today)
-    return {"imported": imported, "scorecard": scorecard, "monday": monday_path}
+    return {"imported": imported, "scorecard": scorecard,
+            "prospects": call_sheet, "compliance": audit,
+            "monday": monday_path}

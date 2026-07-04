@@ -109,6 +109,15 @@ column_maps:
     booking_id: ["booking id", booking, "job id"]
     notes: [notes, text, "review text", comments]
 
+  applicants:             # Indeed export or manual applicant sheet
+    name: [name, "full name", "applicant name", "candidate name"]
+    phone: [phone, "phone number", mobile]
+    email: [email, "email address"]
+    source: [source, "job board", platform]
+    stage: [stage, status, "pipeline stage"]
+    applied_date: ["applied date", date, "application date", applied]
+    notes: [notes, note, comments]
+
   prospects_tracker:      # existing 48-prospect commercial tracker
     name: [name, business, "business name", company]
     phone: [phone, "phone number"]
