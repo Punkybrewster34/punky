@@ -71,6 +71,53 @@ def parse_int(value):
         return 0
 
 
+def normalize_status(raw, service_date, today=None):
+    """Map BookingKoala's status wording onto HavenOS's canonical set.
+
+    BK doesn't use the literal word 'completed' — a past job may show as
+    'Active', 'Confirmed', etc. So: cancelled/paused/skipped are detected
+    by keyword, and anything else is 'completed' if its service date has
+    passed, otherwise 'scheduled'. This makes revenue correct regardless
+    of BK's exact labels.
+    """
+    s = (raw or "").strip().lower()
+    today = today or date.today()
+    if any(w in s for w in ("cancel", "delet", "void", "no show", "no-show")):
+        return "cancelled"
+    if any(w in s for w in ("paus", "hold", "freeze", "frozen")):
+        return "paused"
+    if "skip" in s:
+        return "skipped"
+    if any(w in s for w in ("draft", "pending", "unconfirm", "quote", "request")):
+        return "scheduled"
+    if service_date and service_date <= today:
+        return "completed"
+    return "scheduled"
+
+
+def normalize_frequency(raw):
+    """Map BK frequency labels onto the canonical set the KPI/churn math
+    understands: one-time, weekly, biweekly, every 4 weeks, monthly."""
+    s = (raw or "").strip().lower()
+    if not s or "one" in s and ("time" in s or "off" in s) or s == "once":
+        return "one-time"
+    if "bi" in s and "week" in s:
+        return "biweekly"
+    if "other week" in s or "2 week" in s or "two week" in s or "14 day" in s:
+        return "biweekly"
+    if "4 week" in s or "four week" in s or "28 day" in s:
+        return "every 4 weeks"
+    if "3 week" in s or "three week" in s:
+        return "every 3 weeks"
+    if "month" in s:
+        return "monthly"
+    if "week" in s:
+        return "weekly"
+    if "day" in s or "daily" in s:
+        return "weekly"
+    return s
+
+
 def normalize_source(value):
     v = (value or "").strip().lower()
     known = config.load().get("lead_sources", [])
@@ -167,8 +214,8 @@ def import_bookings(con, path):
             (r.get("booking_id", ""), d.isoformat(), r.get("start_time", ""),
              r.get("customer_name", ""), r.get("customer_email", ""),
              r.get("customer_phone", ""), r.get("service_type", ""),
-             (r.get("frequency") or "one-time").lower(), parse_money(r.get("amount")),
-             (r.get("status") or "completed").lower(), r.get("cleaner", ""),
+             normalize_frequency(r.get("frequency")), parse_money(r.get("amount")),
+             normalize_status(r.get("status"), d), r.get("cleaner", ""),
              parse_bool(r.get("on_my_way")), r.get("clock_in", ""),
              r.get("clock_out", ""), parse_int(r.get("photo_count")),
              parse_bool(r.get("complaint")), r.get("zip", "")))

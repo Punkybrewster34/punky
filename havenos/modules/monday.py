@@ -8,7 +8,7 @@ prospects / churn / compliance / bench appear when Phase 2-3 ship.
 """
 import glob
 import os
-from datetime import date
+from datetime import date, timedelta
 
 from . import (bench, churn, compliance, config, importers, kpi, leads, lsa,
                prospects, reviews)
@@ -167,7 +167,9 @@ def generate(con, today=None):
     bench_line = (f'Bench: <b>{bd["bench_ready"]}</b> qualified on bench · '
                   f'{bd["active_cleaners"]} active · {bd["in_pipeline"]} in pipeline'
                   + (' — ' + H.badge("BENCH < 2", "red") if bd["red_flag"] else ""))
-    if fl:
+    if not compliance.has_operational_data(con, since=(today - timedelta(days=30)).isoformat()):
+        comp_html = f'<div class="callout">⏸ {H.esc(compliance.OPS_NOTE)}</div>'
+    elif fl:
         comp_html = "".join(
             f'<div class="callout"><b>{H.esc(f["cleaner"])}</b> — '
             + "; ".join(H.esc(r) for r in f["reasons"]) + "</div>" for f in fl)
