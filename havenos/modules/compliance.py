@@ -77,6 +77,31 @@ def audit(con, since=None, until=None):
     return sorted(out.values(), key=lambda a: -a["qualifying_pct"])
 
 
+OPS_NOTE = ("On-My-Way, clock-in/out and photo counts aren't included in "
+            "BookingKoala's booking export, so standards auditing and "
+            "perfect-clean bonuses are paused until that data is connected. "
+            "Revenue, recurring, churn and route metrics are unaffected.")
+
+
+def has_operational_data(con, since=None, until=None):
+    """True if any completed job carries the operational signals compliance
+    depends on (OMW / clock-in / photos / complaint). If not, the source
+    export simply doesn't include them and we shouldn't flag anyone."""
+    where = "WHERE status='completed' AND cleaner != ''"
+    args = []
+    if since:
+        where += " AND date >= ?"
+        args.append(since)
+    if until:
+        where += " AND date <= ?"
+        args.append(until)
+    row = con.execute(
+        f"SELECT COUNT(*) n FROM bookings {where} AND "
+        "(on_my_way=1 OR clock_in != '' OR clock_out != '' OR "
+        " photo_count > 0 OR complaint=1)", args).fetchone()
+    return (row["n"] or 0) > 0
+
+
 def bench_depth(con):
     """From Module 7's tables (Phase 3 fills them; schema exists now)."""
     q = lambda stage: con.execute(
@@ -92,6 +117,8 @@ def flags(con, today=None):
     each flag paired with current bench depth."""
     today = today or date.today()
     since = (today - timedelta(days=30)).isoformat()
+    if not has_operational_data(con, since=since):
+        return []
     bench = bench_depth(con)
     result = []
     for a in audit(con, since=since):
@@ -117,6 +144,7 @@ def scorecard_html(con, today=None):
     summary combining Modules 2 and 5."""
     today = today or date.today()
     since = (today - timedelta(days=30)).isoformat()
+    ops = has_operational_data(con, since=since)
     audit_rows = audit(con, since=since)
     payouts = {p["cleaner"]: p for p in bonuses.payout_report(con)}
     bench = bench_depth(con)
@@ -135,11 +163,16 @@ def scorecard_html(con, today=None):
              a["current_streak"],
              f'{a["to_next_bonus"]} more', qual_badge(a)]
             for a in audit_rows]
-    audit_table = H.table(
-        ["Cleaner", "Jobs", "On-My-Way", "On-time", "Clock in+out",
-         "10+ photos", "Complaints", "Qualifying cleans", "Streak",
-         "To next $100", "Qualification status"], rows) if rows else \
-        '<div class="callout">No completed jobs with an assigned cleaner in the last 30 days.</div>'
+    if not ops:
+        audit_table = f'<div class="callout">⏸ {H.esc(OPS_NOTE)}</div>'
+    elif rows:
+        audit_table = H.table(
+            ["Cleaner", "Jobs", "On-My-Way", "On-time", "Clock in+out",
+             "10+ photos", "Complaints", "Qualifying cleans", "Streak",
+             "To next $100", "Qualification status"], rows)
+    else:
+        audit_table = ('<div class="callout">No completed jobs with an '
+                       'assigned cleaner in the last 30 days.</div>')
 
     pay_rows = [[p["cleaner"], p["five_star_reviews"], H.money(p["review_dollars"]),
                  H.money(p["milestone_dollars"]), p["qualifying_cleans"],
