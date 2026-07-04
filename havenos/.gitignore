@@ -1,0 +1,9 @@
+# HavenOS
+.env
+data/haven.db
+data/inbox/*
+!data/inbox/.gitkeep
+dashboards/*
+!dashboards/.gitkeep
+__pycache__/
+*.pyc
