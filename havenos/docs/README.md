@@ -174,12 +174,87 @@ Re-imports are idempotent: the same booking row twice never double-counts.
 
 ---
 
-## Phase 2–3 (schema ready, modules not yet built)
+## Module 4 — Commercial Prospector
 
-Module 4 Commercial Prospector (official Google Places API — never
-scraping), Module 5 Cleaner Compliance Auditor, Module 6 Churn Watchdog,
+**What it does.** Pulls daycares, med spas, salons, boutique gyms and
+chiropractors in Phoenix / Tucson / Scottsdale from the **official Google
+Places API** (Text Search New — never scraping, which risks the GBP
+account), scores them (website +2, 20+ reviews +2, 50+ reviews +1,
+independent/non-chain +3), dedupes against anything already imported
+(including the existing 48-prospect tracker), and runs the outreach
+cadence: **call → walk-in (+3d) → email (+4d) → email every 2 weeks**.
+
+**Commands**
+
+```
+python haven.py prospects fetch              # Places API (15 requests/run, free tier)
+python haven.py prospects import tracker.csv # existing tracker or any pasted CSV
+python haven.py prospects                    # this week's call list w/ phone numbers
+python haven.py prospects done 12 "left vm"  # log touch, auto-schedule next step
+python haven.py prospects won 12             # or lost
+python haven.py prospects sheet              # dashboards/prospects.html call sheet
+```
+
+**Setup.** API key steps in `docs/places-api-setup.md` → key goes in
+`havenos/.env` as `GOOGLE_PLACES_API_KEY`. No key? `prospects import`
+accepts any CSV with a business-name column (header aliases under
+`column_maps.prospects_tracker`).
+
+---
+
+## Module 5 — Cleaner Compliance Auditor
+
+**What it does.** Audits every completed BK job per cleaner: On-My-Way
+pressed, clock-in within 10 minutes, clocked out, 10+ photos, complaint
+flag. Tracks perfect-clean streaks and qualifying-clean counts toward the
+$100/10 bonus. `haven.py compliance report` renders the monthly
+**Standards Audit** HTML (contractor-safe language throughout) with the
+combined Module 2 + 5 payout summary, and a **Non-Renewal Watch** list —
+each flag shown *with current bench depth*, because enforcement without a
+bench is an empty threat.
+
+Watch criteria (trailing 30 days, min 4 jobs): qualifying rate < 50%,
+on-time < 80%, or 2+ complaints.
+
+```
+python haven.py compliance          # terminal audit + watch list
+python haven.py compliance report   # dashboards/compliance.html
+```
+
+Feeds from the same weekly BK bookings export as Module 3. **Zap 5
+(optional) — BK Complaint → Sheets:** BookingKoala Zapier trigger **New
+Feedback/Complaint** → Google Sheets row; or just mark the Complaint
+column in the export before dropping it in the inbox.
+
+---
+
+## Module 6 — Churn Watchdog
+
+**What it does.** Scans recurring clients for skipped / cancelled /
+paused visits, gaps longer than 1.5× their frequency, and frequency
+downgrades. Assigns risk tiers — **HIGH** (cancelled, or gap > 2×
+frequency: call today), **MEDIUM** (paused / downgraded: win-back this
+week), **LOW** (skipped once: friendly check-in) — each with a
+ready-to-send SMS *and* email, three scenarios (skipped-once, paused,
+cancelled), all holding the recurring-is-the-offer line (defend the
+schedule with a lighter frequency, never a one-off discount).
+
+```
+python haven.py churn           # flags + full scripts
+python haven.py churn revenue   # monthly retained-revenue: saved vs lost
+```
+
+Saved = flagged client completed another clean within 45 days of the risk
+event; otherwise lost (or pending while the window is open). Values are
+monthly recurring dollars (visit price × visits/month).
+
+---
+
+## Phase 3 (schema ready, modules not yet built)
+
 Module 7 Recruiting Bench, Module 8 LSA Discipline. Their tables already
-exist in `haven.db`; commands print a "ships in Phase N" notice.
+exist in `haven.db`; commands print a "ships in Phase 3" notice. Bench
+depth already surfaces (as zero) in the compliance watch list.
 
 ---
 
@@ -189,8 +264,10 @@ exist in `haven.db`; commands print a "ships in Phase N" notice.
 python -m unittest discover -s tests
 ```
 
-33 tests cover the three pieces of math that must never be wrong: bonus
-payouts (Rule 2), the review velocity caps (Rule 1), and CAC.
+49 tests cover the money math that must never be wrong — bonus payouts
+(Rule 2), review velocity caps (Rule 1), CAC — plus churn tiers,
+retained-revenue math, prospect scoring/dedupe/cadence, and compliance
+flags.
 
 ## Layout
 

@@ -18,7 +18,18 @@ Usage:
   python haven.py scorecard                    regenerate dashboards/scorecard.html
   python haven.py demo                         load sample data into a fresh demo db
 
-Phase 2-3 (not built yet): prospects, compliance, churn, bench, lsa
+  python haven.py prospects                    this week's commercial call list
+  python haven.py prospects fetch              pull targets via Google Places API
+  python haven.py prospects import <file.csv>  import tracker / pasted CSV (dedupes)
+  python haven.py prospects done <id> [note]   log touch, schedule next cadence step
+  python haven.py prospects won|lost <id>      close out a prospect
+  python haven.py prospects sheet              regenerate dashboards/prospects.html
+  python haven.py compliance                   standards audit + non-renewal watch
+  python haven.py compliance report            regenerate dashboards/compliance.html
+  python haven.py churn                        at-risk recurring clients + scripts
+  python haven.py churn revenue                monthly retained-revenue report
+
+Phase 3 (not built yet): bench, lsa
 """
 import os
 import sys
@@ -27,10 +38,11 @@ from datetime import date
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from modules import config, db, importers, kpi, leads, monday, reviews  # noqa: E402
+from modules import (churn, compliance, config, db, importers, kpi, leads,
+                     monday, prospects, reviews)  # noqa: E402
 from modules import constants as C  # noqa: E402
 
-NOT_YET = {"prospects": 2, "compliance": 2, "churn": 2, "bench": 3, "lsa": 3}
+NOT_YET = {"bench": 3, "lsa": 3}
 
 
 def _open(path):
@@ -163,6 +175,108 @@ def cmd_reviews(con, args):
         print(f"   then:  python haven.py reviews sent \"{snd['customer_name']}\"")
 
 
+def cmd_prospects(con, args):
+    if args and args[0] == "fetch":
+        try:
+            res = prospects.fetch_places(con)
+        except Exception as e:
+            print(f"Places API fetch failed: {e}")
+            return
+        print(f"Places API: {res['queries']} queries, {res['added']} new prospects "
+              "(existing names deduped).")
+        return
+    if args and args[0] == "import":
+        n = prospects.import_csv(con, args[1])
+        print(f"Imported {n} new prospects from {args[1]} (duplicates skipped).")
+        return
+    if args and args[0] == "done":
+        step, nxt = prospects.advance(con, int(args[1]),
+                                      " ".join(args[2:]))
+        print(f"Logged '{step}' for #{args[1]}; next step: {nxt}.")
+        return
+    if args and args[0] in prospects.TERMINAL:
+        prospects.set_outcome(con, int(args[1]), args[0], " ".join(args[2:]))
+        print(f"Prospect #{args[1]} closed as {args[0].upper()}.")
+        return
+    if args and args[0] == "sheet":
+        _open(prospects.call_sheet_html(con))
+        return
+
+    items = prospects.week_list(con)
+    if not items:
+        print("No prospect actions due this week. Fill the pipeline:\n"
+              "  python haven.py prospects fetch          (Places API)\n"
+              "  python haven.py prospects import <csv>   (manual fallback)")
+        return
+    print(f"THIS WEEK'S COMMERCIAL ACTIONS ({len(items)}) — best score first")
+    _hr()
+    today = date.today().isoformat()
+    for p in items:
+        od = "  << OVERDUE" if (p["next_action_date"] or "") < today else ""
+        print(f"#{p['id']:>3}  [{p['next_action'].upper():<7}] {p['name']:<34} "
+              f"{p['phone'] or '(no phone)':<16} {p['category']:<12} "
+              f"{p['city']:<10} score {p['score']}{od}")
+        if p["notes"]:
+            print(f"      last: {p['notes'].split(' | ')[-1]}")
+    print("\nAfter each touch:  python haven.py prospects done <id> [note]")
+
+
+def cmd_compliance(con, args):
+    if args and args[0] == "report":
+        _open(compliance.scorecard_html(con))
+        return
+    from datetime import timedelta
+    since = (date.today() - timedelta(days=30)).isoformat()
+    rows = compliance.audit(con, since=since)
+    print("STANDARDS AUDIT — trailing 30 days")
+    _hr()
+    print(f"{'cleaner':<14}{'jobs':>5}{'OMW%':>6}{'on-time%':>10}{'clock%':>8}"
+          f"{'photos%':>9}{'compl':>7}{'qualifying':>12}{'streak':>8}")
+    for a in rows:
+        print(f"{a['cleaner']:<14}{a['jobs']:>5}{a['on_my_way_pct']:>5}%"
+              f"{a['on_time_pct']:>9}%{a['clocked_out_pct']:>7}%"
+              f"{a['photos_ok_pct']:>8}%{a['complaints']:>7}"
+              f"{a['qualifying']:>7} ({a['qualifying_pct']:>3}%){a['current_streak']:>7}")
+    fl = compliance.flags(con)
+    print("\nNON-RENEWAL WATCH")
+    _hr()
+    if not fl:
+        print("No cleaners on the watch list.")
+    for f in fl:
+        b = f["bench"]
+        print(f"{f['cleaner']}: " + "; ".join(f["reasons"]))
+        print(f"   bench depth: {b['bench']} on bench, {b['pipeline']} in pipeline"
+              + ("  << thin bench — recruit before acting" if b["bench"] < 2 else ""))
+    print("\nHTML version:  python haven.py compliance report")
+
+
+def cmd_churn(con, args):
+    if args and args[0] == "revenue":
+        print("RETAINED RECURRING REVENUE (monthly $/mo value of flagged clients)")
+        _hr()
+        for m in churn.retained_revenue_report(con):
+            print(f"{m['month']}  saved ${m['saved']:>8,.2f} ({m['clients_saved']})   "
+                  f"lost ${m['lost']:>8,.2f} ({m['clients_lost']})   "
+                  f"pending ${m['pending']:>8,.2f} ({m['clients_pending']})")
+        print("\nSaved = completed another clean within 45 days of the risk "
+              "event. Pending = window still open.")
+        return
+    flags = churn.scan(con)
+    if not flags:
+        print("No recurring clients at risk.")
+        return
+    print(f"CHURN WATCHDOG — {len(flags)} at-risk recurring client(s)")
+    for f in flags:
+        _hr("=")
+        print(f"[{f['tier']}] {f['customer_name']}  ({f['phone'] or f['email']})"
+              f"  {f['frequency']} · {f['cleaner'] or 'no cleaner'}"
+              f"  value ${f['monthly_value']:,.2f}/mo")
+        print(f"   why: {'; '.join(f['reasons'])}")
+        print(f"   do:  {f['action']}")
+        print(f"\n   SMS:\n   {f['sms']}")
+        print("\n   EMAIL:\n   " + f["email_msg"].replace("\n", "\n   "))
+
+
 def main(argv):
     if not argv or argv[0] in ("-h", "--help", "help"):
         print(__doc__)
@@ -196,6 +310,12 @@ def main(argv):
         cmd_reviews(con, args)
     elif cmd == "scorecard":
         _open(kpi.generate_scorecard(con))
+    elif cmd == "prospects":
+        cmd_prospects(con, args)
+    elif cmd == "compliance":
+        cmd_compliance(con, args)
+    elif cmd == "churn":
+        cmd_churn(con, args)
     elif cmd == "monday":
         res = monday.run(con)
         print("MONDAY RHYTHM")
@@ -207,6 +327,8 @@ def main(argv):
             print(f"  inbox empty ({config.INBOX_DIR}) — using existing data")
         print("  dashboards refreshed:")
         print(f"  -> {res['scorecard']}")
+        print(f"  -> {res['prospects']}")
+        print(f"  -> {res['compliance']}")
         _open(res["monday"])
     elif cmd == "demo":
         # wipe + reload the db from data/samples so everything is testable
@@ -219,11 +341,12 @@ def main(argv):
         n2 = importers.import_bookings(con, os.path.join(s, "bk_bookings.csv"))
         n3 = importers.import_reviews(con, os.path.join(s, "reviews_log.csv"))
         reviews.set_review_baseline(con, 38)
+        n4 = prospects.import_csv(con, os.path.join(s, "prospect_tracker.csv"))
         # simulate the pipeline so reports have contacted/booked/recurring data
         from data.samples.pipeline_sim import apply as sim  # noqa
         sim(con)
-        print(f"Demo data loaded: {n1} leads, {n2} bookings, {n3} reviews "
-              "(baseline 38 pre-existing Google reviews).")
+        print(f"Demo data loaded: {n1} leads, {n2} bookings, {n3} reviews, "
+              f"{n4} prospects (baseline 38 pre-existing Google reviews).")
         print("Try:  python haven.py monday")
     elif cmd in NOT_YET:
         print(f"'{cmd}' ships in Phase {NOT_YET[cmd]} — schema is already in "

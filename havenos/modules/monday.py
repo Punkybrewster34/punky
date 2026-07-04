@@ -10,7 +10,7 @@ import glob
 import os
 from datetime import date
 
-from . import config, importers, kpi, leads, reviews
+from . import churn, compliance, config, importers, kpi, leads, prospects, reviews
 from . import html as H
 
 
@@ -64,6 +64,23 @@ def weeks_moves(con, anchor):
                            f"{t['lead_response_minutes']}-min target. First-touch "
                            "messages are pre-written below — send them now."))
 
+    at_risk = churn.scan(con, anchor)
+    high = [f for f in at_risk if f["tier"] == "HIGH"]
+    if at_risk:
+        value = sum(f["monthly_value"] for f in at_risk)
+        urgency = min(1.0, value / max(1, t["monthly_revenue"]) * 10)
+        candidates.append((urgency, f"{len(at_risk)} recurring client(s) at churn "
+                           f"risk ({len(high)} HIGH) worth {H.money(value)}/mo. "
+                           "Win-back scripts are below — HIGH tier gets a call "
+                           "today, not just a text."))
+
+    due = prospects.week_list(con)
+    if due:
+        candidates.append((0.5, f"{len(due)} commercial prospect action(s) due "
+                           "this week (calls/walk-ins/emails). One landed "
+                           "daycare or med spa is recurring revenue on a "
+                           "weekday-morning route."))
+
     candidates.sort(key=lambda x: -x[0])
     return [c[1] for c in candidates[:3]]
 
@@ -112,15 +129,45 @@ def generate(con, today=None):
     moves_html = "".join(f'<div class="callout"><b>{i+1}.</b> {H.esc(m)}</div>'
                          for i, m in enumerate(moves))
 
-    later = ('<p class="note">Commercial prospect calls, churn flags, compliance '
-             'flags and bench status appear here when Phase 2–3 modules ship.</p>')
+    # --- churn flags (Module 6)
+    churn_html = churn.flags_html_fragment(con, anchor)
+
+    # --- this week's prospect calls (Module 4)
+    due = prospects.week_list(con, today)
+    if due:
+        prow = [[p["name"], p["next_action"], p["phone"] or "—", p["category"],
+                 p["city"], p["score"]] for p in due[:10]]
+        pros_html = H.table(["Business", "Step", "Phone", "Vertical", "City",
+                             "Score"], prow)
+        pros_html += ('<p class="note">Full sheet: <b>python haven.py prospects '
+                      'sheet</b> · log each touch with <b>prospects done '
+                      '&lt;id&gt;</b>.</p>')
+    else:
+        pros_html = ('<div class="callout">No prospect actions due. Fill the '
+                     'pipeline: <b>python haven.py prospects fetch</b>.</div>')
+
+    # --- compliance flags + bench (Modules 5/7)
+    fl = compliance.flags(con, today)
+    bench = compliance.bench_depth(con)
+    bench_line = (f'Bench: <b>{bench["bench"]}</b> qualified on bench · '
+                  f'{bench["pipeline"]} in pipeline'
+                  + (' — ' + H.badge("BENCH < 2", "red") if bench["bench"] < 2 else ""))
+    if fl:
+        comp_html = "".join(
+            f'<div class="callout"><b>{H.esc(f["cleaner"])}</b> — '
+            + "; ".join(H.esc(r) for r in f["reasons"]) + "</div>" for f in fl)
+    else:
+        comp_html = '<div class="callout">All cleaners meeting standards. ✔</div>'
+    comp_html += f'<p class="note">{bench_line}. Full audit: <b>python haven.py compliance report</b>.</p>'
 
     body = f"""
 <h2>This Week's Moves</h2>{moves_html}
 <h2>Today's Review Sends ({today.isoformat()})</h2>{send_html}
 <h2>Uncontacted Leads</h2>{lead_html}
-{kpi.scorecard_body(con, anchor)}
-<h2>Coming Online</h2>{later}"""
+<h2>Churn Flags</h2>{churn_html}
+<h2>This Week's Prospect Calls</h2>{pros_html}
+<h2>Standards Audit Flags &amp; Bench</h2>{comp_html}
+{kpi.scorecard_body(con, anchor)}"""
     return H.write("monday.html", H.page("Monday", body, "The Monday Command"))
 
 
@@ -128,5 +175,9 @@ def run(con, today=None):
     """Full Monday rhythm: import inbox -> refresh dashboards -> monday.html."""
     imported = import_inbox(con)
     scorecard = kpi.generate_scorecard(con)
+    call_sheet = prospects.call_sheet_html(con, today)
+    audit = compliance.scorecard_html(con, today)
     monday_path = generate(con, today)
-    return {"imported": imported, "scorecard": scorecard, "monday": monday_path}
+    return {"imported": imported, "scorecard": scorecard,
+            "prospects": call_sheet, "compliance": audit,
+            "monday": monday_path}
