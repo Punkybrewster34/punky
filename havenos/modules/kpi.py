@@ -6,7 +6,7 @@ week-over-week deltas, $60K/month progress bar, methodology footnote).
 """
 from datetime import date, timedelta
 
-from . import config, leads, reviews
+from . import bench, config, leads, reviews
 from . import html as H
 
 RECURRING = "frequency != 'one-time' AND frequency != ''"
@@ -171,6 +171,10 @@ def scorecard_body(con, anchor=None):
                f"+{cur['new_reviews']} this wk"),
         H.tile("Review velocity", f"{prog['velocity_per_week']}/wk"),
     ])
+    bd = bench.depth(con, anchor)
+    tiles += H.tile("Bench depth",
+                    f"{bd['bench_ready']}" + (" ⚠" if bd["red_flag"] else ""),
+                    f"{bd['active_cleaners']} active · {bd['in_pipeline']} in pipe")
 
     goal_bar = H.progress_bar(
         rev30, t["monthly_revenue"],

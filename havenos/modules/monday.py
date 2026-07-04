@@ -10,7 +10,8 @@ import glob
 import os
 from datetime import date
 
-from . import churn, compliance, config, importers, kpi, leads, prospects, reviews
+from . import (bench, churn, compliance, config, importers, kpi, leads, lsa,
+               prospects, reviews)
 from . import html as H
 
 
@@ -81,6 +82,20 @@ def weeks_moves(con, anchor):
                            "daycare or med spa is recurring revenue on a "
                            "weekday-morning route."))
 
+    bd = bench.depth(con, anchor)
+    if bd["red_flag"]:
+        candidates.append((0.6, f"Bench is at {bd['bench_ready']} (standard: 2+) "
+                           f"with {bd['in_pipeline']} applicant(s) in the pipeline. "
+                           "Post the Indeed ad and move candidates through "
+                           "screening — no bench means no leverage on standards."))
+
+    un_lsa = lsa.unmarked(con)
+    if un_lsa:
+        candidates.append((0.45, f"{len(un_lsa)} LSA lead(s) not yet marked "
+                           "booked in the LSA app. Marking booked leads trains "
+                           "Google's matching — do it today. "
+                           "Do not touch bids before 75 reviews."))
+
     candidates.sort(key=lambda x: -x[0])
     return [c[1] for c in candidates[:3]]
 
@@ -146,12 +161,12 @@ def generate(con, today=None):
         pros_html = ('<div class="callout">No prospect actions due. Fill the '
                      'pipeline: <b>python haven.py prospects fetch</b>.</div>')
 
-    # --- compliance flags + bench (Modules 5/7)
+    # --- compliance flags + bench + routes (Modules 5/7)
     fl = compliance.flags(con, today)
-    bench = compliance.bench_depth(con)
-    bench_line = (f'Bench: <b>{bench["bench"]}</b> qualified on bench · '
-                  f'{bench["pipeline"]} in pipeline'
-                  + (' — ' + H.badge("BENCH < 2", "red") if bench["bench"] < 2 else ""))
+    bd = bench.depth(con, today)
+    bench_line = (f'Bench: <b>{bd["bench_ready"]}</b> qualified on bench · '
+                  f'{bd["active_cleaners"]} active · {bd["in_pipeline"]} in pipeline'
+                  + (' — ' + H.badge("BENCH < 2", "red") if bd["red_flag"] else ""))
     if fl:
         comp_html = "".join(
             f'<div class="callout"><b>{H.esc(f["cleaner"])}</b> — '
@@ -159,6 +174,28 @@ def generate(con, today=None):
     else:
         comp_html = '<div class="callout">All cleaners meeting standards. ✔</div>'
     comp_html += f'<p class="note">{bench_line}. Full audit: <b>python haven.py compliance report</b>.</p>'
+    scattered = [c for c in bench.route_density(con, today) if c["scattered"]]
+    if scattered:
+        comp_html += "".join(
+            f'<div class="callout">🗺 <b>{H.esc(c["cleaner"])}</b> has a scattered '
+            f'route: {c["jobs"]} jobs across {c["zip_count"]} zips (top zip only '
+            f'{c["top_share"]}%). Route density is the #1 turnover lever — '
+            f'consolidate their schedule before it costs you the cleaner.</div>'
+            for c in scattered)
+
+    # --- LSA discipline (Module 8)
+    ls = lsa.summary(con, today)
+    if ls["unmarked"]:
+        lsa_html = (f'<div class="callout">⚠ <b>{ls["unmarked"]} LSA lead(s) not '
+                    f'marked booked</b> in the LSA app — do this today; it trains '
+                    f'Google\'s lead matching. <b>python haven.py lsa</b> for the '
+                    f'list.</div>')
+    else:
+        lsa_html = ('<div class="callout">All LSA leads marked. ✔</div>')
+    lsa_html += (f'<p class="note">{ls["leads_received"]} LSA leads logged · '
+                 f'{ls["marked_booked"]} marked booked · reviews '
+                 f'{ls["review_progress"]["total_reviews"]}/{ls["review_progress"]["target"]}. '
+                 f'<b>{H.esc(ls["bid_warning"])}</b></p>')
 
     body = f"""
 <h2>This Week's Moves</h2>{moves_html}
@@ -167,6 +204,7 @@ def generate(con, today=None):
 <h2>Churn Flags</h2>{churn_html}
 <h2>This Week's Prospect Calls</h2>{pros_html}
 <h2>Standards Audit Flags &amp; Bench</h2>{comp_html}
+<h2>LSA Discipline</h2>{lsa_html}
 {kpi.scorecard_body(con, anchor)}"""
     return H.write("monday.html", H.page("Monday", body, "The Monday Command"))
 

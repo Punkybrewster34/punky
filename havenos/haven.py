@@ -29,7 +29,15 @@ Usage:
   python haven.py churn                        at-risk recurring clients + scripts
   python haven.py churn revenue                monthly retained-revenue report
 
-Phase 3 (not built yet): bench, lsa
+  python haven.py bench                        applicant pipeline + route density
+  python haven.py bench add "Name" [phone] [source]
+  python haven.py bench move <id> <stage>      applied/screened/checkr/
+                                               qualification_audit/active/bench/out
+  python haven.py bench import <file.csv>      Indeed export / applicant sheet
+  python haven.py lsa                          LSA log + unmarked reminders
+  python haven.py lsa add "Name" [phone]       log a new LSA lead
+  python haven.py lsa booked <id>              mark lead booked (after LSA app!)
+  python haven.py publish                      bundle dashboards for the website
 """
 import os
 import sys
@@ -38,11 +46,9 @@ from datetime import date
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from modules import (churn, compliance, config, db, importers, kpi, leads,
-                     monday, prospects, reviews)  # noqa: E402
+from modules import (bench, churn, compliance, config, db, importers, kpi,
+                     leads, lsa, monday, prospects, reviews)  # noqa: E402
 from modules import constants as C  # noqa: E402
-
-NOT_YET = {"bench": 3, "lsa": 3}
 
 
 def _open(path):
@@ -277,6 +283,93 @@ def cmd_churn(con, args):
         print("\n   EMAIL:\n   " + f["email_msg"].replace("\n", "\n   "))
 
 
+def cmd_bench(con, args):
+    if args and args[0] == "add":
+        bench.add(con, args[1], args[2] if len(args) > 2 else "",
+                  source=args[3] if len(args) > 3 else "manual")
+        print(f"Applicant '{args[1]}' added at stage 'applied'.")
+        return
+    if args and args[0] == "move":
+        bench.move(con, int(args[1]), args[2])
+        print(f"Applicant #{args[1]} -> {args[2]}")
+        return
+    if args and args[0] == "import":
+        n = bench.import_csv(con, args[1])
+        print(f"Imported {n} new applicants from {args[1]}.")
+        return
+
+    d = bench.depth(con)
+    flag = "  << RED FLAG: bench below 2 — recruit now" if d["red_flag"] else ""
+    print(f"BENCH DEPTH: {d['bench_ready']} bench-ready · "
+          f"{d['active_cleaners']} active cleaners · "
+          f"{d['in_pipeline']} in pipeline{flag}")
+    print("\nAPPLICANT PIPELINE")
+    _hr()
+    rows = bench.pipeline(con)
+    if not rows:
+        print("(empty — add applicants with: haven.py bench add \"Name\")")
+    for a in rows:
+        print(f"#{a['id']:>3}  {a['stage']:<20} {a['name']:<24} "
+              f"{a['phone'] or '':<15} applied {a['applied_date'] or '?'}"
+              f"{'  ' + a['notes'] if a['notes'] else ''}")
+    print("\nROUTE DENSITY — trailing 30 days (scattered routes drive turnover)")
+    _hr()
+    for c in bench.route_density(con):
+        tag = "  << SCATTERED — consolidate" if c["scattered"] else ""
+        print(f"{c['cleaner']:<14} {c['jobs']:>3} jobs · {c['zip_count']} zips · "
+              f"top zip {c['top_zip']} ({c['top_share']}%){tag}")
+
+
+def cmd_lsa(con, args):
+    if args and args[0] == "add":
+        lsa.add(con, args[1], args[2] if len(args) > 2 else "")
+        print(f"LSA lead '{args[1]}' logged. Mark it booked in the LSA app "
+              "once scheduled, then: haven.py lsa booked <id>")
+        return
+    if args and args[0] == "booked":
+        lsa.mark_booked(con, int(args[1]))
+        print(f"LSA lead #{args[1]} marked booked. "
+              "(Make sure it's ALSO marked in the LSA app itself.)")
+        return
+
+    s = lsa.summary(con)
+    print(f"LSA DISCIPLINE — {s['leads_received']} leads logged · "
+          f"{s['marked_booked']} marked booked · {s['unmarked']} unmarked")
+    _hr()
+    for l in lsa.unmarked(con):
+        print(f"#{l['id']:>3}  {l['received_date']}  {l['name']:<24} "
+              f"{l['phone']}   << mark booked in LSA app")
+    p = s["review_progress"]
+    print(f"\nReviews: {p['total_reviews']}/{p['target']} "
+          f"(velocity {p['velocity_per_week']}/wk, projected {p['projected_date'] or 'n/a'})")
+    print(s["bid_warning"])
+
+
+def cmd_publish(con):
+    """Bundle every dashboard into ../havenos-site/dashboards.json for the
+    password-protected /havenos page on the website."""
+    import json
+    from datetime import datetime
+    res = monday.run(con)
+    site_dir = os.path.join(os.path.dirname(config.ROOT), "havenos-site")
+    os.makedirs(site_dir, exist_ok=True)
+    bundle = {"generated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+              "dashboards": {}}
+    for name in ("monday", "scorecard", "prospects", "compliance"):
+        path = os.path.join(config.DASHBOARDS_DIR, f"{name}.html")
+        if os.path.exists(path):
+            with open(path, encoding="utf-8") as f:
+                bundle["dashboards"][name] = f.read()
+    out = os.path.join(site_dir, "dashboards.json")
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(bundle, f)
+    print(f"Bundled {len(bundle['dashboards'])} dashboards -> {out}")
+    print("Now push it live:")
+    print("  git add havenos-site && git commit -m 'Publish dashboards' && git push")
+    print("The site rebuilds automatically and /havenos shows the new numbers.")
+    return res
+
+
 def main(argv):
     if not argv or argv[0] in ("-h", "--help", "help"):
         print(__doc__)
@@ -316,6 +409,12 @@ def main(argv):
         cmd_compliance(con, args)
     elif cmd == "churn":
         cmd_churn(con, args)
+    elif cmd == "bench":
+        cmd_bench(con, args)
+    elif cmd == "lsa":
+        cmd_lsa(con, args)
+    elif cmd == "publish":
+        cmd_publish(con)
     elif cmd == "monday":
         res = monday.run(con)
         print("MONDAY RHYTHM")
@@ -342,15 +441,17 @@ def main(argv):
         n3 = importers.import_reviews(con, os.path.join(s, "reviews_log.csv"))
         reviews.set_review_baseline(con, 38)
         n4 = prospects.import_csv(con, os.path.join(s, "prospect_tracker.csv"))
+        n5 = bench.import_csv(con, os.path.join(s, "applicants.csv"))
+        lsa.add(con, "Karen Whitfield", "(602) 555-1424", "2026-07-01")
+        lsa.add(con, "Miguel Santos", "(520) 555-8821", "2026-07-03")
+        lsa.mark_booked(con, 1)
         # simulate the pipeline so reports have contacted/booked/recurring data
         from data.samples.pipeline_sim import apply as sim  # noqa
         sim(con)
         print(f"Demo data loaded: {n1} leads, {n2} bookings, {n3} reviews, "
-              f"{n4} prospects (baseline 38 pre-existing Google reviews).")
+              f"{n4} prospects, {n5} applicants, 2 LSA leads "
+              "(baseline 38 pre-existing Google reviews).")
         print("Try:  python haven.py monday")
-    elif cmd in NOT_YET:
-        print(f"'{cmd}' ships in Phase {NOT_YET[cmd]} — schema is already in "
-              "haven.db, module not built yet.")
     else:
         print(f"Unknown command '{cmd}'.\n{__doc__}")
         return 1

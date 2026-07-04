@@ -250,11 +250,64 @@ monthly recurring dollars (visit price × visits/month).
 
 ---
 
-## Phase 3 (schema ready, modules not yet built)
+## Module 7 — Recruiting Bench Tracker
 
-Module 7 Recruiting Bench, Module 8 LSA Discipline. Their tables already
-exist in `haven.db`; commands print a "ships in Phase 3" notice. Bench
-depth already surfaces (as zero) in the compliance watch list.
+**What it does.** Applicant pipeline (applied → screened → checkr →
+qualification_audit → active / bench / out) from Indeed CSV exports or
+manual entry. Bench depth (bench-ready, active cleaners, in pipeline)
+shows on the KPI scorecard and next to every compliance flag; red flag
+when bench < 2. Route-density view surfaces cleaners working scattered
+zips (6+ jobs across 4+ zips with no dominant cluster) — the #1 turnover
+lever.
+
+```
+python haven.py bench                     # pipeline + depth + route density
+python haven.py bench add "Name" [phone]
+python haven.py bench move 4 checkr
+python haven.py bench import indeed.csv   # headers via column_maps.applicants
+```
+
+---
+
+## Module 8 — LSA Discipline Module
+
+Log every LSA lead, mark booked ones (in the LSA app *and* here), and get
+nagged about unmarked ones on Monday. Shares the 75-review tracker with
+Module 2. Every output ends with the hard-coded line: *Do not touch bids
+before 75 reviews.*
+
+```
+python haven.py lsa                    # log + unmarked reminders + tracker
+python haven.py lsa add "Name" [phone]
+python haven.py lsa booked 3
+```
+
+---
+
+## Web access — dashboards on your phone (`/havenos`)
+
+The laptop stays the engine; the website is the window. The repo's
+Next.js app now serves a password-protected **`/havenos`** page with all
+four dashboards (Monday, Scorecard, Prospects, Standards).
+
+**Publish flow** (after any `monday` run, or whenever you want fresh
+numbers online):
+
+```
+python haven.py publish
+git add havenos-site && git commit -m "Publish dashboards" && git push
+```
+
+`publish` re-runs the Monday rhythm and bundles the dashboards into
+`havenos-site/dashboards.json`; the push triggers the site's auto-deploy
+and `/havenos` shows the new numbers a minute later.
+
+**Password.** Default is set in `lib/havenos-auth.ts`; override it by
+setting `HAVENOS_PASSWORD` (and `SESSION_SECRET`) in Vercel → Project →
+Settings → Environment Variables. Sessions last 7 days per device.
+
+Only the published HTML bundle goes online — haven.db, CSVs, and client
+lists never leave the laptop.
 
 ---
 
