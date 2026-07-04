@@ -3,6 +3,17 @@
 # your exported CSV files into  havenos/data/inbox
 
 cd "$(dirname "$0")/../.." || exit 1   # repo root
+
+# --- Auto-update: pull the latest version, then restart fresh --------
+# (Re-exec so we never run a half-updated copy of this script.)
+if [ -z "$HAVENOS_REEXEC" ]; then
+  echo "Checking for the latest version..."
+  git pull --ff-only >/dev/null 2>&1 && echo "OK  You're on the latest version." \
+    || echo "i   Couldn't auto-update (offline?) — using the version you have."
+  export HAVENOS_REEXEC=1
+  exec "$0" "$@"
+fi
+
 clear
 echo "=================================================="
 echo "   HAVEN OS  ·  Updating your dashboards"
