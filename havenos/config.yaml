@@ -1,0 +1,131 @@
+# ============================================================
+# HavenOS configuration — Haven House Cleaning
+# Edit this file, never the code, when BK export headers change
+# or targets/spend move.
+# ============================================================
+
+business:
+  name: Haven House Cleaning
+  website: havenhouseclean.com
+  markets: [Phoenix, Tucson]
+  timezone: America/Phoenix
+  business_hours:
+    start: "08:00"
+    end: "18:00"
+
+targets:
+  monthly_revenue: 60000          # $60K/month by Jan 2027
+  annual_revenue_2027: 1000000
+  recurring_pct_of_revenue: 60    # agency-readiness threshold
+  ltv_cac_ratio: 3.0
+  cac_payback_cleans: 2           # CAC must recover within 1-2 cleans
+  lead_response_minutes: 5        # first-touch target during business hours
+  review_count_lsa: 75            # LSA threshold — never touch bids before this
+  bench_minimum: 2
+
+# ------------------------------------------------------------
+# HARD RULES — encoded in modules/constants.py; values here are
+# informational mirrors so the config documents the whole system.
+# Changing these does NOT loosen the code-enforced review caps.
+# ------------------------------------------------------------
+review_rules:
+  max_per_week: 6
+  max_per_day: 2
+  send_days: [Tuesday, Thursday, Saturday]
+
+bonus_rules:
+  per_5_star_review: 10.00        # $10 per 5-star review generated
+  review_milestone_every: 10      # every 10 reviews...
+  review_milestone_amount: 100.00 # ...pays $100
+  perfect_clean_every: 10         # every 10 qualifying cleans...
+  perfect_clean_amount: 100.00    # ...pays $100
+  per_review_generating_clean: 25.00  # +$25 per clean that generates a Google review
+  qualifying_clean:
+    on_time_window_minutes: 10
+    min_photos: 10
+
+# ------------------------------------------------------------
+# Ad spend per channel per month — used for CAC. Update monthly.
+# Keys are lowercase channel names matching lead sources.
+# ------------------------------------------------------------
+channel_spend:
+  "2026-06":
+    lsa: 1200
+    facebook: 800
+    thumbtack: 350
+    website: 0
+  "2026-07":
+    lsa: 1200
+    facebook: 800
+    thumbtack: 300
+    website: 0
+
+# LTV assumptions for the LTV:CAC estimate (documented in the
+# scorecard methodology footnote).
+ltv_model:
+  gross_margin_pct: 45            # after contractor payout
+  avg_retention_months: 14        # recurring client average lifetime
+
+# ------------------------------------------------------------
+# COLUMN MAPPINGS — the whole point: when BookingKoala or Zapier
+# renames a header, fix it HERE. Each logical field lists every
+# header (case-insensitive) it may appear under. First match wins.
+# ------------------------------------------------------------
+column_maps:
+
+  leads_sheet:            # Zapier -> Google Sheet -> CSV download
+    timestamp: [timestamp, created, created_at, date, "date created", "lead date"]
+    name: [name, "full name", "customer name", "lead name", "first name"]
+    phone: [phone, "phone number", mobile, "cell phone", cell]
+    email: [email, "email address", "e-mail"]
+    source: [source, channel, "lead source", platform]
+    service_interest: [service_interest, service, "service interest", "service type", "job type"]
+    notes: [notes, note, message, comments, details]
+
+  bk_bookings:            # BookingKoala booking/appointment export
+    booking_id: ["booking id", id, "appointment id", "booking #", "booking number"]
+    date: ["service date", date, "appointment date", "booking date"]
+    start_time: ["start time", time, "arrival time", "appointment time"]
+    customer_name: ["customer name", customer, client, "client name", "customer full name"]
+    customer_email: ["customer email", email, "client email"]
+    customer_phone: ["customer phone", phone, "client phone"]
+    service_type: ["service type", service, "service name", "industry", "booking type"]
+    frequency: [frequency, recurrence, "recurring frequency", "service frequency"]
+    amount: [amount, total, price, "total amount", "final amount", "invoice total"]
+    status: [status, "booking status", "appointment status"]
+    cleaner: [provider, cleaner, "provider name", "assigned provider", team, "team assigned"]
+    on_my_way: ["on my way", omw, "on the way", "on my way pressed"]
+    clock_in: ["clock in", "check in", "clock-in", "check in time", "clock in time"]
+    clock_out: ["clock out", "check out", "clock-out", "check out time", "clock out time"]
+    photo_count: [photos, "photo count", "no of photos", "number of photos", "photos uploaded"]
+    complaint: [complaint, complaints, "complaint flag", issue, "customer complaint"]
+    zip: [zip, zipcode, "zip code", "postal code"]
+
+  reviews_sheet:          # manual log or Zapier review-capture sheet
+    review_date: [date, review_date, "review date", timestamp]
+    reviewer_name: [name, reviewer, "reviewer name", "customer name"]
+    rating: [rating, stars, "star rating"]
+    cleaner: [cleaner, provider, "attributed cleaner", "provider name"]
+    booking_id: ["booking id", booking, "job id"]
+    notes: [notes, text, "review text", comments]
+
+  prospects_tracker:      # existing 48-prospect commercial tracker
+    name: [name, business, "business name", company]
+    phone: [phone, "phone number"]
+    address: [address, location]
+    website: [website, url, site]
+    city: [city, market]
+    category: [category, type, vertical, industry]
+    status: [status, stage]
+    notes: [notes, note]
+
+# ------------------------------------------------------------
+# First-touch lead sources recognized by Module 1. Anything else
+# is bucketed as "other" and gets the website templates.
+# ------------------------------------------------------------
+lead_sources: [facebook, thumbtack, lsa, website, bk_form, referral]
+
+# Commercial prospector (Phase 2) search targets
+places:
+  cities: [Phoenix, Tucson, Scottsdale]
+  categories: [daycare, "med spa", salon, "boutique gym", chiropractor]

@@ -1,0 +1,239 @@
+Booking ID,Service Date,Start Time,Customer Name,Customer Email,Customer Phone,Service Type,Frequency,Total Amount,Status,Provider Name,On My Way,Clock In,Clock Out,No of Photos,Complaint,Zip Code
+BK-4201,04/25/2026,12:00 PM,Noah Meyer,noah.meyer@example.com,(602) 555-8973,Standard Clean,biweekly,$185.00,completed,Elena V.,Yes,12:00 PM,03:00 PM,10,No,85710
+BK-4207,04/25/2026,8:00 AM,Hector Gomez,hector.gomez@example.com,(602) 555-3170,Standard Clean,biweekly,$170.00,completed,Priya S.,Yes,08:00 AM,12:00 PM,14,No,85016
+BK-4238,04/25/2026,12:00 PM,Hank Lopez,hank.lopez@example.com,(602) 555-9947,Airbnb Turnover,every 4 weeks,$170.00,completed,Tanya R.,Yes,12:08 PM,03:00 PM,18,No,85018
+BK-4361,04/25/2026,1:00 PM,Bella Gomez,bella.gomez@example.com,(602) 555-5720,Standard Clean,biweekly,$150.00,completed,Tanya R.,Yes,01:06 PM,05:00 PM,18,No,85710
+BK-4377,04/25/2026,10:00 AM,Faith Duran,faith.duran@example.com,(602) 555-8371,Standard Clean,weekly,$185.00,completed,Elena V.,Yes,10:01 AM,02:00 PM,12,No,85018
+BK-4400,04/25/2026,10:00 AM,Ivy Gomez,ivy.gomez@example.com,(602) 555-5582,Move-In/Out Clean,One-Time,$260.00,completed,Luis O.,Yes,10:00 AM,01:00 PM,18,No,85704
+BK-4401,04/25/2026,12:00 PM,Karen Ortega,karen.ortega@example.com,(602) 555-3363,Move-In/Out Clean,One-Time,$480.00,completed,Priya S.,Yes,12:00 PM,03:00 PM,18,No,85745
+BK-4399,04/27/2026,12:00 PM,Nate Nguyen,nate.nguyen@example.com,(602) 555-7606,Deep Clean,One-Time,$480.00,completed,Priya S.,Yes,12:00 PM,03:00 PM,10,No,85718
+BK-4228,04/28/2026,2:00 PM,Umar Fischer,umar.fischer@example.com,(602) 555-6491,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,02:00 PM,06:00 PM,12,No,85018
+BK-4261,04/28/2026,8:00 AM,Karen Quintero,karen.quintero@example.com,(602) 555-7565,Standard Clean,weekly,$220.00,completed,Luis O.,Yes,08:00 AM,11:00 AM,12,No,85032
+BK-4304,04/28/2026,12:00 PM,Quinn Meyer,quinn.meyer@example.com,(602) 555-3290,Standard Clean,biweekly,$185.00,completed,Maria G.,Yes,12:06 PM,03:00 PM,10,No,85710
+BK-4314,04/28/2026,8:00 AM,Carlos Kim,carlos.kim@example.com,(602) 555-1710,Airbnb Turnover,weekly,$220.00,completed,Maria G.,Yes,08:02 AM,12:00 PM,14,No,85008
+BK-4398,04/28/2026,9:00 AM,Ivy Torres,ivy.torres@example.com,(602) 555-9108,Deep Clean,One-Time,$260.00,completed,Deshawn K.,Yes,09:04 AM,12:00 PM,12,No,85016
+BK-4211,04/29/2026,2:00 PM,Ximena Jensen,ximena.jensen@example.com,(602) 555-1832,Standard Clean,weekly,$200.00,completed,Tanya R.,Yes,02:08 PM,05:00 PM,18,No,85251
+BK-4246,04/29/2026,10:00 AM,Quinn Chen,quinn.chen@example.com,(602) 555-4249,Standard Clean,biweekly,$160.00,completed,Tanya R.,No,,,9,No,85251
+BK-4281,04/29/2026,12:00 PM,Nate Ortega,nate.ortega@example.com,(602) 555-5634,Airbnb Turnover,every 4 weeks,$220.00,completed,Maria G.,Yes,12:00 PM,04:00 PM,15,No,85710
+BK-4339,04/29/2026,10:00 AM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-2118,Standard Clean,weekly,$200.00,completed,Maria G.,Yes,10:08 AM,02:00 PM,15,No,85704
+BK-4351,04/29/2026,1:00 PM,Noah Ortega,noah.ortega@example.com,(602) 555-7172,Standard Clean,weekly,$170.00,skipped,Maria G.,No,,,0,No,85008
+BK-4388,04/30/2026,1:00 PM,Derek Nguyen,derek.nguyen@example.com,(602) 555-5496,Standard Clean,biweekly,$170.00,completed,Tanya R.,Yes,01:00 PM,03:00 PM,15,No,85718
+BK-4218,05/01/2026,9:00 AM,Gina Sato,gina.sato@example.com,(602) 555-1634,Standard Clean,weekly,$170.00,completed,Deshawn K.,Yes,09:00 AM,11:00 AM,10,No,85745
+BK-4251,05/01/2026,10:00 AM,Dana Alvarez,dana.alvarez@example.com,(602) 555-7209,Standard Clean,weekly,$160.00,completed,Priya S.,Yes,10:02 AM,12:00 PM,11,No,85718
+BK-4271,05/01/2026,8:00 AM,Derek Hughes,derek.hughes@example.com,(602) 555-3870,Standard Clean,weekly,$185.00,completed,Tanya R.,Yes,08:07 AM,12:00 PM,15,No,85016
+BK-4309,05/01/2026,12:00 PM,Leo Ellis,leo.ellis@example.com,(602) 555-1349,Standard Clean,biweekly,$140.00,completed,Maria G.,Yes,12:00 PM,04:00 PM,14,No,85018
+BK-4334,05/01/2026,8:00 AM,Tina Ibarra,tina.ibarra@example.com,(602) 555-8538,Airbnb Turnover,biweekly,$220.00,completed,Deshawn K.,Yes,08:01 AM,10:00 AM,15,No,85704
+BK-4378,05/02/2026,1:00 PM,Faith Duran,faith.duran@example.com,(602) 555-5566,Standard Clean,weekly,$185.00,completed,Elena V.,Yes,01:00 PM,05:00 PM,15,No,85018
+BK-4233,05/04/2026,12:00 PM,Zoe Lopez,zoe.lopez@example.com,(602) 555-8777,Standard Clean,biweekly,$160.00,completed,Elena V.,Yes,12:08 PM,04:00 PM,11,No,85016
+BK-4294,05/04/2026,2:00 PM,Noah Duran,noah.duran@example.com,(602) 555-7302,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,02:00 PM,05:00 PM,15,No,85254
+BK-4299,05/04/2026,9:00 AM,Leo Ortega,leo.ortega@example.com,(602) 555-5465,Standard Clean,every 4 weeks,$200.00,completed,Elena V.,Yes,09:00 AM,01:00 PM,15,No,85008
+BK-4241,05/05/2026,9:00 AM,Karen Reyes,karen.reyes@example.com,(602) 555-8449,Standard Clean,biweekly,$140.00,completed,Priya S.,Yes,09:00 AM,12:00 PM,11,No,85032
+BK-4262,05/05/2026,8:00 AM,Karen Quintero,karen.quintero@example.com,(602) 555-2395,Standard Clean,weekly,$220.00,completed,Luis O.,Yes,08:00 AM,10:00 AM,18,No,85032
+BK-4289,05/05/2026,2:00 PM,Quinn Duran,quinn.duran@example.com,(602) 555-2646,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,02:00 PM,05:00 PM,12,No,85745
+BK-4315,05/05/2026,1:00 PM,Carlos Kim,carlos.kim@example.com,(602) 555-1996,Standard Clean,weekly,$220.00,completed,Maria G.,Yes,01:00 PM,04:00 PM,10,No,85008
+BK-4329,05/05/2026,12:00 PM,Nate Quintero,nate.quintero@example.com,(602) 555-8043,Standard Clean,biweekly,$185.00,completed,Elena V.,Yes,12:00 PM,02:00 PM,18,No,85745
+BK-4212,05/06/2026,8:00 AM,Ximena Jensen,ximena.jensen@example.com,(602) 555-5291,Standard Clean,weekly,$200.00,completed,Tanya R.,Yes,08:00 AM,11:00 AM,14,No,85251
+BK-4340,05/06/2026,10:00 AM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-6085,Standard Clean,weekly,$200.00,completed,Maria G.,Yes,10:04 AM,12:00 PM,15,No,85704
+BK-4352,05/06/2026,1:00 PM,Noah Ortega,noah.ortega@example.com,(602) 555-7731,Standard Clean,weekly,$170.00,completed,Maria G.,Yes,01:07 PM,03:00 PM,10,No,85008
+BK-4367,05/06/2026,10:00 AM,Iris Patel,iris.patel@example.com,(602) 555-8612,Airbnb Turnover,biweekly,$150.00,completed,Deshawn K.,Yes,10:03 AM,01:00 PM,4,No,85032
+BK-4372,05/06/2026,1:00 PM,Kate Chen,kate.chen@example.com,(602) 555-8055,Airbnb Turnover,biweekly,$170.00,completed,Maria G.,Yes,01:00 PM,03:00 PM,10,No,85710
+BK-4402,05/06/2026,9:00 AM,Steve Duran,steve.duran@example.com,(602) 555-9508,Deep Clean,One-Time,$420.00,completed,Priya S.,No,,,7,No,85704
+BK-4403,05/06/2026,1:00 PM,Steve Torres,steve.torres@example.com,(602) 555-5902,Move-In/Out Clean,One-Time,$300.00,completed,Deshawn K.,Yes,01:00 PM,03:00 PM,11,No,85745
+BK-4393,05/07/2026,12:00 PM,Hank Duran,hank.duran@example.com,(602) 555-7809,Standard Clean,biweekly,$140.00,completed,Deshawn K.,Yes,12:00 PM,04:00 PM,12,No,85251
+BK-4219,05/08/2026,12:00 PM,Gina Sato,gina.sato@example.com,(602) 555-4164,Standard Clean,weekly,$170.00,completed,Deshawn K.,Yes,12:00 PM,03:00 PM,14,No,85745
+BK-4252,05/08/2026,9:00 AM,Dana Alvarez,dana.alvarez@example.com,(602) 555-6813,Standard Clean,weekly,$160.00,skipped,Priya S.,No,,,0,No,85718
+BK-4272,05/08/2026,10:00 AM,Derek Hughes,derek.hughes@example.com,(602) 555-9056,Standard Clean,weekly,$185.00,completed,Tanya R.,Yes,10:00 AM,02:00 PM,11,No,85016
+BK-4284,05/08/2026,2:00 PM,Umar Kim,umar.kim@example.com,(602) 555-3492,Standard Clean,biweekly,$170.00,completed,Elena V.,No,,,9,No,85710
+BK-4324,05/08/2026,10:00 AM,Gina Patel,gina.patel@example.com,(602) 555-1430,Airbnb Turnover,biweekly,$200.00,completed,Luis O.,Yes,10:30 AM,12:00 PM,9,No,85718
+BK-4404,05/08/2026,10:00 AM,Iris Gomez,iris.gomez@example.com,(602) 555-2795,Deep Clean,One-Time,$340.00,completed,Priya S.,Yes,10:02 AM,12:00 PM,15,No,85710
+BK-4202,05/09/2026,8:00 AM,Noah Meyer,noah.meyer@example.com,(602) 555-6138,Standard Clean,biweekly,$185.00,completed,Elena V.,Yes,08:04 AM,12:00 PM,18,No,85710
+BK-4208,05/09/2026,10:00 AM,Hector Gomez,hector.gomez@example.com,(602) 555-5956,Airbnb Turnover,biweekly,$170.00,completed,Priya S.,Yes,10:00 AM,12:00 PM,11,No,85016
+BK-4362,05/09/2026,12:00 PM,Bella Gomez,bella.gomez@example.com,(602) 555-9189,Airbnb Turnover,biweekly,$150.00,completed,Tanya R.,No,,,9,No,85710
+BK-4379,05/09/2026,9:00 AM,Faith Duran,faith.duran@example.com,(602) 555-2929,Standard Clean,weekly,$185.00,completed,Elena V.,No,,,9,No,85018
+BK-4408,05/11/2026,10:00 AM,Noah Quintero,noah.quintero@example.com,(602) 555-6804,Deep Clean,One-Time,$300.00,completed,Priya S.,Yes,10:00 AM,01:00 PM,18,No,85710
+BK-4229,05/12/2026,2:00 PM,Umar Fischer,umar.fischer@example.com,(602) 555-1757,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,02:00 PM,04:00 PM,14,No,85018
+BK-4263,05/12/2026,1:00 PM,Karen Quintero,karen.quintero@example.com,(602) 555-7232,Standard Clean,weekly,$220.00,completed,Luis O.,Yes,01:04 PM,05:00 PM,14,No,85032
+BK-4305,05/12/2026,12:00 PM,Quinn Meyer,quinn.meyer@example.com,(602) 555-3222,Standard Clean,biweekly,$185.00,completed,Maria G.,Yes,12:00 PM,02:00 PM,14,No,85710
+BK-4316,05/12/2026,8:00 AM,Carlos Kim,carlos.kim@example.com,(602) 555-2323,Standard Clean,weekly,$220.00,completed,Maria G.,Yes,08:02 AM,12:00 PM,11,No,85008
+BK-4407,05/12/2026,1:00 PM,Ximena Ellis,ximena.ellis@example.com,(602) 555-3262,Move-In/Out Clean,One-Time,$380.00,completed,Luis O.,Yes,01:02 PM,05:00 PM,10,No,85251
+BK-4213,05/13/2026,12:00 PM,Ximena Jensen,ximena.jensen@example.com,(602) 555-3442,Airbnb Turnover,weekly,$200.00,completed,Tanya R.,Yes,12:03 PM,02:00 PM,12,No,85251
+BK-4247,05/13/2026,9:00 AM,Quinn Chen,quinn.chen@example.com,(602) 555-2983,Airbnb Turnover,biweekly,$160.00,completed,Tanya R.,Yes,09:00 AM,01:00 PM,15,No,85251
+BK-4341,05/13/2026,10:00 AM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-9307,Standard Clean,weekly,$200.00,completed,Maria G.,No,,,0,No,85704
+BK-4353,05/13/2026,12:00 PM,Noah Ortega,noah.ortega@example.com,(602) 555-4833,Airbnb Turnover,weekly,$170.00,completed,Maria G.,Yes,12:04 PM,03:00 PM,10,No,85008
+BK-4405,05/13/2026,2:00 PM,Steve Nguyen,steve.nguyen@example.com,(602) 555-1841,Deep Clean,One-Time,$340.00,completed,Priya S.,Yes,02:07 PM,06:00 PM,18,No,85018
+BK-4406,05/13/2026,2:00 PM,Gina Kim,gina.kim@example.com,(602) 555-8225,Deep Clean,One-Time,$380.00,completed,Priya S.,Yes,02:00 PM,04:00 PM,0,No,85251
+BK-4205,05/14/2026,1:00 PM,Nate Lopez,nate.lopez@example.com,(602) 555-4346,Airbnb Turnover,every 4 weeks,$170.00,completed,Priya S.,Yes,01:04 PM,05:00 PM,15,No,85008
+BK-4389,05/14/2026,8:00 AM,Derek Nguyen,derek.nguyen@example.com,(602) 555-3526,Standard Clean,biweekly,$170.00,completed,Tanya R.,Yes,08:03 AM,12:00 PM,14,No,85718
+BK-4220,05/15/2026,10:00 AM,Gina Sato,gina.sato@example.com,(602) 555-9785,Standard Clean,weekly,$170.00,completed,Deshawn K.,Yes,10:00 AM,02:00 PM,18,No,85745
+BK-4253,05/15/2026,2:00 PM,Dana Alvarez,dana.alvarez@example.com,(602) 555-4130,Standard Clean,weekly,$160.00,completed,Priya S.,Yes,02:00 PM,06:00 PM,12,No,85718
+BK-4273,05/15/2026,10:00 AM,Derek Hughes,derek.hughes@example.com,(602) 555-9117,Standard Clean,weekly,$185.00,completed,Tanya R.,Yes,10:05 AM,12:00 PM,14,No,85016
+BK-4310,05/15/2026,9:00 AM,Leo Ellis,leo.ellis@example.com,(602) 555-4394,Airbnb Turnover,biweekly,$140.00,completed,Maria G.,Yes,09:07 AM,01:00 PM,14,No,85018
+BK-4335,05/15/2026,8:00 AM,Tina Ibarra,tina.ibarra@example.com,(602) 555-7484,Standard Clean,biweekly,$220.00,completed,Deshawn K.,No,08:19 AM,11:00 AM,9,No,85704
+BK-4349,05/15/2026,8:00 AM,Iris Hughes,iris.hughes@example.com,(602) 555-6598,Standard Clean,every 4 weeks,$170.00,completed,Deshawn K.,Yes,08:00 AM,11:00 AM,14,No,85018
+BK-4380,05/16/2026,9:00 AM,Faith Duran,faith.duran@example.com,(602) 555-9047,Standard Clean,weekly,$185.00,completed,Elena V.,Yes,09:04 AM,12:00 PM,10,No,85018
+BK-4412,05/17/2026,2:00 PM,Emily Brooks,emily.brooks@example.com,(602) 555-4920,Post-Construction Clean,One-Time,$380.00,completed,Elena V.,Yes,02:00 PM,04:00 PM,12,No,85254
+BK-4413,05/17/2026,12:00 PM,Olivia Quintero,olivia.quintero@example.com,(602) 555-3252,Move-In/Out Clean,One-Time,$260.00,completed,Tanya R.,No,,,9,No,85710
+BK-4234,05/18/2026,2:00 PM,Zoe Lopez,zoe.lopez@example.com,(602) 555-5499,Standard Clean,biweekly,$160.00,completed,Elena V.,Yes,02:00 PM,06:00 PM,11,No,85016
+BK-4295,05/18/2026,10:00 AM,Noah Duran,noah.duran@example.com,(602) 555-7484,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,10:04 AM,01:00 PM,10,No,85254
+BK-4242,05/19/2026,10:00 AM,Karen Reyes,karen.reyes@example.com,(602) 555-8705,Standard Clean,biweekly,$140.00,completed,Priya S.,Yes,10:07 AM,01:00 PM,15,No,85032
+BK-4264,05/19/2026,1:00 PM,Karen Quintero,karen.quintero@example.com,(602) 555-2625,Standard Clean,weekly,$220.00,completed,Luis O.,Yes,01:01 PM,04:00 PM,18,No,85032
+BK-4290,05/19/2026,8:00 AM,Quinn Duran,quinn.duran@example.com,(602) 555-7141,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,08:00 AM,11:00 AM,12,No,85745
+BK-4317,05/19/2026,10:00 AM,Carlos Kim,carlos.kim@example.com,(602) 555-9692,Standard Clean,weekly,$220.00,completed,Maria G.,No,10:31 AM,,7,No,85008
+BK-4330,05/19/2026,12:00 PM,Nate Quintero,nate.quintero@example.com,(602) 555-7475,Airbnb Turnover,biweekly,$185.00,completed,Elena V.,Yes,12:03 PM,04:00 PM,15,Yes,85745
+BK-4214,05/20/2026,1:00 PM,Ximena Jensen,ximena.jensen@example.com,(602) 555-3088,Standard Clean,weekly,$200.00,skipped,Tanya R.,No,,,0,No,85251
+BK-4302,05/20/2026,8:00 AM,Carla Reyes,carla.reyes@example.com,(602) 555-5295,Airbnb Turnover,every 4 weeks,$150.00,completed,Maria G.,Yes,08:02 AM,11:00 AM,10,No,85254
+BK-4342,05/20/2026,2:00 PM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-6267,Airbnb Turnover,weekly,$200.00,completed,Maria G.,Yes,02:00 PM,05:00 PM,18,No,85704
+BK-4354,05/20/2026,12:00 PM,Noah Ortega,noah.ortega@example.com,(602) 555-8218,Standard Clean,weekly,$170.00,completed,Maria G.,Yes,12:08 PM,02:00 PM,15,No,85008
+BK-4368,05/20/2026,9:00 AM,Iris Patel,iris.patel@example.com,(602) 555-4302,Standard Clean,biweekly,$150.00,completed,Deshawn K.,Yes,09:00 AM,01:00 PM,11,Yes,85032
+BK-4373,05/20/2026,10:00 AM,Kate Chen,kate.chen@example.com,(602) 555-5843,Standard Clean,biweekly,$170.00,completed,Maria G.,Yes,10:00 AM,12:00 PM,12,No,85710
+BK-4409,05/20/2026,9:00 AM,Liam Nguyen,liam.nguyen@example.com,(602) 555-5876,Deep Clean,One-Time,$480.00,completed,Elena V.,Yes,09:00 AM,01:00 PM,15,No,85032
+BK-4394,05/21/2026,9:00 AM,Hank Duran,hank.duran@example.com,(602) 555-6658,Standard Clean,biweekly,$140.00,completed,Deshawn K.,Yes,09:00 AM,01:00 PM,15,No,85251
+BK-4410,05/21/2026,10:00 AM,Frank Duran,frank.duran@example.com,(602) 555-9899,Deep Clean,One-Time,$480.00,completed,Luis O.,Yes,10:03 AM,02:00 PM,15,No,85254
+BK-4221,05/22/2026,10:00 AM,Gina Sato,gina.sato@example.com,(602) 555-8119,Standard Clean,weekly,$170.00,completed,Deshawn K.,Yes,10:17 AM,02:00 PM,7,Yes,85745
+BK-4254,05/22/2026,1:00 PM,Dana Alvarez,dana.alvarez@example.com,(602) 555-9041,Standard Clean,weekly,$160.00,completed,Priya S.,Yes,01:07 PM,03:00 PM,10,No,85718
+BK-4274,05/22/2026,1:00 PM,Derek Hughes,derek.hughes@example.com,(602) 555-6296,Standard Clean,weekly,$185.00,completed,Tanya R.,Yes,01:00 PM,04:00 PM,12,No,85016
+BK-4285,05/22/2026,1:00 PM,Umar Kim,umar.kim@example.com,(602) 555-8486,Standard Clean,biweekly,$170.00,completed,Elena V.,Yes,01:00 PM,03:00 PM,9,No,85710
+BK-4325,05/22/2026,10:00 AM,Gina Patel,gina.patel@example.com,(602) 555-6062,Standard Clean,biweekly,$200.00,completed,Luis O.,Yes,10:00 AM,12:00 PM,15,No,85718
+BK-4411,05/22/2026,10:00 AM,Mia Torres,mia.torres@example.com,(602) 555-5201,Move-In/Out Clean,One-Time,$380.00,completed,Deshawn K.,Yes,10:06 AM,12:00 PM,15,No,85008
+BK-4203,05/23/2026,1:00 PM,Noah Meyer,noah.meyer@example.com,(602) 555-4044,Standard Clean,biweekly,$185.00,completed,Elena V.,Yes,01:00 PM,03:00 PM,18,No,85710
+BK-4209,05/23/2026,1:00 PM,Hector Gomez,hector.gomez@example.com,(602) 555-2697,Standard Clean,biweekly,$170.00,completed,Priya S.,Yes,01:00 PM,05:00 PM,18,No,85016
+BK-4239,05/23/2026,10:00 AM,Hank Lopez,hank.lopez@example.com,(602) 555-7624,Airbnb Turnover,every 4 weeks,$170.00,completed,Tanya R.,Yes,10:01 AM,01:00 PM,12,No,85018
+BK-4363,05/23/2026,1:00 PM,Bella Gomez,bella.gomez@example.com,(602) 555-1025,Airbnb Turnover,biweekly,$150.00,completed,Tanya R.,Yes,01:00 PM,05:00 PM,14,No,85710
+BK-4381,05/23/2026,12:00 PM,Faith Duran,faith.duran@example.com,(602) 555-6236,Airbnb Turnover,weekly,$185.00,completed,Elena V.,Yes,12:00 PM,04:00 PM,11,No,85018
+BK-4416,05/23/2026,1:00 PM,Carla Gomez,carla.gomez@example.com,(602) 555-9901,Deep Clean,One-Time,$300.00,completed,Deshawn K.,Yes,01:00 PM,04:00 PM,15,No,85032
+BK-4415,05/24/2026,9:00 AM,Hank Reyes,hank.reyes@example.com,(602) 555-7504,Deep Clean,One-Time,$480.00,completed,Maria G.,Yes,09:01 AM,11:00 AM,12,No,85745
+BK-4230,05/26/2026,8:00 AM,Umar Fischer,umar.fischer@example.com,(602) 555-7291,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,08:02 AM,11:00 AM,10,No,85018
+BK-4265,05/26/2026,8:00 AM,Karen Quintero,karen.quintero@example.com,(602) 555-3564,Standard Clean,weekly,$220.00,completed,Luis O.,Yes,08:00 AM,10:00 AM,14,No,85032
+BK-4306,05/26/2026,2:00 PM,Quinn Meyer,quinn.meyer@example.com,(602) 555-3531,Standard Clean,biweekly,$185.00,completed,Maria G.,Yes,02:06 PM,06:00 PM,11,No,85710
+BK-4318,05/26/2026,8:00 AM,Carlos Kim,carlos.kim@example.com,(602) 555-4522,Standard Clean,weekly,$220.00,completed,Maria G.,Yes,08:07 AM,12:00 PM,12,No,85008
+BK-4215,05/27/2026,8:00 AM,Ximena Jensen,ximena.jensen@example.com,(602) 555-2684,Standard Clean,weekly,$200.00,completed,Tanya R.,Yes,08:00 AM,10:00 AM,10,No,85251
+BK-4248,05/27/2026,12:00 PM,Quinn Chen,quinn.chen@example.com,(602) 555-6590,Standard Clean,biweekly,$160.00,completed,Tanya R.,Yes,12:05 PM,03:00 PM,12,No,85251
+BK-4282,05/27/2026,2:00 PM,Nate Ortega,nate.ortega@example.com,(602) 555-6654,Standard Clean,every 4 weeks,$220.00,completed,Maria G.,Yes,02:02 PM,04:00 PM,11,No,85710
+BK-4343,05/27/2026,8:00 AM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-2381,Airbnb Turnover,weekly,$200.00,completed,Maria G.,Yes,08:02 AM,10:00 AM,7,No,85704
+BK-4355,05/27/2026,1:00 PM,Noah Ortega,noah.ortega@example.com,(602) 555-3267,Standard Clean,weekly,$170.00,completed,Maria G.,Yes,01:03 PM,04:00 PM,14,No,85008
+BK-4390,05/28/2026,1:00 PM,Derek Nguyen,derek.nguyen@example.com,(602) 555-1464,Standard Clean,biweekly,$170.00,completed,Tanya R.,Yes,01:00 PM,05:00 PM,12,No,85718
+BK-4414,05/28/2026,9:00 AM,Leo Nguyen,leo.nguyen@example.com,(602) 555-1969,Deep Clean,One-Time,$300.00,completed,Priya S.,Yes,09:07 AM,12:00 PM,15,No,85704
+BK-4222,05/29/2026,1:00 PM,Gina Sato,gina.sato@example.com,(602) 555-4114,Standard Clean,weekly,$170.00,completed,Deshawn K.,Yes,01:03 PM,03:00 PM,11,No,85745
+BK-4255,05/29/2026,9:00 AM,Dana Alvarez,dana.alvarez@example.com,(602) 555-7046,Standard Clean,weekly,$160.00,completed,Priya S.,No,09:24 AM,01:00 PM,4,No,85718
+BK-4275,05/29/2026,1:00 PM,Derek Hughes,derek.hughes@example.com,(602) 555-8569,Standard Clean,weekly,$185.00,completed,Tanya R.,Yes,01:08 PM,03:00 PM,10,No,85016
+BK-4311,05/29/2026,10:00 AM,Leo Ellis,leo.ellis@example.com,(602) 555-3370,Standard Clean,biweekly,$140.00,completed,Maria G.,Yes,10:07 AM,12:00 PM,18,Yes,85018
+BK-4336,05/29/2026,9:00 AM,Tina Ibarra,tina.ibarra@example.com,(602) 555-9355,Standard Clean,biweekly,$220.00,completed,Deshawn K.,Yes,09:00 AM,01:00 PM,10,No,85704
+BK-4382,05/30/2026,1:00 PM,Faith Duran,faith.duran@example.com,(602) 555-3852,Standard Clean,weekly,$185.00,completed,Elena V.,No,01:21 PM,,7,No,85018
+BK-4419,05/30/2026,9:00 AM,Jake Quintero,jake.quintero@example.com,(602) 555-1111,Deep Clean,One-Time,$420.00,completed,Deshawn K.,Yes,09:00 AM,12:00 PM,15,No,85008
+BK-4235,06/01/2026,10:00 AM,Zoe Lopez,zoe.lopez@example.com,(602) 555-3471,Standard Clean,biweekly,$160.00,completed,Elena V.,Yes,10:00 AM,01:00 PM,18,No,85016
+BK-4296,06/01/2026,2:00 PM,Noah Duran,noah.duran@example.com,(602) 555-9138,Standard Clean,biweekly,$220.00,skipped,Priya S.,No,,,0,No,85254
+BK-4300,06/01/2026,12:00 PM,Leo Ortega,leo.ortega@example.com,(602) 555-2886,Standard Clean,every 4 weeks,$200.00,completed,Elena V.,Yes,12:07 PM,03:00 PM,10,No,85008
+BK-4243,06/02/2026,10:00 AM,Karen Reyes,karen.reyes@example.com,(602) 555-1659,Standard Clean,biweekly,$140.00,completed,Priya S.,No,,,0,No,85032
+BK-4266,06/02/2026,12:00 PM,Karen Quintero,karen.quintero@example.com,(602) 555-5632,Airbnb Turnover,weekly,$220.00,completed,Luis O.,Yes,12:00 PM,02:00 PM,14,No,85032
+BK-4291,06/02/2026,1:00 PM,Quinn Duran,quinn.duran@example.com,(602) 555-7267,Airbnb Turnover,biweekly,$220.00,completed,Priya S.,Yes,01:05 PM,03:00 PM,14,No,85745
+BK-4319,06/02/2026,10:00 AM,Carlos Kim,carlos.kim@example.com,(602) 555-2557,Standard Clean,weekly,$220.00,completed,Maria G.,Yes,10:08 AM,01:00 PM,11,No,85008
+BK-4331,06/02/2026,9:00 AM,Nate Quintero,nate.quintero@example.com,(602) 555-2965,Standard Clean,biweekly,$185.00,completed,Elena V.,Yes,09:07 AM,11:00 AM,15,No,85745
+BK-4417,06/02/2026,8:00 AM,Derek Lopez,derek.lopez@example.com,(602) 555-5215,Post-Construction Clean,One-Time,$300.00,completed,Deshawn K.,Yes,08:00 AM,10:00 AM,10,No,85710
+BK-4420,06/02/2026,10:00 AM,Dana Lopez,dana.lopez@example.com,(602) 555-6890,Post-Construction Clean,One-Time,$380.00,completed,Luis O.,Yes,10:04 AM,02:00 PM,18,Yes,85254
+BK-4216,06/03/2026,12:00 PM,Ximena Jensen,ximena.jensen@example.com,(602) 555-4878,Standard Clean,weekly,$200.00,completed,Tanya R.,Yes,12:04 PM,04:00 PM,14,No,85251
+BK-4344,06/03/2026,2:00 PM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-3600,Standard Clean,weekly,$200.00,completed,Maria G.,No,,,9,No,85704
+BK-4356,06/03/2026,10:00 AM,Noah Ortega,noah.ortega@example.com,(602) 555-3042,Standard Clean,weekly,$170.00,completed,Maria G.,Yes,10:03 AM,12:00 PM,10,No,85008
+BK-4369,06/03/2026,10:00 AM,Iris Patel,iris.patel@example.com,(602) 555-9897,Standard Clean,biweekly,$150.00,completed,Deshawn K.,Yes,10:00 AM,02:00 PM,11,No,85032
+BK-4374,06/03/2026,9:00 AM,Kate Chen,kate.chen@example.com,(602) 555-6776,Airbnb Turnover,biweekly,$170.00,completed,Maria G.,Yes,09:06 AM,12:00 PM,15,No,85710
+BK-4395,06/04/2026,1:00 PM,Hank Duran,hank.duran@example.com,(602) 555-5382,Standard Clean,biweekly,$140.00,completed,Deshawn K.,Yes,01:00 PM,04:00 PM,14,No,85251
+BK-4418,06/04/2026,1:00 PM,Kate Brooks,kate.brooks@example.com,(602) 555-7643,Post-Construction Clean,One-Time,$300.00,completed,Elena V.,Yes,01:05 PM,03:00 PM,14,No,85018
+BK-4421,06/04/2026,9:00 AM,Steve Kim,steve.kim@example.com,(602) 555-6095,Deep Clean,One-Time,$300.00,completed,Elena V.,Yes,09:01 AM,01:00 PM,18,No,85018
+BK-4223,06/05/2026,1:00 PM,Gina Sato,gina.sato@example.com,(602) 555-4228,Standard Clean,weekly,$170.00,completed,Deshawn K.,Yes,01:07 PM,05:00 PM,10,No,85745
+BK-4256,06/05/2026,2:00 PM,Dana Alvarez,dana.alvarez@example.com,(602) 555-5438,Standard Clean,weekly,$160.00,completed,Priya S.,Yes,02:03 PM,05:00 PM,15,No,85718
+BK-4276,06/05/2026,1:00 PM,Derek Hughes,derek.hughes@example.com,(602) 555-1845,Standard Clean,weekly,$185.00,completed,Tanya R.,Yes,01:07 PM,04:00 PM,10,No,85016
+BK-4286,06/05/2026,2:00 PM,Umar Kim,umar.kim@example.com,(602) 555-5342,Standard Clean,biweekly,$170.00,completed,Elena V.,Yes,02:00 PM,04:00 PM,11,No,85710
+BK-4326,06/05/2026,9:00 AM,Gina Patel,gina.patel@example.com,(602) 555-1502,Standard Clean,biweekly,$200.00,completed,Luis O.,Yes,09:04 AM,01:00 PM,11,No,85718
+BK-4204,06/06/2026,9:00 AM,Noah Meyer,noah.meyer@example.com,(602) 555-5033,Airbnb Turnover,biweekly,$185.00,cancelled,Elena V.,No,,,0,No,85710
+BK-4210,06/06/2026,8:00 AM,Hector Gomez,hector.gomez@example.com,(602) 555-5462,Standard Clean,biweekly,$170.00,paused,Priya S.,No,,,0,No,85016
+BK-4364,06/06/2026,9:00 AM,Bella Gomez,bella.gomez@example.com,(602) 555-6908,Standard Clean,biweekly,$150.00,completed,Tanya R.,Yes,09:05 AM,01:00 PM,12,No,85710
+BK-4383,06/06/2026,9:00 AM,Faith Duran,faith.duran@example.com,(602) 555-1430,Standard Clean,weekly,$185.00,completed,Elena V.,Yes,09:07 AM,11:00 AM,4,No,85018
+BK-4422,06/08/2026,9:00 AM,Faith Nguyen,faith.nguyen@example.com,(602) 555-7121,Move-In/Out Clean,One-Time,$480.00,completed,Maria G.,Yes,09:02 AM,11:00 AM,11,No,85032
+BK-4231,06/09/2026,2:00 PM,Umar Fischer,umar.fischer@example.com,(602) 555-9486,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,02:00 PM,04:00 PM,9,No,85018
+BK-4267,06/09/2026,9:00 AM,Karen Quintero,karen.quintero@example.com,(602) 555-9922,Standard Clean,weekly,$220.00,completed,Luis O.,No,09:20 AM,,4,No,85032
+BK-4307,06/09/2026,1:00 PM,Quinn Meyer,quinn.meyer@example.com,(602) 555-4559,Standard Clean,biweekly,$185.00,completed,Maria G.,Yes,01:01 PM,04:00 PM,12,No,85710
+BK-4320,06/09/2026,10:00 AM,Carlos Kim,carlos.kim@example.com,(602) 555-2398,Standard Clean,weekly,$220.00,completed,Maria G.,Yes,10:00 AM,02:00 PM,11,No,85008
+BK-4423,06/09/2026,2:00 PM,Gina Duran,gina.duran@example.com,(602) 555-9653,Move-In/Out Clean,One-Time,$480.00,completed,Deshawn K.,Yes,02:07 PM,06:00 PM,12,No,85710
+BK-4425,06/09/2026,2:00 PM,Carlos Fischer,carlos.fischer@example.com,(602) 555-8298,Deep Clean,One-Time,$340.00,completed,Tanya R.,Yes,02:04 PM,05:00 PM,12,No,85710
+BK-4217,06/10/2026,8:00 AM,Ximena Jensen,ximena.jensen@example.com,(602) 555-6442,Standard Clean,weekly,$200.00,cancelled,Tanya R.,No,,,0,No,85251
+BK-4249,06/10/2026,8:00 AM,Quinn Chen,quinn.chen@example.com,(602) 555-8532,Airbnb Turnover,biweekly,$160.00,completed,Tanya R.,Yes,08:01 AM,11:00 AM,10,No,85251
+BK-4345,06/10/2026,12:00 PM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-6482,Standard Clean,weekly,$200.00,completed,Maria G.,Yes,12:07 PM,03:00 PM,10,No,85704
+BK-4357,06/10/2026,12:00 PM,Noah Ortega,noah.ortega@example.com,(602) 555-4637,Standard Clean,weekly,$170.00,completed,Maria G.,Yes,12:03 PM,02:00 PM,9,No,85008
+BK-4424,06/10/2026,1:00 PM,Paul Alvarez,paul.alvarez@example.com,(602) 555-3455,Deep Clean,One-Time,$340.00,completed,Elena V.,No,01:40 PM,,4,No,85016
+BK-4426,06/10/2026,8:00 AM,Emily Alvarez,emily.alvarez@example.com,(602) 555-1356,Deep Clean,One-Time,$380.00,completed,Maria G.,Yes,08:03 AM,11:00 AM,10,No,85251
+BK-4206,06/11/2026,12:00 PM,Nate Lopez,nate.lopez@example.com,(602) 555-6180,Standard Clean,every 4 weeks,$170.00,completed,Priya S.,Yes,12:00 PM,04:00 PM,10,No,85008
+BK-4391,06/11/2026,1:00 PM,Derek Nguyen,derek.nguyen@example.com,(602) 555-7825,Airbnb Turnover,biweekly,$170.00,completed,Tanya R.,Yes,01:00 PM,05:00 PM,14,No,85718
+BK-4224,06/12/2026,10:00 AM,Gina Sato,gina.sato@example.com,(602) 555-5920,Airbnb Turnover,weekly,$170.00,completed,Deshawn K.,Yes,10:04 AM,01:00 PM,10,No,85745
+BK-4257,06/12/2026,9:00 AM,Dana Alvarez,dana.alvarez@example.com,(602) 555-8933,Standard Clean,weekly,$160.00,completed,Priya S.,Yes,09:00 AM,11:00 AM,4,No,85718
+BK-4277,06/12/2026,10:00 AM,Derek Hughes,derek.hughes@example.com,(602) 555-4920,Airbnb Turnover,weekly,$185.00,completed,Tanya R.,Yes,10:02 AM,02:00 PM,9,No,85016
+BK-4312,06/12/2026,8:00 AM,Leo Ellis,leo.ellis@example.com,(602) 555-4898,Airbnb Turnover,biweekly,$140.00,completed,Maria G.,Yes,08:05 AM,10:00 AM,14,Yes,85018
+BK-4337,06/12/2026,2:00 PM,Tina Ibarra,tina.ibarra@example.com,(602) 555-3399,Standard Clean,biweekly,$220.00,completed,Deshawn K.,Yes,02:08 PM,06:00 PM,14,No,85704
+BK-4350,06/12/2026,9:00 AM,Iris Hughes,iris.hughes@example.com,(602) 555-9843,Airbnb Turnover,every 4 weeks,$170.00,completed,Deshawn K.,Yes,09:00 AM,12:00 PM,12,No,85018
+BK-4384,06/13/2026,1:00 PM,Faith Duran,faith.duran@example.com,(602) 555-7523,Airbnb Turnover,weekly,$185.00,completed,Elena V.,Yes,01:00 PM,05:00 PM,12,No,85018
+BK-4429,06/13/2026,10:00 AM,Bella Jensen,bella.jensen@example.com,(602) 555-3086,Move-In/Out Clean,One-Time,$380.00,completed,Deshawn K.,Yes,10:00 AM,12:00 PM,18,No,85704
+BK-4236,06/15/2026,9:00 AM,Zoe Lopez,zoe.lopez@example.com,(602) 555-8633,Standard Clean,biweekly,$160.00,completed,Elena V.,Yes,09:00 AM,12:00 PM,9,No,85016
+BK-4297,06/15/2026,10:00 AM,Noah Duran,noah.duran@example.com,(602) 555-3240,Airbnb Turnover,biweekly,$220.00,completed,Priya S.,Yes,10:00 AM,02:00 PM,14,No,85254
+BK-4428,06/15/2026,9:00 AM,Grace Hughes,grace.hughes@example.com,(602) 555-7266,Deep Clean,One-Time,$380.00,completed,Maria G.,Yes,09:07 AM,01:00 PM,9,No,85018
+BK-4244,06/16/2026,8:00 AM,Karen Reyes,karen.reyes@example.com,(602) 555-2874,Airbnb Turnover,biweekly,$140.00,completed,Priya S.,Yes,08:04 AM,10:00 AM,14,No,85032
+BK-4268,06/16/2026,9:00 AM,Karen Quintero,karen.quintero@example.com,(602) 555-5728,Standard Clean,weekly,$220.00,completed,Luis O.,Yes,09:00 AM,11:00 AM,14,No,85032
+BK-4292,06/16/2026,1:00 PM,Quinn Duran,quinn.duran@example.com,(602) 555-8529,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,01:00 PM,03:00 PM,11,No,85745
+BK-4321,06/16/2026,10:00 AM,Carlos Kim,carlos.kim@example.com,(602) 555-6400,Airbnb Turnover,weekly,$220.00,completed,Maria G.,Yes,10:07 AM,12:00 PM,18,No,85008
+BK-4332,06/16/2026,9:00 AM,Nate Quintero,nate.quintero@example.com,(602) 555-6802,Standard Clean,biweekly,$185.00,completed,Elena V.,Yes,09:01 AM,01:00 PM,10,No,85745
+BK-4303,06/17/2026,10:00 AM,Carla Reyes,carla.reyes@example.com,(602) 555-6374,Airbnb Turnover,every 4 weeks,$150.00,completed,Maria G.,Yes,10:00 AM,02:00 PM,14,No,85254
+BK-4346,06/17/2026,12:00 PM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-3463,Standard Clean,weekly,$200.00,completed,Maria G.,Yes,12:00 PM,03:00 PM,10,No,85704
+BK-4358,06/17/2026,12:00 PM,Noah Ortega,noah.ortega@example.com,(602) 555-7326,Standard Clean,weekly,$170.00,completed,Maria G.,Yes,12:00 PM,03:00 PM,18,No,85008
+BK-4370,06/17/2026,9:00 AM,Iris Patel,iris.patel@example.com,(602) 555-6438,Standard Clean,biweekly,$150.00,completed,Deshawn K.,Yes,09:00 AM,12:00 PM,12,No,85032
+BK-4375,06/17/2026,8:00 AM,Kate Chen,kate.chen@example.com,(602) 555-9406,Airbnb Turnover,biweekly,$170.00,completed,Maria G.,Yes,08:00 AM,12:00 PM,10,No,85710
+BK-4427,06/17/2026,10:00 AM,Tina Hughes,tina.hughes@example.com,(602) 555-1987,Deep Clean,One-Time,$260.00,completed,Luis O.,No,,,0,No,85254
+BK-4396,06/18/2026,10:00 AM,Hank Duran,hank.duran@example.com,(602) 555-3616,Standard Clean,biweekly,$140.00,completed,Deshawn K.,No,10:24 AM,02:00 PM,9,No,85251
+BK-4225,06/19/2026,12:00 PM,Gina Sato,gina.sato@example.com,(602) 555-7888,Airbnb Turnover,weekly,$170.00,completed,Deshawn K.,Yes,12:06 PM,03:00 PM,18,No,85745
+BK-4258,06/19/2026,1:00 PM,Dana Alvarez,dana.alvarez@example.com,(602) 555-5853,Standard Clean,weekly,$160.00,completed,Priya S.,Yes,01:04 PM,04:00 PM,12,No,85718
+BK-4278,06/19/2026,1:00 PM,Derek Hughes,derek.hughes@example.com,(602) 555-2858,Standard Clean,weekly,$185.00,completed,Tanya R.,Yes,01:01 PM,03:00 PM,14,No,85016
+BK-4287,06/19/2026,8:00 AM,Umar Kim,umar.kim@example.com,(602) 555-7226,Standard Clean,biweekly,$170.00,completed,Elena V.,Yes,08:08 AM,11:00 AM,10,No,85710
+BK-4327,06/19/2026,12:00 PM,Gina Patel,gina.patel@example.com,(602) 555-6314,Airbnb Turnover,biweekly,$200.00,completed,Luis O.,Yes,12:02 PM,03:00 PM,14,No,85718
+BK-4430,06/19/2026,12:00 PM,Ximena Kim,ximena.kim@example.com,(602) 555-7214,Deep Clean,One-Time,$300.00,completed,Elena V.,Yes,12:05 PM,04:00 PM,18,No,85018
+BK-4240,06/20/2026,9:00 AM,Hank Lopez,hank.lopez@example.com,(602) 555-1444,Standard Clean,every 4 weeks,$170.00,completed,Tanya R.,Yes,09:04 AM,01:00 PM,12,No,85018
+BK-4365,06/20/2026,1:00 PM,Bella Gomez,bella.gomez@example.com,(602) 555-1713,Airbnb Turnover,biweekly,$150.00,completed,Tanya R.,Yes,01:03 PM,03:00 PM,11,No,85710
+BK-4385,06/20/2026,12:00 PM,Faith Duran,faith.duran@example.com,(602) 555-6194,Airbnb Turnover,weekly,$185.00,completed,Elena V.,Yes,12:08 PM,04:00 PM,12,No,85018
+BK-4431,06/21/2026,2:00 PM,Carla Ellis,carla.ellis@example.com,(602) 555-7868,Post-Construction Clean,One-Time,$380.00,completed,Tanya R.,Yes,02:07 PM,04:00 PM,12,No,85008
+BK-4432,06/21/2026,8:00 AM,Nate Kim,nate.kim@example.com,(602) 555-1724,Deep Clean,One-Time,$260.00,completed,Priya S.,Yes,08:26 AM,12:00 PM,0,No,85254
+BK-4232,06/23/2026,8:00 AM,Umar Fischer,umar.fischer@example.com,(602) 555-6198,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,08:02 AM,10:00 AM,11,No,85018
+BK-4269,06/23/2026,2:00 PM,Karen Quintero,karen.quintero@example.com,(602) 555-8172,Standard Clean,weekly,$220.00,completed,Luis O.,Yes,02:01 PM,05:00 PM,18,No,85032
+BK-4308,06/23/2026,10:00 AM,Quinn Meyer,quinn.meyer@example.com,(602) 555-6876,Standard Clean,biweekly,$185.00,completed,Maria G.,Yes,10:00 AM,02:00 PM,15,No,85710
+BK-4322,06/23/2026,2:00 PM,Carlos Kim,carlos.kim@example.com,(602) 555-5712,Airbnb Turnover,weekly,$220.00,completed,Maria G.,Yes,02:07 PM,05:00 PM,10,No,85008
+BK-4250,06/24/2026,1:00 PM,Quinn Chen,quinn.chen@example.com,(602) 555-5397,Standard Clean,biweekly,$160.00,completed,Tanya R.,Yes,01:05 PM,04:00 PM,9,No,85251
+BK-4283,06/24/2026,12:00 PM,Nate Ortega,nate.ortega@example.com,(602) 555-7274,Standard Clean,every 4 weeks,$220.00,completed,Maria G.,Yes,12:00 PM,02:00 PM,10,No,85710
+BK-4347,06/24/2026,10:00 AM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-3112,Airbnb Turnover,weekly,$200.00,completed,Maria G.,Yes,10:00 AM,02:00 PM,10,No,85704
+BK-4359,06/24/2026,8:00 AM,Noah Ortega,noah.ortega@example.com,(602) 555-3254,Standard Clean,weekly,$170.00,completed,Maria G.,No,,,7,No,85008
+BK-4433,06/24/2026,8:00 AM,Eddie Sato,eddie.sato@example.com,(602) 555-6224,Move-In/Out Clean,One-Time,$380.00,completed,Deshawn K.,Yes,08:00 AM,12:00 PM,15,No,85254
+BK-4392,06/25/2026,2:00 PM,Derek Nguyen,derek.nguyen@example.com,(602) 555-8912,Standard Clean,biweekly,$170.00,completed,Tanya R.,Yes,02:03 PM,05:00 PM,10,No,85718
+BK-4226,06/26/2026,9:00 AM,Gina Sato,gina.sato@example.com,(602) 555-1006,Standard Clean,weekly,$170.00,completed,Deshawn K.,Yes,09:04 AM,01:00 PM,15,No,85745
+BK-4259,06/26/2026,2:00 PM,Dana Alvarez,dana.alvarez@example.com,(602) 555-1893,Airbnb Turnover,weekly,$160.00,completed,Priya S.,Yes,02:03 PM,04:00 PM,15,Yes,85718
+BK-4279,06/26/2026,9:00 AM,Derek Hughes,derek.hughes@example.com,(602) 555-5479,Standard Clean,weekly,$185.00,completed,Tanya R.,Yes,09:02 AM,01:00 PM,15,No,85016
+BK-4313,06/26/2026,8:00 AM,Leo Ellis,leo.ellis@example.com,(602) 555-2041,Standard Clean,biweekly,$140.00,completed,Maria G.,Yes,08:00 AM,12:00 PM,9,No,85018
+BK-4338,06/26/2026,2:00 PM,Tina Ibarra,tina.ibarra@example.com,(602) 555-8354,Airbnb Turnover,biweekly,$220.00,completed,Deshawn K.,Yes,02:00 PM,04:00 PM,10,No,85704
+BK-4386,06/27/2026,1:00 PM,Faith Duran,faith.duran@example.com,(602) 555-3981,Standard Clean,weekly,$185.00,completed,Elena V.,Yes,01:00 PM,03:00 PM,18,No,85018
+BK-4434,06/28/2026,2:00 PM,Rosa Meyer,rosa.meyer@example.com,(602) 555-1998,Post-Construction Clean,One-Time,$480.00,completed,Priya S.,Yes,02:03 PM,04:00 PM,11,No,85008
+BK-4237,06/29/2026,12:00 PM,Zoe Lopez,zoe.lopez@example.com,(602) 555-7232,Standard Clean,biweekly,$160.00,completed,Elena V.,Yes,12:07 PM,04:00 PM,10,Yes,85016
+BK-4298,06/29/2026,8:00 AM,Noah Duran,noah.duran@example.com,(602) 555-3153,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,08:00 AM,11:00 AM,12,No,85254
+BK-4301,06/29/2026,9:00 AM,Leo Ortega,leo.ortega@example.com,(602) 555-6992,Standard Clean,every 4 weeks,$200.00,completed,Elena V.,Yes,09:08 AM,01:00 PM,9,No,85008
+BK-4438,06/29/2026,10:00 AM,Emily Ortega,emily.ortega@example.com,(602) 555-1844,Deep Clean,One-Time,$340.00,completed,Tanya R.,Yes,10:00 AM,02:00 PM,10,No,85254
+BK-4245,06/30/2026,10:00 AM,Karen Reyes,karen.reyes@example.com,(602) 555-2876,Standard Clean,biweekly,$140.00,completed,Priya S.,Yes,10:07 AM,01:00 PM,14,No,85032
+BK-4270,06/30/2026,2:00 PM,Karen Quintero,karen.quintero@example.com,(602) 555-4750,Airbnb Turnover,weekly,$220.00,completed,Luis O.,Yes,02:00 PM,06:00 PM,15,Yes,85032
+BK-4293,06/30/2026,12:00 PM,Quinn Duran,quinn.duran@example.com,(602) 555-8237,Standard Clean,biweekly,$220.00,completed,Priya S.,Yes,12:00 PM,04:00 PM,18,No,85745
+BK-4323,06/30/2026,1:00 PM,Carlos Kim,carlos.kim@example.com,(602) 555-2773,Standard Clean,weekly,$220.00,completed,Maria G.,Yes,01:18 PM,03:00 PM,9,No,85008
+BK-4333,06/30/2026,12:00 PM,Nate Quintero,nate.quintero@example.com,(602) 555-8033,Airbnb Turnover,biweekly,$185.00,completed,Elena V.,Yes,12:00 PM,03:00 PM,12,No,85745
+BK-4436,06/30/2026,9:00 AM,Emily Torres,emily.torres@example.com,(602) 555-4692,Move-In/Out Clean,One-Time,$480.00,completed,Luis O.,Yes,09:07 AM,01:00 PM,11,No,85704
+BK-4348,07/01/2026,1:00 PM,Ximena Nguyen,ximena.nguyen@example.com,(602) 555-9624,Standard Clean,weekly,$200.00,completed,Maria G.,No,01:24 PM,05:00 PM,7,No,85704
+BK-4360,07/01/2026,2:00 PM,Noah Ortega,noah.ortega@example.com,(602) 555-1086,Standard Clean,weekly,$170.00,completed,Maria G.,Yes,02:08 PM,04:00 PM,10,No,85008
+BK-4371,07/01/2026,12:00 PM,Iris Patel,iris.patel@example.com,(602) 555-4060,Standard Clean,biweekly,$150.00,completed,Deshawn K.,Yes,12:06 PM,03:00 PM,11,No,85032
+BK-4376,07/01/2026,9:00 AM,Kate Chen,kate.chen@example.com,(602) 555-1570,Standard Clean,biweekly,$170.00,completed,Maria G.,Yes,09:08 AM,01:00 PM,10,No,85710
+BK-4397,07/02/2026,9:00 AM,Hank Duran,hank.duran@example.com,(602) 555-8648,Standard Clean,biweekly,$140.00,completed,Deshawn K.,Yes,09:07 AM,11:00 AM,11,No,85251
+BK-4435,07/02/2026,8:00 AM,Steve Hughes,steve.hughes@example.com,(602) 555-9592,Deep Clean,One-Time,$420.00,completed,Priya S.,Yes,08:00 AM,12:00 PM,10,No,85251
+BK-4227,07/03/2026,1:00 PM,Gina Sato,gina.sato@example.com,(602) 555-8244,Airbnb Turnover,weekly,$170.00,completed,Deshawn K.,Yes,01:04 PM,05:00 PM,15,No,85745
+BK-4260,07/03/2026,2:00 PM,Dana Alvarez,dana.alvarez@example.com,(602) 555-5658,Standard Clean,weekly,$160.00,completed,Priya S.,Yes,02:08 PM,05:00 PM,12,No,85718
+BK-4280,07/03/2026,9:00 AM,Derek Hughes,derek.hughes@example.com,(602) 555-9327,Airbnb Turnover,weekly,$185.00,completed,Tanya R.,Yes,09:02 AM,01:00 PM,14,No,85016
+BK-4288,07/03/2026,12:00 PM,Umar Kim,umar.kim@example.com,(602) 555-4846,Airbnb Turnover,biweekly,$170.00,completed,Elena V.,Yes,12:08 PM,04:00 PM,12,No,85710
+BK-4328,07/03/2026,9:00 AM,Gina Patel,gina.patel@example.com,(602) 555-5458,Standard Clean,biweekly,$200.00,completed,Luis O.,Yes,09:00 AM,01:00 PM,12,No,85718
+BK-4437,07/03/2026,1:00 PM,Tina Jensen,tina.jensen@example.com,(602) 555-7363,Deep Clean,One-Time,$480.00,completed,Luis O.,Yes,01:01 PM,04:00 PM,18,No,85251
+BK-4366,07/04/2026,2:00 PM,Bella Gomez,bella.gomez@example.com,(602) 555-2698,Airbnb Turnover,biweekly,$150.00,completed,Tanya R.,Yes,02:00 PM,05:00 PM,12,No,85710
+BK-4387,07/04/2026,8:00 AM,Faith Duran,faith.duran@example.com,(602) 555-3697,Standard Clean,weekly,$185.00,completed,Elena V.,Yes,08:08 AM,10:00 AM,18,No,85018

@@ -1,0 +1,6 @@
+# HavenOS — Python 3.11+. One required dependency.
+PyYAML>=6.0
+
+# Optional (only if you switch from CSV downloads to live Sheet reads):
+# gspread>=6.0
+# google-auth>=2.0
