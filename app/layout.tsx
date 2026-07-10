@@ -5,9 +5,9 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Schedule',
-  description: 'Cleaner Schedule Management',
-  robots: 'noindex, nofollow',
+  title: 'HavenClean — Trusted, background-checked house cleaners near you',
+  description:
+    'Find background-checked, reviewed local cleaners and cleaning teams. See photos, bios, rates and reviews, then book the exact clean you need.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
