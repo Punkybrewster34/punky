@@ -94,6 +94,10 @@ CREATE TABLE IF NOT EXISTS prospects (
     next_action TEXT DEFAULT 'call',
     next_action_date TEXT,
     notes TEXT DEFAULT '',
+    segment TEXT DEFAULT 'local_service',  -- local_service (call-first) / commercial_re (email-first)
+    contact_name TEXT DEFAULT '',
+    contact_title TEXT DEFAULT '',
+    contact_email TEXT DEFAULT '',
     UNIQUE(name, address)
 );
 
@@ -127,6 +131,24 @@ CREATE TABLE IF NOT EXISTS meta (
 """
 
 
+# Columns added after the initial release — CREATE TABLE IF NOT EXISTS
+# won't retrofit an existing haven.db, so add them here if missing.
+_MIGRATIONS = (
+    ("prospects", "segment", "TEXT DEFAULT 'local_service'"),
+    ("prospects", "contact_name", "TEXT DEFAULT ''"),
+    ("prospects", "contact_title", "TEXT DEFAULT ''"),
+    ("prospects", "contact_email", "TEXT DEFAULT ''"),
+)
+
+
+def _migrate(con):
+    for table, column, decl in _MIGRATIONS:
+        cols = {row["name"] for row in con.execute(f"PRAGMA table_info({table})")}
+        if column not in cols:
+            con.execute(f"ALTER TABLE {table} ADD COLUMN {column} {decl}")
+    con.commit()
+
+
 def connect(db_path=None):
     path = db_path or config.DB_PATH
     if path != ":memory:":
@@ -134,4 +156,5 @@ def connect(db_path=None):
     con = sqlite3.connect(path)
     con.row_factory = sqlite3.Row
     con.executescript(SCHEMA)
+    _migrate(con)
     return con

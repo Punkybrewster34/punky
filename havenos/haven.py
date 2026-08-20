@@ -21,6 +21,8 @@ Usage:
   python haven.py prospects                    this week's commercial call list
   python haven.py prospects fetch              pull targets via Google Places API
   python haven.py prospects import <file.csv>  import tracker / pasted CSV (dedupes)
+  python haven.py prospects import-apollo <f>  import Apollo.io people-search CSV
+                                               (property mgmt / real estate contacts)
   python haven.py prospects done <id> [note]   log touch, schedule next cadence step
   python haven.py prospects won|lost <id>      close out a prospect
   python haven.py prospects sheet              regenerate dashboards/prospects.html
@@ -195,6 +197,10 @@ def cmd_prospects(con, args):
         n = prospects.import_csv(con, args[1])
         print(f"Imported {n} new prospects from {args[1]} (duplicates skipped).")
         return
+    if args and args[0] == "import-apollo":
+        n = prospects.import_apollo(con, args[1])
+        print(f"Imported {n} new contacts from {args[1]} (duplicates by email skipped).")
+        return
     if args and args[0] == "done":
         step, nxt = prospects.advance(con, int(args[1]),
                                       " ".join(args[2:]))
@@ -219,11 +225,17 @@ def cmd_prospects(con, args):
     today = date.today().isoformat()
     for p in items:
         od = "  << OVERDUE" if (p["next_action_date"] or "") < today else ""
+        contact = f"{p['contact_name']} ({p['contact_email']})" if p["contact_email"] else \
+            (p["phone"] or "(no phone)")
         print(f"#{p['id']:>3}  [{p['next_action'].upper():<7}] {p['name']:<34} "
-              f"{p['phone'] or '(no phone)':<16} {p['category']:<12} "
+              f"{contact:<34} {p['category']:<20} "
               f"{p['city']:<10} score {p['score']}{od}")
         if p["notes"]:
             print(f"      last: {p['notes'].split(' | ')[-1]}")
+        if p["next_action"] == "email" and p["segment"] == "commercial_re":
+            draft = prospects.email_draft(p)
+            print(f"      SUBJECT: {draft['subject']}")
+            print("      " + draft["body"].replace("\n", "\n      "))
     print("\nAfter each touch:  python haven.py prospects done <id> [note]")
 
 

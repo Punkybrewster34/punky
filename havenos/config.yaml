@@ -130,6 +130,16 @@ column_maps:
     status: [status, stage]
     notes: [notes, note]
 
+  apollo_contacts:        # Apollo.io "People Search" CSV export
+    contact_name: ["first name", "full name", name, contact]
+    contact_title: [title, "job title", position]
+    contact_email: [email, "email address", "work email", "primary email"]
+    company: [company, "company name", organization, account, employer]
+    phone: [phone, "company phone", "work direct phone", "mobile phone", "corporate phone"]
+    website: ["website", "company website", "website url", domain]
+    city: [city, "company city", "person city"]
+    category: [category, industry, keywords]
+
 # ------------------------------------------------------------
 # First-touch lead sources recognized by Module 1. Anything else
 # is bucketed as "other" and gets the website templates.
@@ -139,4 +149,9 @@ lead_sources: [facebook, thumbtack, lsa, website, bk_form, referral]
 # Commercial prospector (Phase 2) search targets
 places:
   cities: [Phoenix, Tucson, Scottsdale]
-  categories: [daycare, "med spa", salon, "boutique gym", chiropractor]
+  categories: [daycare, "med spa", salon, "boutique gym", chiropractor,
+               "property management company", "apartment complex"]
+  # categories in this list are tagged segment=commercial_re (email-first
+  # cadence, Apollo contact enrichment) instead of segment=local_service
+  # (call-first cadence). See modules/prospects.py.
+  commercial_re_categories: ["property management company", "apartment complex"]

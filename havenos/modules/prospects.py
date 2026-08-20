@@ -67,33 +67,69 @@ def score(website, review_count, name):
         s += 3
     return s
 
+
+# titles that indicate someone with actual buying authority for a
+# vendor contract (cleaning), as opposed to leasing/front-office staff
+DECISION_TITLES = (
+    "manager", "director", "owner", "broker", "principal", "president",
+    "vp", "vice president", "partner", "coo", "ceo",
+)
+
+
+def score_contact(title, has_email, has_phone):
+    """Scoring for Apollo-sourced person-level contacts: decision-maker
+    title +3, verified email +2, phone on file +1."""
+    s = 0
+    t = (title or "").lower()
+    if any(k in t for k in DECISION_TITLES):
+        s += 3
+    if has_email:
+        s += 2
+    if has_phone:
+        s += 1
+    return s
+
 # ---------------------------------------------------------------
 # intake — API and CSV, both landing in upsert()
 # ---------------------------------------------------------------
 
 
 def upsert(con, p):
-    """Insert a prospect unless (name, address) already known. Dedupe is
-    case-insensitive on name + first address token so the tracker's
-    hand-typed addresses still match API-formatted ones."""
-    row = con.execute(
-        "SELECT id FROM prospects WHERE lower(name)=lower(?)",
-        (p["name"],)).fetchone()
+    """Insert a prospect unless already known. Apollo-sourced contacts
+    (contact_email set) dedupe on that email, since one company can have
+    several separate outreach targets; everything else dedupes
+    case-insensitively on name, as before."""
+    contact_email = (p.get("contact_email") or "").strip()
+    if contact_email:
+        row = con.execute(
+            "SELECT id FROM prospects WHERE lower(contact_email)=lower(?)",
+            (contact_email,)).fetchone()
+    else:
+        row = con.execute(
+            "SELECT id FROM prospects WHERE lower(name)=lower(?)",
+            (p["name"],)).fetchone()
     if row:
         return 0
+    segment = p.get("segment", "local_service")
+    if segment == "commercial_re" or contact_email:
+        s = score_contact(p.get("contact_title"), bool(contact_email),
+                           bool(p.get("phone")))
+    else:
+        s = score(p.get("website"), p.get("review_count"), p["name"])
     con.execute(
         """INSERT OR IGNORE INTO prospects
            (place_id, name, address, phone, website, city, category, rating,
-            review_count, hours, score, status, next_action, next_action_date, notes)
-           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            review_count, hours, score, status, next_action, next_action_date, notes,
+            segment, contact_name, contact_title, contact_email)
+           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
         (p.get("place_id", ""), p["name"], p.get("address", ""),
          p.get("phone", ""), p.get("website", ""), p.get("city", ""),
          p.get("category", ""), p.get("rating"), p.get("review_count"),
-         p.get("hours", ""),
-         score(p.get("website"), p.get("review_count"), p["name"]),
+         p.get("hours", ""), s,
          p.get("status", "new"), p.get("next_action", "call"),
          p.get("next_action_date") or date.today().isoformat(),
-         p.get("notes", "")))
+         p.get("notes", ""), segment, p.get("contact_name", ""),
+         p.get("contact_title", ""), contact_email))
     return 1
 
 
@@ -111,9 +147,11 @@ def fetch_places(con, max_pages_per_query=1):
             "docs/places-api-setup.md, or use the manual fallback: "
             "python haven.py prospects import <file.csv>")
     cfg = config.load()["places"]
+    re_categories = {c.lower() for c in cfg.get("commercial_re_categories", [])}
     added = queries = 0
     for city in cfg["cities"]:
         for cat in cfg["categories"]:
+            segment = "commercial_re" if cat.lower() in re_categories else "local_service"
             token = None
             for _ in range(max_pages_per_query):
                 body = {"textQuery": f"{cat} in {city}, AZ"}
@@ -139,6 +177,7 @@ def fetch_places(con, max_pages_per_query=1):
                         "rating": pl.get("rating"),
                         "review_count": pl.get("userRatingCount"),
                         "hours": hours, "city": city, "category": cat,
+                        "segment": segment,
                     })
                 token = data.get("nextPageToken")
                 if not token:
@@ -162,6 +201,104 @@ def import_csv(con, path):
         })
     con.commit()
     return added
+
+
+def import_apollo(con, path):
+    """Apollo.io "People Search" CSV export -> prospects, one row per
+    contact (not per company — a management company can have several
+    separate outreach targets). Headers resolve through
+    column_maps.apollo_contacts in config.yaml. Person-level rows dedupe
+    on email; the commercial_re segment starts the cadence at 'email'
+    since you already have a named contact, not just a front-desk phone.
+    """
+    added = 0
+    for r in importers.read_mapped(
+            path, "apollo_contacts", required=("company", "contact_email")):
+        if not r.get("contact_email"):
+            continue
+        added += upsert(con, {
+            "name": r.get("company", ""), "phone": r.get("phone", ""),
+            "website": r.get("website", ""), "city": r.get("city", ""),
+            "category": r.get("category", "") or "commercial - property mgmt",
+            "segment": "commercial_re", "next_action": "email",
+            "contact_name": r.get("contact_name", ""),
+            "contact_title": r.get("contact_title", ""),
+            "contact_email": r.get("contact_email", ""),
+        })
+    con.commit()
+    return added
+
+# ---------------------------------------------------------------
+# commercial real-estate email templates (property managers, brokers,
+# apartment complexes) — filled at the 'email' cadence step
+# ---------------------------------------------------------------
+
+COMMERCIAL_EMAIL_TEMPLATES = {
+    "property_management": {
+        "subject": "Faster unit turns for {company}",
+        "body": (
+            "Hi {first_name},\n\n"
+            "I run Haven House Cleaning here in {market} — we do turnover "
+            "cleans and common-area service for a few property groups in the "
+            "Valley, and wanted to introduce myself before you're stuck "
+            "choosing a vendor under deadline pressure.\n\n"
+            "What we do differently: photo-documented cleans (so you have "
+            "proof for owner reports), a standard turn checklist we hold "
+            "every cleaner to, and a dedicated rate for recurring "
+            "common-area/office cleaning if you want that off your plate "
+            "too.\n\n"
+            "Would it be worth 10 minutes to see if our turnaround time and "
+            "pricing beat your current vendor? Happy to do a walkthrough on "
+            "one unit at {company}, no cost, so you can see the standard "
+            "before committing to anything.\n\n"
+            "Ryan\nHaven House Cleaning · havenhouseclean.com"
+        ),
+    },
+    "real_estate": {
+        "subject": "A cleaning partner for your listings",
+        "body": (
+            "Hi {first_name},\n\n"
+            "I'm Ryan with Haven House Cleaning — we help a handful of "
+            "{market}-area agents get homes show-ready before photos and "
+            "open houses, usually same-week turnaround.\n\n"
+            "A few agents at {company} send us their sellers directly for a "
+            "move-out deep clean, and we make sure you look good for "
+            "referring us (guaranteed re-clean if anything's missed). No "
+            "cost to you — just a reliable name to hand your clients when "
+            "\"who do I call to clean this place\" comes up.\n\n"
+            "Want me to send a one-page rate sheet you can keep on hand for "
+            "your next listing?\n\n"
+            "Ryan\nHaven House Cleaning · havenhouseclean.com"
+        ),
+    },
+}
+
+_REAL_ESTATE_MARKERS = ("real estate", "realt", "broker", "agent")
+
+
+def commercial_template_key(category, title=""):
+    """Which COMMERCIAL_EMAIL_TEMPLATES entry fits a prospect — real-estate
+    /brokerage wording vs. property-management/apartment wording. Checks
+    both the category and the contact's title (Apollo rows usually carry
+    a title even when category is blank/generic). Defaults to
+    property_management (the more common case: apartment complexes,
+    HOAs, management companies)."""
+    text = f"{category or ''} {title or ''}".lower()
+    if any(m in text for m in _REAL_ESTATE_MARKERS):
+        return "real_estate"
+    return "property_management"
+
+
+def email_draft(p, market=None):
+    """Subject + body for a commercial_re prospect's next email touch,
+    placeholders filled from the prospect row."""
+    market = market or ", ".join(config.load()["business"]["markets"])
+    key = commercial_template_key(p.get("category"), p.get("contact_title"))
+    tpl = COMMERCIAL_EMAIL_TEMPLATES[key]
+    first = (p.get("contact_name") or "there").split()[0]
+    fill = lambda s: s.format(first_name=first, company=p.get("name") or "your company",
+                              market=market)
+    return {"subject": fill(tpl["subject"]), "body": fill(tpl["body"])}
 
 # ---------------------------------------------------------------
 # cadence
@@ -222,15 +359,28 @@ def call_sheet_html(con, today=None):
                  H.badge(p["next_action"].upper(), "amber")
                  + (f' <span class="badge red">OVERDUE</span>'
                     if p["next_action_date"] < today.isoformat() else ""),
-                 p["phone"] or "—", p["category"], p["city"],
-                 f'{p["review_count"] or "?"} revs', p["score"],
-                 p["website"] or "—"] for p in items]
-        body = H.table(["#", "Business", "This week", "Phone", "Vertical",
+                 f'{p["contact_name"]}<br>{p["contact_email"]}' if p["contact_email"]
+                 else (p["phone"] or "—"),
+                 p["category"], p["city"],
+                 f'{p["review_count"] or "?"} revs' if p["segment"] != "commercial_re" else "—",
+                 p["score"], p["website"] or "—"] for p in items]
+        body = H.table(["#", "Business", "This week", "Contact", "Vertical",
                         "City", "Proof", "Score", "Website"], rows)
         body += ('<p class="note">Cadence: call → walk-in (+3d) → email (+4d) '
-                 '→ email every 2 weeks. After each touch: '
+                 '→ email every 2 weeks (local-service leads); Apollo-sourced '
+                 'commercial real-estate contacts start at email and repeat '
+                 'every 2 weeks. After each touch: '
                  '<b>python haven.py prospects done &lt;id&gt;</b>. Close with '
                  '<b>prospects won|lost &lt;id&gt;</b>.</p>')
+        drafts = [p for p in items if p["next_action"] == "email"
+                  and p["segment"] == "commercial_re"]
+        if drafts:
+            body += '<h2>Ready-to-send emails</h2>'
+            for p in drafts:
+                d = email_draft(p)
+                body += (f'<div class="msg"><b>#{p["id"]} {H.esc(p["name"])} '
+                         f'&mdash; {H.esc(p["contact_email"])}</b>\n'
+                         f'Subject: {H.esc(d["subject"])}\n\n{H.esc(d["body"])}</div>')
     else:
         body = ('<div class="callout">No prospect actions due this week. '
                 'Run <b>python haven.py prospects fetch</b> (Places API) or '

@@ -144,6 +144,57 @@ class TestProspects(unittest.TestCase):
         self.assertEqual(prospects.week_list(con, TODAY), [])  # closed = off list
 
 
+class TestCommercialRE(unittest.TestCase):
+    def test_score_contact(self):
+        # decision title + verified email + phone = 3+2+1
+        self.assertEqual(prospects.score_contact("Leasing Manager", True, True), 6)
+        # no title match, email only
+        self.assertEqual(prospects.score_contact("Leasing Consultant", True, False), 2)
+        # nothing on file
+        self.assertEqual(prospects.score_contact("", False, False), 0)
+
+    def test_template_key_by_category(self):
+        self.assertEqual(
+            prospects.commercial_template_key("Real Estate Agency"), "real_estate")
+        self.assertEqual(
+            prospects.commercial_template_key("Property Management Company"),
+            "property_management")
+        self.assertEqual(
+            prospects.commercial_template_key(""), "property_management")
+
+    def test_email_draft_fills_placeholders(self):
+        p = {"contact_name": "Dana Alvarez", "name": "Desert Ridge Apartments",
+             "category": "apartment complex"}
+        draft = prospects.email_draft(p, market="Phoenix")
+        self.assertIn("Dana", draft["body"])
+        self.assertIn("Desert Ridge Apartments", draft["body"])
+        self.assertNotIn("{", draft["body"])
+        self.assertNotIn("{", draft["subject"])
+
+    def test_apollo_import_dedupes_by_email_starts_at_email_step(self):
+        con = mem()
+        path = os.path.join(os.path.dirname(__file__), "_apollo_sample.csv")
+        with open(path, "w", newline="", encoding="utf-8") as f:
+            f.write("First Name,Title,Email,Company,Phone,Website,City\n")
+            f.write("Dana,Leasing Manager,dana@desertridge.com,"
+                    "Desert Ridge Apartments,(602) 555-0100,desertridge.com,Phoenix\n")
+        try:
+            added = prospects.import_apollo(con, path)
+            self.assertEqual(added, 1)
+            row = con.execute("SELECT * FROM prospects").fetchone()
+            self.assertEqual(row["segment"], "commercial_re")
+            self.assertEqual(row["next_action"], "email")
+            self.assertEqual(row["contact_email"], "dana@desertridge.com")
+            self.assertEqual(row["score"], prospects.score_contact(
+                "Leasing Manager", True, True))
+            # re-importing the same contact (even under a different company
+            # spelling) is a no-op — dedupe is by email, not name
+            added_again = prospects.import_apollo(con, path)
+            self.assertEqual(added_again, 0)
+        finally:
+            os.remove(path)
+
+
 class TestComplianceFlags(unittest.TestCase):
     def test_low_qualifying_rate_flagged_with_bench(self):
         con = mem()

@@ -200,6 +200,26 @@ python haven.py prospects sheet              # dashboards/prospects.html call sh
 accepts any CSV with a business-name column (header aliases under
 `column_maps.prospects_tracker`).
 
+**Commercial real estate (property managers, brokers, apartment
+complexes).** Two of the Places categories (`property management
+company`, `apartment complex`) are tagged `segment=commercial_re` and
+work the same call → walk-in → email cadence. For named decision-makers
+with verified emails — leasing managers, brokers, agents — export a
+People Search from Apollo.io and import it directly:
+
+```
+python haven.py prospects import-apollo apollo_export.csv
+```
+
+Apollo rows dedupe by email (not name — one management company can have
+several separate contacts), start the cadence at `email` instead of
+`call`, and `prospects` / `prospects sheet` print a ready-to-send subject
++ body for each one — property-management wording or real-estate/broker
+wording, picked from the contact's title/category
+(`prospects.COMMERCIAL_EMAIL_TEMPLATES`). Column aliases live under
+`column_maps.apollo_contacts` in `config.yaml` if Apollo's export headers
+change.
+
 ---
 
 ## Module 5 — Cleaner Compliance Auditor
