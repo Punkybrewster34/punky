@@ -1,0 +1,783 @@
+<title>Haven Club Pro App</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: contractor walkthrough on the left, live phone prototype on the right; stacks on narrow screens. */
+:root {
+  --page: #E8ECF2;
+  --surface: #FFFFFF;
+  --surface-2: #F3F5F8;
+  --ink: #0F1B2D;
+  --muted: #5A6577;
+  --line: #DCE2EA;
+  --brand: #17407E;
+  --brand-ink: #FFFFFF;
+  --brand-soft: #E3EBF8;
+  --go: #15834F;
+  --go-ink: #FFFFFF;
+  --go-soft: #DFF2E7;
+  --signal: #E2512F;
+  --signal-ink: #FFFFFF;
+  --signal-soft: #FCE8E2;
+  --warn: #B7791F;
+  --warn-soft: #FBF0DC;
+  --gold: #D9AE4F;
+  --alert-bg: #0F1B2D;
+  --alert-ink: #F3F6FB;
+  --alert-muted: #A7B3C6;
+  --alert-panel: #1A2940;
+  --bezel: #0C1320;
+  --map-bg: #EEF2F6;
+  --map-road: #FFFFFF;
+  --map-block: #E0E6EE;
+  --shadow: 0 30px 60px -20px rgba(15, 27, 45, .35);
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0A0F18; --surface: #141C29; --surface-2: #0F1622; --ink: #E7ECF3; --muted: #95A1B3; --line: #263246;
+    --brand: #6E9CF0; --brand-ink: #0A0F18; --brand-soft: #1A2A45; --go: #45C185; --go-ink: #07160E; --go-soft: #12301F;
+    --signal: #FF7552; --signal-ink: #1A0D08; --signal-soft: #3A1E17; --warn: #E8B04F; --warn-soft: #33270F; --gold: #E5BE68;
+    --alert-bg: #05080E; --alert-ink: #F3F6FB; --alert-muted: #95A1B3; --alert-panel: #131D2C; --bezel: #000000;
+    --map-bg: #182231; --map-road: #24324A; --map-block: #1D2938; --shadow: 0 30px 60px -20px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0A0F18; --surface: #141C29; --surface-2: #0F1622; --ink: #E7ECF3; --muted: #95A1B3; --line: #263246;
+  --brand: #6E9CF0; --brand-ink: #0A0F18; --brand-soft: #1A2A45; --go: #45C185; --go-ink: #07160E; --go-soft: #12301F;
+  --signal: #FF7552; --signal-ink: #1A0D08; --signal-soft: #3A1E17; --warn: #E8B04F; --warn-soft: #33270F; --gold: #E5BE68;
+  --alert-bg: #05080E; --alert-ink: #F3F6FB; --alert-muted: #95A1B3; --alert-panel: #131D2C; --bezel: #000000;
+  --map-bg: #182231; --map-road: #24324A; --map-block: #1D2938; --shadow: 0 30px 60px -20px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { min-height: 100%; }
+body {
+  background: var(--page); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+.stage { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 56px; align-items: start; }
+
+/* Walkthrough */
+.story { padding-top: 24px; min-width: 0; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.story h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(40px, 5vw, 60px); line-height: 1; letter-spacing: -.02em; margin: 12px 0 14px; text-wrap: balance; }
+.story h1 em { font-style: normal; color: var(--go); }
+.story .lede { font-size: 18px; color: var(--muted); max-width: 30em; margin: 0 0 32px; }
+.walk { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-width: 460px; }
+.walk button { width: 100%; text-align: left; border: 1px solid transparent; background: transparent; border-radius: 14px; padding: 12px 14px; display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 12px; align-items: start; }
+.walk button:hover { background: var(--surface); }
+.walk button[aria-current="step"] { background: var(--surface); border-color: var(--line); }
+.walk .n { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 800; background: var(--go-soft); color: var(--go); font-variant-numeric: tabular-nums; }
+.walk button[aria-current="step"] .n { background: var(--go); color: var(--go-ink); }
+.walk strong { display: block; font-size: 15px; }
+.walk small { display: block; color: var(--muted); font-size: 13.5px; line-height: 1.45; margin-top: 2px; }
+.footnote { margin-top: 28px; font-size: 12.5px; color: var(--muted); max-width: 34em; }
+.footnote a { color: var(--brand); font-weight: 700; }
+
+/* Phone */
+.phone { width: 384px; height: 800px; border-radius: 52px; padding: 11px; background: var(--bezel); box-shadow: var(--shadow); position: sticky; top: calc(24px + env(safe-area-inset-top, 0px)); }
+.device { height: 100%; border-radius: 42px; overflow: hidden; background: var(--surface-2); display: flex; flex-direction: column; position: relative; }
+.statusbar { flex: none; height: 46px; padding: 14px 28px 0; display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; position: relative; z-index: 3; }
+.statusbar .notch { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); width: 110px; height: 30px; background: var(--bezel); border-radius: 20px; }
+.statusbar .sys { display: flex; gap: 6px; align-items: center; }
+.statusbar .sys i { display: block; background: currentColor; border-radius: 2px; }
+.device.alerting .statusbar { color: var(--alert-ink); }
+.view { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+.view::-webkit-scrollbar { display: none; }
+.screen { padding: 8px 18px 28px; display: grid; gap: 16px; }
+.tabbar { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); background: var(--surface); padding: 8px 6px 18px; }
+.tabbar button { border: 0; background: none; display: grid; justify-items: center; gap: 3px; font-size: 11px; font-weight: 700; color: var(--muted); padding: 4px 0; }
+.tabbar button svg { width: 22px; height: 22px; }
+.tabbar button[aria-selected="true"] { color: var(--brand); }
+
+/* Shared */
+svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.topbar { display: flex; align-items: center; gap: 10px; min-height: 40px; }
+.back { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; }
+.topbar .t { font-weight: 700; font-size: 15px; }
+.topbar .r { margin-left: auto; }
+h2.h { font-family: var(--font-display); font-weight: 700; font-size: 26px; line-height: 1.12; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: -8px 0 0; font-size: 14px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; }
+.label { font-size: 11.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.row { display: flex; align-items: center; gap: 12px; }
+.row > .grow { flex: 1; min-width: 0; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.num { font-variant-numeric: tabular-nums; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.pill.go { background: var(--go-soft); color: var(--go); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.brand { background: var(--brand-soft); color: var(--brand); }
+.pill.hot { background: var(--signal-soft); color: var(--signal); }
+.pill .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.btn { border: 0; border-radius: 16px; padding: 15px 18px; font-weight: 800; font-size: 16px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.btn.primary { background: var(--brand); color: var(--brand-ink); }
+.btn.go { background: var(--go); color: var(--go-ink); }
+.btn.ghost { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
+.btn.sm { padding: 10px 14px; font-size: 14px; border-radius: 12px; width: auto; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.demo-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: -6px; }
+.ico { width: 40px; height: 40px; border-radius: 12px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; flex: none; }
+.lines { display: grid; gap: 10px; font-size: 14px; }
+.lines .l { display: flex; justify-content: space-between; gap: 12px; }
+.lines .l b { font-variant-numeric: tabular-nums; }
+.lines hr { border: 0; border-top: 1px solid var(--line); margin: 2px 0; }
+.lines .total { font-size: 17px; font-weight: 800; }
+.lines .plus { color: var(--go); }
+.lines .minus { color: var(--muted); }
+
+/* Dashboard */
+.hello { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.hello .who { font-size: 13px; color: var(--muted); font-weight: 600; }
+.hello .name { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.15; }
+.online { display: flex; align-items: center; gap: 14px; border-radius: 20px; padding: 16px; background: var(--go); color: var(--go-ink); }
+.online.off { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.online strong { display: block; font-size: 16px; }
+.online span.s { font-size: 13px; opacity: .9; }
+.switch { margin-left: auto; width: 56px; height: 32px; border-radius: 99px; border: 0; background: rgba(255,255,255,.35); position: relative; flex: none; }
+.switch::after { content: ""; position: absolute; top: 4px; left: 28px; width: 24px; height: 24px; border-radius: 50%; background: var(--go-ink); transition: left .2s; }
+.online.off .switch { background: var(--line); }
+.online.off .switch::after { left: 4px; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px; }
+.stat b { display: block; font-family: var(--font-display); font-size: 22px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--muted); font-weight: 600; }
+.job-row { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.job-row:first-of-type { border-top: 0; padding-top: 2px; }
+.job-row .time { width: 54px; flex: none; font-weight: 800; font-size: 13px; font-variant-numeric: tabular-nums; }
+.job-row strong { display: block; font-size: 14.5px; }
+.job-row small { display: block; font-size: 12.5px; color: var(--muted); }
+.job-row .amt { font-weight: 800; font-variant-numeric: tabular-nums; }
+.sec-h { display: flex; justify-content: space-between; align-items: baseline; }
+.linkbtn { font-size: 13px; font-weight: 700; color: var(--brand); background: none; border: 0; padding: 0; }
+
+/* Incoming job alert */
+.alert-screen { position: absolute; inset: 0; z-index: 2; background: var(--alert-bg); color: var(--alert-ink); padding: 56px 18px 22px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; scrollbar-width: none; }
+.alert-screen::-webkit-scrollbar { display: none; }
+.alert-top { display: flex; justify-content: space-between; align-items: center; }
+.alert-top .pill.hot { background: var(--signal); color: var(--signal-ink); }
+.ring { width: 64px; height: 64px; position: relative; flex: none; }
+.ring svg { width: 64px; height: 64px; transform: rotate(-90deg); }
+.ring b { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-size: 20px; font-variant-numeric: tabular-nums; }
+.alert-screen h2 { font-family: var(--font-display); font-size: 30px; line-height: 1.05; margin: 0; letter-spacing: -.01em; }
+.alert-screen .where { color: var(--alert-muted); font-size: 14px; margin-top: 4px; }
+.apanel { background: var(--alert-panel); border-radius: 18px; padding: 14px; }
+.apanel .label { color: var(--alert-muted); }
+.pay { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pay div b { display: block; font-family: var(--font-display); font-size: 26px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.pay div span { font-size: 12px; color: var(--alert-muted); font-weight: 600; }
+.quote { font-size: 14.5px; line-height: 1.45; margin: 6px 0 0; }
+.aphotos { display: flex; gap: 8px; margin-top: 10px; }
+.aphotos span { width: 64px; height: 52px; border-radius: 10px; background: var(--alert-bg); border: 1px solid var(--alert-muted); opacity: .6; display: grid; place-items: center; font-size: 10px; text-align: center; color: var(--alert-muted); }
+.techs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.tech { border: 1.5px solid var(--alert-muted); background: transparent; color: var(--alert-ink); border-radius: 999px; padding: 7px 12px; font-size: 13px; font-weight: 700; }
+.tech[aria-pressed="true"] { background: var(--alert-ink); color: var(--alert-bg); border-color: var(--alert-ink); }
+.accept { border: 0; border-radius: 20px; background: var(--go); color: var(--go-ink); padding: 20px; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; }
+.pass { border: 0; background: none; color: var(--alert-muted); font-weight: 700; font-size: 14px; padding: 4px; }
+
+/* Active job */
+.map { border-radius: 20px; overflow: hidden; border: 1px solid var(--line); background: var(--map-bg); }
+.map svg { display: block; width: 100%; height: auto; }
+.deadline { display: flex; align-items: center; gap: 10px; background: var(--warn-soft); color: var(--warn); border-radius: 14px; padding: 10px 12px; font-size: 13px; font-weight: 700; }
+.deadline.ok { background: var(--go-soft); color: var(--go); }
+.member { display: grid; gap: 12px; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; font-size: 13.5px; }
+.facts span { display: block; color: var(--muted); font-size: 12px; font-weight: 600; }
+.facts b { font-weight: 700; }
+.progress { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.progress i { height: 5px; border-radius: 9px; background: var(--line); }
+.progress i.on { background: var(--go); }
+
+/* Estimate builder */
+.pb { display: grid; gap: 8px; }
+.pb-item { display: flex; align-items: center; gap: 12px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 16px; padding: 12px 12px 12px 14px; width: 100%; text-align: left; }
+.pb-item strong { display: block; font-size: 14.5px; }
+.pb-item small { display: block; font-size: 12.5px; color: var(--muted); }
+.pb-item .price { margin-left: auto; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pb-item .tick { width: 26px; height: 26px; border-radius: 8px; border: 1.5px solid var(--line); display: grid; place-items: center; flex: none; color: transparent; }
+.pb-item[aria-pressed="true"] { border-color: var(--go); }
+.pb-item[aria-pressed="true"] .tick { background: var(--go); border-color: var(--go); color: var(--go-ink); }
+.tag { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--go); }
+.sticky-sum { position: sticky; bottom: 0; background: var(--surface-2); padding-top: 8px; display: grid; gap: 10px; }
+.photo-req { display: flex; gap: 10px; }
+.shot { width: 72px; height: 72px; border-radius: 14px; border: 1.5px dashed var(--line); background: none; display: grid; place-items: center; color: var(--muted); font-size: 11px; font-weight: 700; text-align: center; }
+.shot.done { border-style: solid; background: linear-gradient(135deg, var(--map-block), var(--line)); color: var(--ink); }
+
+/* Waiting / done */
+.center { text-align: center; display: grid; justify-items: center; gap: 10px; padding-top: 12px; }
+.bigring { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; background: var(--go-soft); color: var(--go); }
+.bigring svg { width: 38px; height: 38px; stroke-width: 2.4; }
+.spinner { width: 46px; height: 46px; border-radius: 50%; border: 4px solid var(--line); border-top-color: var(--brand); animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg) } }
+.payout-big { font-family: var(--font-display); font-size: 44px; font-weight: 800; line-height: 1; color: var(--go); font-variant-numeric: tabular-nums; }
+
+/* Earnings */
+.bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end; height: 120px; margin-top: 10px; }
+.bars div { display: grid; gap: 6px; justify-items: center; align-self: stretch; grid-template-rows: 1fr auto; }
+.bars i { width: 100%; border-radius: 8px 8px 4px 4px; background: var(--brand); opacity: .35; align-self: end; }
+.bars div.today i { opacity: 1; }
+.bars span { font-size: 11px; color: var(--muted); font-weight: 700; }
+.ehead { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+.ehead b { font-family: var(--font-display); font-size: 34px; line-height: 1; font-variant-numeric: tabular-nums; }
+
+/* Profile */
+.tier { border-radius: 20px; padding: 16px; color: var(--alert-ink); background: radial-gradient(120% 100% at 100% 0%, #1D4E96, #0F2448); display: grid; gap: 4px; position: relative; overflow: hidden; }
+.tier::after { content: ""; position: absolute; right: -40px; top: -50px; width: 150px; height: 150px; border-radius: 50%; border: 22px solid var(--gold); opacity: .2; }
+.tier .t1 { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.tier .t2 { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+.tier .t3 { font-size: 13px; opacity: .85; }
+.score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.check { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.check:first-of-type { border-top: 0; padding-top: 2px; }
+.check svg { color: var(--go); }
+.check small { display: block; color: var(--muted); font-size: 12.5px; }
+
+.toast { position: absolute; left: 18px; right: 18px; bottom: 92px; background: var(--ink); color: var(--surface); border-radius: 14px; padding: 12px 14px; font-size: 14px; font-weight: 700; display: flex; gap: 10px; align-items: center; transform: translateY(16px); opacity: 0; pointer-events: none; transition: .25s ease; z-index: 5; }
+.toast.show { transform: none; opacity: 1; }
+
+@media (max-width: 900px) {
+  .stage { grid-template-columns: minmax(0, 1fr); gap: 28px; justify-items: center; }
+  .story { padding-top: 0; max-width: 560px; width: 100%; }
+  .phone { position: relative; top: 0; }
+  .walk { max-width: none; }
+}
+@media (max-width: 440px) {
+  body { padding-block: 20px; }
+  .phone { width: 100%; height: 780px; border-radius: 40px; padding: 8px; }
+  .device { border-radius: 33px; }
+  .story .lede { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-jobs" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 12.5h18"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-money" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.8"/><path d="M6 9.5v5M18 9.5v5"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></symbol>
+    <symbol id="i-ac" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M9.5 4.5 12 6.5l2.5-2M9.5 19.5 12 17.5l2.5 2"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-nav" viewBox="0 0 24 24"><path d="M20 4 3.5 11l7 2.5L13 20.5z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2.5h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12z"/></symbol>
+  </defs>
+</svg>
+
+<main class="stage">
+  <section class="story" aria-label="Walkthrough">
+    <div class="eyebrow">Investor prototype · contractor side</div>
+    <h1>Haven Club <em>Pro</em></h1>
+    <p class="lede">The contractor app. A new paid job takes one tap to accept, the price book builds the estimate, and payouts land every Friday.</p>
+    <ol class="walk" id="walk">
+      <li><button data-go="dash"><span class="n">1</span><span><strong>Go online</strong><small>Today's jobs, earnings and one switch to start taking emergency calls.</small></span></button></li>
+      <li><button data-go="incoming"><span class="n">2</span><span><strong>Accept a job in one tap</strong><small>Pay, distance and the member's photos up front. Assign it to any tech on the crew.</small></span></button></li>
+      <li><button data-go="active"><span class="n">3</span><span><strong>Navigate and arrive</strong><small>Gate code, home history and the guarantee deadline before the truck leaves.</small></span></button></li>
+      <li><button data-go="estimate"><span class="n">4</span><span><strong>Build the estimate in seconds</strong><small>Tap items from the price book. Member discount and payout are calculated live.</small></span></button></li>
+      <li><button data-go="waiting"><span class="n">5</span><span><strong>Member approves, job done, paid</strong><small>Approval comes from the member's phone. Haven Club collects the payment.</small></span></button></li>
+      <li><button data-go="schedule"><span class="n">6</span><span><strong>Included visits, routed</strong><small>Tune-ups grouped by neighborhood to fill slow days.</small></span></button></li>
+      <li><button data-go="earnings"><span class="n">7</span><span><strong>Earnings and payouts</strong><small>Every dollar by job, and new customers with zero ad spend.</small></span></button></li>
+      <li><button data-go="profile"><span class="n">8</span><span><strong>Pro scorecard</strong><small>Ratings, on-time record and licenses. Top pros get first pick of jobs.</small></span></button></li>
+    </ol>
+    <p class="footnote">Prototype with sample data. Shop, techs, members, prices and payout terms are illustrative. Pairs with the <a href="https://claude.ai/artifact/Hx8XyuVSeydxW9HoRrjTwb" target="_blank" rel="noopener">member app prototype</a>.</p>
+  </section>
+
+  <div class="phone">
+    <div class="device" id="device">
+      <div class="statusbar" aria-hidden="true">
+        <span class="num" id="clock">4:02</span>
+        <span class="notch"></span>
+        <span class="sys"><i style="width:3px;height:6px"></i><i style="width:3px;height:9px"></i><i style="width:3px;height:12px"></i><i style="width:22px;height:11px;border-radius:3px;margin-left:4px"></i></span>
+      </div>
+
+      <div class="view" id="view">
+
+        <!-- DASHBOARD -->
+        <section class="screen" data-screen="dash">
+          <div class="hello">
+            <div><div class="who">Desert Air Heating & Cooling</div><div class="name">Good afternoon, Dana</div></div>
+            <button class="back" aria-label="Notifications" data-toast="No new notifications"><svg class="i"><use href="#i-bell"/></svg></button>
+          </div>
+
+          <div class="online" id="online">
+            <div><strong id="onlineTitle">Online for emergencies</strong><span class="s" id="onlineSub">East Valley · 3 techs available</span></div>
+            <button class="switch" id="onlineSwitch" role="switch" aria-checked="true" aria-label="Online for emergencies"></button>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><b>$612</b><span>Earned today</span></div>
+            <div class="stat"><b>4</b><span>Jobs today</span></div>
+            <div class="stat"><b>4.9</b><span>Rating</span></div>
+          </div>
+
+          <button class="btn go" data-go="incoming"><svg class="i"><use href="#i-bell"/></svg>Demo: a new job comes in</button>
+
+          <div class="panel">
+            <div class="sec-h" style="margin-bottom:6px"><span class="label">Today</span><button class="linkbtn" data-go="schedule">Schedule</button></div>
+            <div class="job-row"><span class="time">8:00</span><div class="grow" style="min-width:0"><strong>AC tune-up · included</strong><small>Gilbert 85234 · Luis R.</small></div><span class="pill go">Done</span></div>
+            <div class="job-row"><span class="time">10:15</span><div class="grow" style="min-width:0"><strong>No cooling · repair</strong><small>Mesa 85206 · Luis R.</small></div><span class="pill go">Done</span></div>
+            <div class="job-row"><span class="time">1:30</span><div class="grow" style="min-width:0"><strong>Thermostat swap</strong><small>Chandler 85249 · Marcus T.</small></div><span class="pill go">Done</span></div>
+            <div class="job-row"><span class="time">3:45</span><div class="grow" style="min-width:0"><strong>AC tune-up · included</strong><small>Gilbert 85296 · Ana P.</small></div><span class="pill brand">On site</span></div>
+          </div>
+
+          <div class="panel row">
+            <span class="ico"><svg class="i"><use href="#i-money"/></svg></span>
+            <div class="grow"><strong>Next payout Fri, Nov 13</strong><div class="muted small">$1,842 so far this week</div></div>
+            <button class="linkbtn" data-go="earnings">Details</button>
+          </div>
+        </section>
+
+        <!-- ACTIVE JOB -->
+        <section class="screen" data-screen="active" hidden>
+          <div class="topbar"><button class="back" data-go="dash" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t">Job #HC-20418</span><span class="r pill hot"><span class="dot"></span>Emergency</span></div>
+          <div class="progress" aria-hidden="true"><i class="on" id="p1"></i><i id="p2"></i><i id="p3"></i></div>
+          <div class="map">
+            <svg viewBox="0 0 340 150" role="img" aria-label="Route from your current location to the member's home">
+              <rect width="340" height="150" fill="var(--map-bg)"/>
+              <g fill="var(--map-block)"><rect x="10" y="10" width="70" height="36" rx="6"/><rect x="100" y="10" width="90" height="36" rx="6"/><rect x="210" y="10" width="120" height="36" rx="6"/><rect x="10" y="66" width="70" height="36" rx="6"/><rect x="100" y="66" width="130" height="36" rx="6"/><rect x="250" y="66" width="80" height="36" rx="6"/><rect x="10" y="122" width="150" height="24" rx="6"/><rect x="180" y="122" width="150" height="24" rx="6"/></g>
+              <g stroke="var(--map-road)" stroke-width="10" fill="none"><path d="M0 56H340M0 112H340M90 0V150M240 0V150"/></g>
+              <path d="M30 112H90V56H240V90" fill="none" stroke="var(--brand)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="30" cy="112" r="8" fill="var(--brand)"/><circle cx="30" cy="112" r="3" fill="var(--surface)"/>
+              <circle cx="240" cy="94" r="13" fill="var(--signal)" opacity=".18"/><circle cx="240" cy="94" r="7" fill="var(--signal)"/>
+            </svg>
+          </div>
+          <div class="row">
+            <div class="grow"><div class="label">Arrive by</div><div style="font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1" class="num" id="arriveBy">4:58 PM</div></div>
+            <button class="btn primary sm" data-toast="Opening directions in Maps"><svg class="i"><use href="#i-nav"/></svg>Navigate</button>
+          </div>
+          <div class="deadline ok" id="deadline"><svg class="i"><use href="#i-clock"/></svg><span id="deadlineText">14 min drive · 4-hour guarantee ends 8:02 PM</span></div>
+
+          <div class="panel member">
+            <div class="row">
+              <div class="grow"><strong>Maria Reyes</strong><div class="muted small">2418 E Palo Verde Dr, Gilbert</div></div>
+              <button class="back" aria-label="Message member" data-toast="Message sent to Maria"><svg class="i"><use href="#i-chat"/></svg></button>
+              <button class="back" aria-label="Call member" data-toast="Calling through masked number"><svg class="i"><use href="#i-phone"/></svg></button>
+            </div>
+            <div class="facts">
+              <div><span>Problem</span><b>Blowing warm air</b></div>
+              <div><span>Inside temp</span><b>88°F and rising</b></div>
+              <div><span>Equipment</span><b>Trane 3.5 ton, 2015</b></div>
+              <div><span>Last service</span><b>Oct 2026 tune-up</b></div>
+              <div><span>Gate code</span><b class="num">#4417</b></div>
+              <div><span>Notes</span><b>Dog in yard, friendly</b></div>
+            </div>
+          </div>
+
+          <button class="btn go" id="stepBtn">I'm on my way</button>
+        </section>
+
+        <!-- ESTIMATE -->
+        <section class="screen" data-screen="estimate" hidden>
+          <div class="topbar"><button class="back" data-go="active" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t">Build estimate</span><span class="r muted small">Maria R.</span></div>
+          <h2 class="h">What did you find?</h2>
+          <div class="label">Photo of the problem <span style="color:var(--signal)">required</span></div>
+          <div class="photo-req">
+            <button class="shot" id="shot1">Add<br>photo</button>
+            <button class="shot" id="shot2">Add<br>photo</button>
+          </div>
+          <div class="label">Price book · AC repair</div>
+          <div class="pb" id="pb">
+            <button class="pb-item" data-item="cap" data-price="68" aria-pressed="false"><span class="tick"><svg class="i" style="width:16px;height:16px;stroke-width:3"><use href="#i-check"/></svg></span><span><span class="tag">Common for this problem</span><strong>Run capacitor</strong><small>Dual 45/5 µF</small></span><span class="price">$68</span></button>
+            <button class="pb-item" data-item="con" data-price="54" aria-pressed="false"><span class="tick"><svg class="i" style="width:16px;height:16px;stroke-width:3"><use href="#i-check"/></svg></span><span><span class="tag">Common for this problem</span><strong>Contactor</strong><small>2-pole 40 amp</small></span><span class="price">$54</span></button>
+            <button class="pb-item" data-item="lab" data-price="129" aria-pressed="false"><span class="tick"><svg class="i" style="width:16px;height:16px;stroke-width:3"><use href="#i-check"/></svg></span><span><strong>Labor, 1 hour</strong><small>Standard rate</small></span><span class="price">$129</span></button>
+            <button class="pb-item" data-item="fan" data-price="285" aria-pressed="false"><span class="tick"><svg class="i" style="width:16px;height:16px;stroke-width:3"><use href="#i-check"/></svg></span><span><strong>Condenser fan motor</strong><small>1/4 HP, installed</small></span><span class="price">$285</span></button>
+            <button class="pb-item" data-item="ref" data-price="95" aria-pressed="false"><span class="tick"><svg class="i" style="width:16px;height:16px;stroke-width:3"><use href="#i-check"/></svg></span><span><strong>Refrigerant, per lb</strong><small>R-410A</small></span><span class="price">$95</span></button>
+          </div>
+          <div class="sticky-sum">
+            <div class="panel lines">
+              <div class="l"><span>Price book total</span><b id="eSub">$0.00</b></div>
+              <div class="l minus"><span>Member discount 15%</span><b id="eDisc">−$0.00</b></div>
+              <div class="l total"><span>Member pays</span><b id="eTotal">$0.00</b></div>
+              <hr>
+              <div class="l plus"><span>You receive (after 8% fee)</span><b id="eYou">$0.00</b></div>
+            </div>
+            <button class="btn go" id="sendEst" disabled>Send to Maria for approval</button>
+          </div>
+        </section>
+
+        <!-- WAITING / APPROVED -->
+        <section class="screen" data-screen="waiting" hidden>
+          <div class="topbar"><button class="back" data-go="estimate" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t">Estimate sent</span></div>
+          <div class="center" id="waitBox">
+            <div class="spinner"></div>
+            <h2 class="h">Waiting for Maria</h2>
+            <p class="sub" style="margin:0">She gets a notification with your photos and the itemized price.</p>
+          </div>
+          <div class="center" id="approvedBox" hidden>
+            <div class="bigring"><svg class="i"><use href="#i-check"/></svg></div>
+            <h2 class="h">Approved. Start the repair.</h2>
+            <p class="sub" style="margin:0">Maria approved <b id="apprAmt">$213.35</b>. Her card on file is charged when you finish.</p>
+          </div>
+          <div class="panel" id="finishPanel" hidden>
+            <div class="label" style="margin-bottom:10px">Finish the job</div>
+            <div class="photo-req" style="margin-bottom:12px">
+              <button class="shot" id="shot3">After<br>photo</button>
+              <button class="shot" id="shot4">Unit<br>running</button>
+            </div>
+            <div class="facts" style="margin-bottom:14px">
+              <div><span>Supply air</span><b>56°F</b></div>
+              <div><span>Return air</span><b>77°F</b></div>
+            </div>
+            <button class="btn go" data-go="done">Mark job complete</button>
+          </div>
+        </section>
+
+        <!-- DONE -->
+        <section class="screen" data-screen="done" hidden>
+          <div class="center">
+            <div class="bigring"><svg class="i"><use href="#i-check"/></svg></div>
+            <div class="label">You earned</div>
+            <div class="payout-big" id="doneTotal">$271.28</div>
+            <p class="sub" style="margin:0">Paid Friday, Nov 13 with your weekly payout</p>
+          </div>
+          <div class="panel lines">
+            <div class="l"><span>Emergency dispatch fee (paid by Haven Club)</span><b>$75.00</b></div>
+            <div class="l"><span>Repair, member paid</span><b id="dMember">$213.35</b></div>
+            <div class="l minus"><span>Haven Club fee 8%</span><b id="dFee">−$17.07</b></div>
+            <hr>
+            <div class="l total"><span>Total for this job</span><b id="dTotal">$271.28</b></div>
+          </div>
+          <div class="panel row">
+            <span class="ico"><svg class="i"><use href="#i-clock"/></svg></span>
+            <div class="grow"><strong>On time: arrived in 56 min</strong><div class="muted small">Counts toward your Gold Pro status</div></div>
+          </div>
+          <div class="duo">
+            <button class="btn ghost" data-toast="Instant payout sent to your debit card">Cash out now</button>
+            <button class="btn primary" data-go="dash">Back to jobs</button>
+          </div>
+          <div class="demo-note">Cash out now is an optional instant payout for a small fee.</div>
+        </section>
+
+        <!-- SCHEDULE -->
+        <section class="screen" data-screen="schedule" hidden>
+          <h2 class="h" style="padding-top:8px">Tomorrow · Tue, Nov 10</h2>
+          <p class="sub">6 included tune-ups, grouped by neighborhood</p>
+          <div class="panel row">
+            <span class="ico"><svg class="i"><use href="#i-route"/></svg></span>
+            <div class="grow"><strong>Gilbert route · 4 stops</strong><div class="muted small">31 miles total · Luis R.</div></div>
+            <span class="pill go">$300</span>
+          </div>
+          <div class="panel">
+            <div class="job-row"><span class="time">8:00</span><div class="grow" style="min-width:0"><strong>AC tune-up</strong><small>85234 · 11-year-old unit, flag for replacement</small></div><span class="amt">$75</span></div>
+            <div class="job-row"><span class="time">9:30</span><div class="grow" style="min-width:0"><strong>AC tune-up</strong><small>85234 · 2 systems</small></div><span class="amt">$150</span></div>
+            <div class="job-row"><span class="time">11:00</span><div class="grow" style="min-width:0"><strong>AC tune-up</strong><small>85296 · new member</small></div><span class="amt">$75</span></div>
+            <div class="job-row"><span class="time">1:00</span><div class="grow" style="min-width:0"><strong>Open for emergencies</strong><small>Kept free for same-day calls</small></div><span class="pill brand">Hold</span></div>
+          </div>
+          <div class="panel row">
+            <span class="ico"><svg class="i"><use href="#i-route"/></svg></span>
+            <div class="grow"><strong>Mesa route · 2 stops</strong><div class="muted small">18 miles · Ana P.</div></div>
+            <span class="pill go">$150</span>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:8px">Capacity this week</div>
+            <div class="row"><div class="grow small">Emergency slots per day</div><b class="num" id="capVal">3</b><button class="back" aria-label="Fewer" data-cap="-1">−</button><button class="back" aria-label="More" data-cap="1">+</button></div>
+            <div class="muted small" style="margin-top:8px">We only send you as many jobs as you can handle.</div>
+          </div>
+        </section>
+
+        <!-- EARNINGS -->
+        <section class="screen" data-screen="earnings" hidden>
+          <h2 class="h" style="padding-top:8px">Earnings</h2>
+          <div class="panel">
+            <div class="ehead"><div><div class="label">This week</div><b>$1,842</b></div><span class="pill go">+18% vs last week</span></div>
+            <div class="bars" aria-label="Earnings by day this week">
+              <div><i style="height:62%"></i><span>Mon</span></div>
+              <div><i style="height:48%"></i><span>Tue</span></div>
+              <div><i style="height:74%"></i><span>Wed</span></div>
+              <div><i style="height:40%"></i><span>Thu</span></div>
+              <div><i style="height:55%"></i><span>Fri</span></div>
+              <div><i style="height:20%"></i><span>Sat</span></div>
+              <div class="today"><i style="height:88%"></i><span>Sun</span></div>
+            </div>
+          </div>
+          <div class="panel lines">
+            <div class="l"><span>Included visits (8 × $75)</span><b>$600.00</b></div>
+            <div class="l"><span>Emergency dispatch fees (3)</span><b>$225.00</b></div>
+            <div class="l"><span>Repairs, after 8% fee (5)</span><b>$1,017.00</b></div>
+            <hr>
+            <div class="l total"><span>Payout Fri, Nov 13</span><b>$1,842.00</b></div>
+          </div>
+          <div class="panel row">
+            <span class="ico" style="background:var(--go-soft);color:var(--go)"><svg class="i"><use href="#i-user"/></svg></span>
+            <div class="grow"><strong>23 new customers this month</strong><div class="muted small">With $0 in ad spend or lead fees</div></div>
+          </div>
+          <div class="label">Recent payouts</div>
+          <div class="panel">
+            <div class="job-row"><span class="time">Nov 6</span><div class="grow"><strong>Weekly payout</strong><small>Deposited to Chase ••4402</small></div><span class="amt">$1,561</span></div>
+            <div class="job-row"><span class="time">Oct 30</span><div class="grow"><strong>Weekly payout</strong><small>Deposited to Chase ••4402</small></div><span class="amt">$1,904</span></div>
+            <div class="job-row"><span class="time">Oct 23</span><div class="grow"><strong>Weekly payout</strong><small>Deposited to Chase ••4402</small></div><span class="amt">$1,377</span></div>
+          </div>
+        </section>
+
+        <!-- PROFILE -->
+        <section class="screen" data-screen="profile" hidden>
+          <h2 class="h" style="padding-top:8px">Pro scorecard</h2>
+          <div class="tier">
+            <span class="t1">Gold Pro</span>
+            <span class="t2">Desert Air Heating & Cooling</span>
+            <span class="t3">First pick of emergency jobs within 12 miles</span>
+          </div>
+          <div class="score-grid">
+            <div class="stat"><b>4.9</b><span>Member rating · 312 jobs</span></div>
+            <div class="stat"><b>97%</b><span>Arrived on time</span></div>
+            <div class="stat"><b>92%</b><span>Jobs accepted</span></div>
+            <div class="stat"><b>38 sec</b><span>Average time to accept</span></div>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:8px">Verified</div>
+            <div class="check"><svg class="i"><use href="#i-shield"/></svg><div><strong>AZ contractor license</strong><small>Verified · renews Aug 2027</small></div></div>
+            <div class="check"><svg class="i"><use href="#i-shield"/></svg><div><strong>Liability insurance, $1M</strong><small>Certificate on file · expires Mar 2027</small></div></div>
+            <div class="check"><svg class="i"><use href="#i-shield"/></svg><div><strong>Workers' comp</strong><small>Active</small></div></div>
+            <div class="check"><svg class="i"><use href="#i-shield"/></svg><div><strong>Background checks</strong><small>3 of 3 techs cleared</small></div></div>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:8px">Crew</div>
+            <div class="job-row"><span class="ico" style="width:34px;height:34px">MT</span><div class="grow"><strong>Marcus T.</strong><small>4.9 · available</small></div><span class="pill go">Online</span></div>
+            <div class="job-row"><span class="ico" style="width:34px;height:34px">LR</span><div class="grow"><strong>Luis R.</strong><small>5.0 · on a job until 4:30</small></div><span class="pill warn">Busy</span></div>
+            <div class="job-row"><span class="ico" style="width:34px;height:34px">AP</span><div class="grow"><strong>Ana P.</strong><small>4.8 · available</small></div><span class="pill go">Online</span></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- INCOMING JOB OVERLAY -->
+      <div class="alert-screen" id="incoming" hidden role="dialog" aria-label="New job request">
+        <div class="alert-top">
+          <span class="pill hot"><span class="dot"></span>Emergency · AC</span>
+          <div class="ring" aria-label="Time left to accept">
+            <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="var(--alert-panel)" stroke-width="6"/><circle id="ringArc" cx="32" cy="32" r="28" fill="none" stroke="var(--go)" stroke-width="6" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="0"/></svg>
+            <b id="ringNum">60</b>
+          </div>
+        </div>
+        <div>
+          <h2>AC blowing warm air</h2>
+          <div class="where">Gilbert 85234 · 6.2 mi · 14 min away</div>
+        </div>
+        <div class="apanel pay">
+          <div><b>$75</b><span>Dispatch fee, guaranteed</span></div>
+          <div><b>+ repair</b><span>At your price book rates</span></div>
+        </div>
+        <div class="apanel">
+          <div class="label">Member says</div>
+          <p class="quote">"AC is running but blowing warm air. House is 88° and climbing."</p>
+          <div class="aphotos"><span>Thermostat</span><span>Outdoor unit</span></div>
+          <div class="where" style="margin-top:10px">Trane 3.5 ton, 2015 · Complete member since Jul 2026</div>
+        </div>
+        <div class="apanel">
+          <div class="label">Send</div>
+          <div class="techs" id="techs">
+            <button class="tech" aria-pressed="true" data-tech="Marcus T.">Marcus T. · 14 min</button>
+            <button class="tech" aria-pressed="false" data-tech="Ana P.">Ana P. · 22 min</button>
+          </div>
+        </div>
+        <div style="margin-top:auto;display:grid;gap:8px">
+          <button class="accept" id="acceptBtn"><svg class="i" style="width:24px;height:24px"><use href="#i-check"/></svg>Accept job</button>
+          <button class="pass" id="passBtn">Pass on this one</button>
+        </div>
+      </div>
+
+      <nav class="tabbar" aria-label="App sections">
+        <button data-tab="dash" aria-selected="true"><svg class="i"><use href="#i-jobs"/></svg>Jobs</button>
+        <button data-tab="schedule"><svg class="i"><use href="#i-cal"/></svg>Schedule</button>
+        <button data-tab="earnings"><svg class="i"><use href="#i-money"/></svg>Earnings</button>
+        <button data-tab="profile"><svg class="i"><use href="#i-user"/></svg>Profile</button>
+      </nav>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"><svg class="i"><use href="#i-check"/></svg><span id="toastText">Done</span></div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  var view = document.getElementById('view');
+  var device = document.getElementById('device');
+  var overlay = document.getElementById('incoming');
+  var screens = Array.prototype.slice.call(document.querySelectorAll('[data-screen]'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-tab]'));
+  var walk = Array.prototype.slice.call(document.querySelectorAll('#walk button'));
+  var TAB_OF = { dash: 'dash', incoming: 'dash', active: 'dash', estimate: 'dash', waiting: 'dash', done: 'dash', schedule: 'schedule', earnings: 'earnings', profile: 'profile' };
+  var WALK_OF = { dash: 'dash', incoming: 'incoming', active: 'active', estimate: 'estimate', waiting: 'waiting', done: 'waiting', schedule: 'schedule', earnings: 'earnings', profile: 'profile' };
+  var state = { tech: 'Marcus T.', step: 0, items: {}, cap: 3 };
+  var timers = [], countdown = null;
+  var FEE = 0.08, DISC = 0.15, DISPATCH = 75;
+
+  function money(v) { return '$' + v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function fmt(d) { var h = d.getHours(), m = d.getMinutes(), ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ap; }
+  function plus(mins) { return new Date(Date.now() + mins * 60000); }
+  function tickClock() { var d = new Date(), h = d.getHours() % 12 || 12, m = d.getMinutes(); document.getElementById('clock').textContent = h + ':' + (m < 10 ? '0' : '') + m; }
+  tickClock(); setInterval(tickClock, 30000);
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; if (countdown) { clearInterval(countdown); countdown = null; } }
+
+  function setNav(id) {
+    var tab = TAB_OF[id], w = WALK_OF[id];
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.tab === tab ? 'true' : 'false'); });
+    walk.forEach(function (b) { if (b.dataset.go === w) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+  }
+
+  function go(id) {
+    clearTimers();
+    if (id === 'incoming') { showIncoming(); setNav(id); return; }
+    overlay.hidden = true; device.classList.remove('alerting');
+    screens.forEach(function (s) { s.hidden = s.dataset.screen !== id; });
+    view.scrollTop = 0;
+    setNav(id);
+    if (id === 'active') enterActive();
+    if (id === 'estimate') renderEstimate();
+    if (id === 'waiting') enterWaiting();
+    if (id === 'done') renderDone();
+  }
+
+  /* Incoming job */
+  function showIncoming() {
+    overlay.hidden = false; overlay.scrollTop = 0; device.classList.add('alerting');
+    var left = 60, arc = document.getElementById('ringArc'), num = document.getElementById('ringNum'), full = 175.9;
+    num.textContent = left; arc.setAttribute('stroke-dashoffset', '0');
+    countdown = setInterval(function () {
+      left -= 1;
+      num.textContent = left;
+      arc.setAttribute('stroke-dashoffset', String(full * (1 - left / 60)));
+      if (left <= 0) { clearInterval(countdown); countdown = null; toast('Job offered to the next pro'); go('dash'); }
+    }, 1000);
+  }
+
+  /* Active job */
+  var STEPS = [
+    { btn: "I'm on my way", toast: 'Maria was told you are on the way' },
+    { btn: "I've arrived", toast: 'Maria was told you arrived' },
+    { btn: 'Start diagnosis', toast: null }
+  ];
+  function enterActive() {
+    var arrive = plus(14);
+    document.getElementById('arriveBy').textContent = fmt(arrive);
+    document.getElementById('deadlineText').textContent = '14 min drive · 4-hour guarantee ends ' + fmt(plus(240));
+    renderStep();
+  }
+  function renderStep() {
+    document.getElementById('stepBtn').textContent = STEPS[Math.min(state.step, 2)].btn;
+    ['p1', 'p2', 'p3'].forEach(function (id, i) { document.getElementById(id).classList.toggle('on', i <= state.step); });
+  }
+
+  /* Estimate */
+  function totals() {
+    var sub = 0;
+    document.querySelectorAll('.pb-item').forEach(function (b) { if (state.items[b.dataset.item]) sub += +b.dataset.price; });
+    var disc = Math.round(sub * DISC * 100) / 100;
+    var member = Math.round((sub - disc) * 100) / 100;
+    var fee = Math.round(member * FEE * 100) / 100;
+    return { sub: sub, disc: disc, member: member, fee: fee, you: Math.round((member - fee) * 100) / 100 };
+  }
+  function renderEstimate() {
+    document.querySelectorAll('.pb-item').forEach(function (b) { b.setAttribute('aria-pressed', state.items[b.dataset.item] ? 'true' : 'false'); });
+    var t = totals();
+    document.getElementById('eSub').textContent = money(t.sub);
+    document.getElementById('eDisc').textContent = '−' + money(t.disc);
+    document.getElementById('eTotal').textContent = money(t.member);
+    document.getElementById('eYou').textContent = money(t.you);
+    var hasPhoto = document.getElementById('shot1').classList.contains('done');
+    var btn = document.getElementById('sendEst');
+    btn.disabled = !(t.sub > 0 && hasPhoto);
+    btn.textContent = t.sub > 0 && !hasPhoto ? 'Add a photo to send' : 'Send to Maria for approval';
+  }
+
+  /* Waiting */
+  function enterWaiting() {
+    if (totals().sub === 0) { state.items = { cap: true, con: true, lab: true }; markPhoto('shot1'); }
+    document.getElementById('waitBox').hidden = false;
+    document.getElementById('approvedBox').hidden = true;
+    document.getElementById('finishPanel').hidden = true;
+    document.getElementById('apprAmt').textContent = money(totals().member);
+    timers.push(setTimeout(function () {
+      document.getElementById('waitBox').hidden = true;
+      document.getElementById('approvedBox').hidden = false;
+      document.getElementById('finishPanel').hidden = false;
+      toast('Maria approved the estimate');
+    }, 2200));
+  }
+
+  function renderDone() {
+    if (totals().sub === 0) state.items = { cap: true, con: true, lab: true };
+    var t = totals();
+    document.getElementById('dMember').textContent = money(t.member);
+    document.getElementById('dFee').textContent = '−' + money(t.fee);
+    var total = money(DISPATCH + t.you);
+    document.getElementById('dTotal').textContent = total;
+    document.getElementById('doneTotal').textContent = total;
+  }
+
+  function markPhoto(id) { var s = document.getElementById(id); s.classList.add('done'); s.innerHTML = 'Photo<br>added'; }
+
+  var toastTimer;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    document.getElementById('toastText').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2200);
+  }
+
+  document.addEventListener('click', function (e) {
+    var el;
+    if ((el = e.target.closest('[data-tab]'))) { go(el.dataset.tab); return; }
+    if ((el = e.target.closest('[data-go]'))) {
+      if (el.dataset.go === 'active' && el.closest('#walk')) state.step = 0;
+      go(el.dataset.go); return;
+    }
+    if ((el = e.target.closest('[data-toast]'))) { toast(el.dataset.toast); return; }
+    if ((el = e.target.closest('.tech'))) {
+      document.querySelectorAll('.tech').forEach(function (b) { b.setAttribute('aria-pressed', b === el ? 'true' : 'false'); });
+      state.tech = el.dataset.tech; return;
+    }
+    if (e.target.closest('#acceptBtn')) { state.step = 0; go('active'); toast('Accepted. ' + state.tech + ' is assigned.'); return; }
+    if (e.target.closest('#passBtn')) { go('dash'); toast('Passed. No penalty for an occasional pass.'); return; }
+    if (e.target.closest('#stepBtn')) {
+      if (state.step >= 2) { go('estimate'); return; }
+      var msg = STEPS[state.step].toast;
+      state.step += 1; renderStep();
+      if (state.step === 2) { var d = document.getElementById('deadline'); document.getElementById('deadlineText').textContent = 'Arrived ' + fmt(new Date()) + ' · on time'; d.className = 'deadline ok'; }
+      if (msg) toast(msg);
+      return;
+    }
+    if ((el = e.target.closest('.pb-item'))) { state.items[el.dataset.item] = !state.items[el.dataset.item]; renderEstimate(); return; }
+    if ((el = e.target.closest('.shot'))) { markPhoto(el.id); if (el.id === 'shot1' || el.id === 'shot2') renderEstimate(); return; }
+    if (e.target.closest('#sendEst')) { go('waiting'); return; }
+    if (e.target.closest('#onlineSwitch')) {
+      var box = document.getElementById('online'), sw = document.getElementById('onlineSwitch');
+      var on = box.classList.toggle('off') === false;
+      sw.setAttribute('aria-checked', on ? 'true' : 'false');
+      document.getElementById('onlineTitle').textContent = on ? 'Online for emergencies' : 'Offline';
+      document.getElementById('onlineSub').textContent = on ? 'East Valley · 3 techs available' : 'Scheduled visits still show up';
+      toast(on ? 'You will get emergency jobs again' : 'No emergency jobs until you go online');
+      return;
+    }
+    if ((el = e.target.closest('[data-cap]'))) {
+      state.cap = Math.max(0, Math.min(8, state.cap + +el.dataset.cap));
+      document.getElementById('capVal').textContent = state.cap; return;
+    }
+  });
+
+  go('dash');
+})();
+</script>
