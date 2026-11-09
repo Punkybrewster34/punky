@@ -1,0 +1,721 @@
+<title>Haven House Pricing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: navy hero with price promise, then a two-column estimator (inputs + sticky price receipt),
+   price cards, what's-included table, booking, FAQ. Single light look to match the Haven House site.
+   Everything is scoped under .hh so it can be pasted into a GoHighLevel custom code element. */
+:root {
+  --hh-navy: #12307D;
+  --hh-navy-deep: #0B1F55;
+  --hh-navy-soft: #E9EEF9;
+  --hh-ink: #0E1A33;
+  --hh-muted: #56627A;
+  --hh-line: #E2E7F0;
+  --hh-bg: #F6F7FB;
+  --hh-surface: #FFFFFF;
+  --hh-gold: #F4B81C;
+  --hh-gold-ink: #3A2A00;
+  --hh-gold-soft: #FFF5D9;
+  --hh-good: #1E7A4C;
+  --hh-good-soft: #E3F3EA;
+  --hh-on-navy: #FFFFFF;
+  --hh-on-navy-muted: #B9C6E6;
+  --hh-serif: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --hh-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+body { background: var(--hh-bg); margin: 0; }
+.hh { background: var(--hh-bg); color: var(--hh-ink); font-family: var(--hh-sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+.hh *, .hh *::before, .hh *::after { box-sizing: border-box; }
+.hh [hidden] { display: none !important; }
+.hh button, .hh input, .hh select { font: inherit; color: inherit; }
+.hh button { cursor: pointer; }
+.hh :focus-visible { outline: 3px solid var(--hh-gold); outline-offset: 2px; }
+.hh .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.hh h1, .hh h2, .hh h3 { font-family: var(--hh-serif); font-weight: 400; letter-spacing: -.01em; line-height: 1.08; margin: 0; text-wrap: balance; }
+.hh .eyebrow { font-size: 12.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--hh-navy); }
+.hh .num { font-variant-numeric: tabular-nums; }
+.hh .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 14px; padding: 16px 22px; font-weight: 800; font-size: 16px; text-decoration: none; line-height: 1.2; }
+.hh .btn-gold { background: var(--hh-gold); color: var(--hh-gold-ink); }
+.hh .btn-gold:hover { filter: brightness(1.04); }
+.hh .btn-navy { background: var(--hh-navy); color: var(--hh-on-navy); }
+.hh .btn-line { background: var(--hh-surface); color: var(--hh-navy); border: 1.5px solid var(--hh-line); }
+.hh .btn-line:hover { border-color: var(--hh-navy); }
+.hh svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* Hero */
+.hh .hero { background: radial-gradient(120% 140% at 85% 0%, var(--hh-navy) 0%, var(--hh-navy-deep) 70%); color: var(--hh-on-navy); padding-block: 64px 120px; position: relative; overflow: hidden; }
+.hh .hero::after { content: ""; position: absolute; right: -120px; top: -140px; width: 420px; height: 420px; border-radius: 50%; border: 56px solid var(--hh-gold); opacity: .08; }
+.hh .hero .eyebrow { color: var(--hh-gold); }
+.hh .hero h1 { font-size: clamp(38px, 6vw, 64px); margin-top: 14px; max-width: 14em; }
+.hh .hero h1 em { font-style: italic; color: var(--hh-gold); }
+.hh .hero p.lede { font-size: clamp(17px, 2vw, 19px); color: var(--hh-on-navy-muted); max-width: 36em; margin: 18px 0 28px; }
+.hh .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.hh .hero .btn-line { background: transparent; color: var(--hh-on-navy); border-color: rgba(255,255,255,.35); }
+.hh .trust { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 36px; font-size: 14px; color: var(--hh-on-navy-muted); }
+.hh .trust span { display: inline-flex; align-items: center; gap: 8px; }
+.hh .trust b { color: var(--hh-on-navy); }
+.hh .stars { color: var(--hh-gold); letter-spacing: 1px; }
+
+/* Estimator */
+.hh .est { margin-top: -84px; position: relative; z-index: 1; }
+.hh .est-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.hh .card { background: var(--hh-surface); border: 1px solid var(--hh-line); border-radius: 24px; }
+.hh .inputs { padding: 28px; display: grid; gap: 26px; box-shadow: 0 30px 60px -30px rgba(14, 26, 51, .25); }
+.hh .inputs h2 { font-size: 30px; }
+.hh .q { display: grid; gap: 10px; }
+.hh .q > label, .hh .q > .ql { font-weight: 800; font-size: 15px; }
+.hh .q .hint { font-size: 13.5px; color: var(--hh-muted); margin-top: -6px; }
+.hh .seg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.hh .seg button { border: 1.5px solid var(--hh-line); background: var(--hh-surface); border-radius: 14px; padding: 12px 10px; text-align: left; display: grid; gap: 2px; }
+.hh .seg button strong { font-size: 14.5px; }
+.hh .seg button small { font-size: 12.5px; color: var(--hh-muted); }
+.hh .seg button[aria-pressed="true"] { border-color: var(--hh-navy); background: var(--hh-navy-soft); box-shadow: inset 0 0 0 1px var(--hh-navy); }
+.hh .row2 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.hh .stepper { display: flex; align-items: center; border: 1.5px solid var(--hh-line); border-radius: 14px; overflow: hidden; background: var(--hh-surface); }
+.hh .stepper button { width: 48px; height: 50px; border: 0; background: var(--hh-bg); font-size: 22px; font-weight: 700; color: var(--hh-navy); }
+.hh .stepper button:disabled { color: var(--hh-line); cursor: not-allowed; }
+.hh .stepper output { flex: 1; text-align: center; font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; }
+.hh select { width: 100%; height: 53px; border: 1.5px solid var(--hh-line); border-radius: 14px; background: var(--hh-surface); padding: 0 14px; font-weight: 600; }
+.hh .freq { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.hh .freq button { border: 1.5px solid var(--hh-line); background: var(--hh-surface); border-radius: 14px; padding: 12px 8px; display: grid; gap: 2px; justify-items: center; text-align: center; position: relative; }
+.hh .freq button strong { font-size: 14px; }
+.hh .freq button small { font-size: 12.5px; color: var(--hh-good); font-weight: 700; }
+.hh .freq button[aria-pressed="true"] { border-color: var(--hh-navy); background: var(--hh-navy-soft); box-shadow: inset 0 0 0 1px var(--hh-navy); }
+.hh .freq button .tag { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--hh-gold); color: var(--hh-gold-ink); font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+.hh .freq.off { opacity: .45; pointer-events: none; }
+.hh .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.hh .chip { border: 1.5px solid var(--hh-line); background: var(--hh-surface); border-radius: 99px; padding: 9px 14px; font-size: 14px; font-weight: 600; display: inline-flex; gap: 8px; align-items: center; }
+.hh .chip span { color: var(--hh-muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+.hh .chip[aria-pressed="true"] { border-color: var(--hh-navy); background: var(--hh-navy); color: var(--hh-on-navy); }
+.hh .chip[aria-pressed="true"] span { color: var(--hh-gold); }
+
+/* Receipt */
+.hh .receipt { position: sticky; top: 16px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(14, 26, 51, .3); }
+.hh .receipt .top { background: var(--hh-navy); color: var(--hh-on-navy); padding: 24px; display: grid; gap: 4px; }
+.hh .receipt .top .lbl { font-size: 12.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--hh-gold); }
+.hh .receipt .price { font-family: var(--hh-serif); font-size: 64px; line-height: 1; font-variant-numeric: tabular-nums; }
+.hh .receipt .per { font-size: 15px; color: var(--hh-on-navy-muted); }
+.hh .receipt .was { text-decoration: line-through; color: var(--hh-on-navy-muted); font-size: 18px; margin-left: 8px; font-family: var(--hh-sans); }
+.hh .receipt .body { padding: 22px 24px 24px; display: grid; gap: 16px; }
+.hh .lines { display: grid; gap: 9px; font-size: 14.5px; }
+.hh .lines .l { display: flex; justify-content: space-between; gap: 12px; }
+.hh .lines .l b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hh .lines .disc { color: var(--hh-good); }
+.hh .lines hr { border: 0; border-top: 1px dashed var(--hh-line); margin: 4px 0; width: 100%; }
+.hh .note { font-size: 13.5px; color: var(--hh-muted); background: var(--hh-bg); border-radius: 12px; padding: 10px 12px; }
+.hh .note b { color: var(--hh-ink); }
+.hh .receipt .ctas { display: grid; gap: 10px; }
+.hh .receipt .ctas .btn { width: 100%; }
+.hh .assure { display: grid; gap: 8px; font-size: 13.5px; color: var(--hh-muted); }
+.hh .assure span { display: flex; gap: 8px; align-items: flex-start; }
+.hh .assure svg { color: var(--hh-good); width: 18px; height: 18px; margin-top: 1px; }
+.hh .custom { background: var(--hh-gold-soft); color: var(--hh-gold-ink); border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 600; }
+
+/* Quote form */
+.hh form.qf { display: grid; gap: 10px; }
+.hh .field { display: grid; gap: 4px; font-size: 13.5px; font-weight: 700; }
+.hh .field input { height: 48px; border: 1.5px solid var(--hh-line); border-radius: 12px; padding: 0 12px; font-weight: 500; font-size: 15px; background: var(--hh-surface); }
+.hh .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; color: var(--hh-muted); line-height: 1.45; }
+.hh .consent input { margin-top: 2px; width: 18px; height: 18px; flex: none; accent-color: var(--hh-navy); }
+.hh .err { color: #B42318; font-size: 13px; font-weight: 600; }
+.hh .ok { background: var(--hh-good-soft); color: var(--hh-good); border-radius: 12px; padding: 12px; font-weight: 700; font-size: 14px; }
+
+/* Sections */
+.hh section.sec { padding-block: 88px 0; }
+.hh .sec-head { display: grid; gap: 12px; max-width: 40em; margin-bottom: 36px; }
+.hh .sec-head h2 { font-size: clamp(32px, 4.4vw, 46px); }
+.hh .sec-head p { color: var(--hh-muted); margin: 0; font-size: 17px; }
+.hh .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.hh .plan { padding: 24px; display: grid; gap: 14px; align-content: start; }
+.hh .plan.feature { border: 2px solid var(--hh-navy); position: relative; }
+.hh .plan.feature::before { content: "Most booked"; position: absolute; top: -12px; left: 24px; background: var(--hh-gold); color: var(--hh-gold-ink); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 99px; }
+.hh .plan h3 { font-size: 26px; }
+.hh .plan .from { font-size: 13px; color: var(--hh-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.hh .plan .amt { font-family: var(--hh-serif); font-size: 44px; line-height: 1; color: var(--hh-navy); font-variant-numeric: tabular-nums; }
+.hh .plan p { margin: 0; color: var(--hh-muted); font-size: 14.5px; }
+.hh .plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 14.5px; }
+.hh .plan li { display: flex; gap: 8px; align-items: flex-start; }
+.hh .plan li svg { color: var(--hh-good); width: 18px; height: 18px; margin-top: 2px; }
+.hh .plan .btn { width: 100%; margin-top: 4px; }
+
+.hh .tbl-wrap { overflow-x: auto; border-radius: 24px; border: 1px solid var(--hh-line); background: var(--hh-surface); }
+.hh table { width: 100%; border-collapse: collapse; min-width: 620px; font-size: 15px; }
+.hh th, .hh td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--hh-line); }
+.hh th:first-child, .hh td:first-child { text-align: left; }
+.hh thead th { font-family: var(--hh-serif); font-weight: 400; font-size: 20px; background: var(--hh-navy-soft); color: var(--hh-navy); }
+.hh tbody tr:last-child td { border-bottom: 0; }
+.hh td .y { color: var(--hh-good); font-weight: 800; }
+.hh td .n { color: var(--hh-line); font-weight: 800; }
+
+/* Booking */
+.hh .book { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 20px; align-items: start; }
+.hh .book-side { padding: 28px; display: grid; gap: 18px; background: var(--hh-navy); color: var(--hh-on-navy); border: 0; }
+.hh .book-side h3 { font-size: 30px; }
+.hh .book-side p { margin: 0; color: var(--hh-on-navy-muted); }
+.hh .book-side .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.hh .book-side .steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start; }
+.hh .book-side .steps .n { width: 34px; height: 34px; border-radius: 50%; background: var(--hh-gold); color: var(--hh-gold-ink); display: grid; place-items: center; font-weight: 800; }
+.hh .book-side .phone { font-family: var(--hh-serif); font-size: 30px; color: var(--hh-gold); font-variant-numeric: tabular-nums; }
+.hh .cal { padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.hh .cal > *, .hh .book > * { min-width: 0; }
+.hh .cal iframe { width: 100%; min-height: 680px; border: 0; }
+.hh .days { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.hh .day { border: 1.5px solid var(--hh-line); background: var(--hh-surface); border-radius: 14px; padding: 10px 4px; display: grid; justify-items: center; gap: 2px; }
+.hh .day small { font-size: 11.5px; font-weight: 800; color: var(--hh-muted); text-transform: uppercase; letter-spacing: .06em; }
+.hh .day b { font-size: 20px; font-variant-numeric: tabular-nums; }
+.hh .day[aria-pressed="true"] { border-color: var(--hh-navy); background: var(--hh-navy); color: var(--hh-on-navy); }
+.hh .day[aria-pressed="true"] small { color: var(--hh-gold); }
+.hh .slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.hh .slot { border: 1.5px solid var(--hh-line); background: var(--hh-surface); border-radius: 12px; padding: 11px 6px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.hh .slot[aria-pressed="true"] { border-color: var(--hh-navy); background: var(--hh-navy-soft); box-shadow: inset 0 0 0 1px var(--hh-navy); color: var(--hh-navy); }
+.hh .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.hh form.qf { grid-template-columns: minmax(0, 1fr); }
+.hh .field input { width: 100%; min-width: 0; }
+
+/* FAQ */
+.hh .faq { display: grid; gap: 10px; max-width: 820px; }
+.hh details { background: var(--hh-surface); border: 1px solid var(--hh-line); border-radius: 18px; padding: 4px 20px; }
+.hh summary { cursor: pointer; list-style: none; font-weight: 800; padding: 16px 0; display: flex; justify-content: space-between; gap: 16px; }
+.hh summary::-webkit-details-marker { display: none; }
+.hh summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--hh-navy); }
+.hh details[open] summary::after { content: "–"; }
+.hh details p { margin: 0 0 18px; color: var(--hh-muted); }
+
+.hh .final { margin-block: 88px 0; padding-block: 64px; background: var(--hh-navy-deep); color: var(--hh-on-navy); text-align: center; }
+.hh .final h2 { font-size: clamp(30px, 4.4vw, 44px); }
+.hh .final p { color: var(--hh-on-navy-muted); margin: 14px auto 26px; max-width: 32em; }
+.hh .final .hero-ctas { justify-content: center; }
+.hh .final .btn-line { background: transparent; color: var(--hh-on-navy); border-color: rgba(255,255,255,.35); }
+.hh .fine { font-size: 12.5px; color: var(--hh-muted); padding-block: 22px 40px; text-align: center; }
+
+.hh .mobile-bar { display: none; }
+
+@media (max-width: 980px) {
+  .hh .est-grid, .hh .book { grid-template-columns: minmax(0, 1fr); }
+  .hh .receipt { position: relative; top: 0; }
+  .hh .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .hh .hero { padding-block: 44px 108px; }
+  .hh .inputs { padding: 20px; }
+  .hh .seg, .hh .freq { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hh .freq { row-gap: 16px; }
+  .hh .row2 { grid-template-columns: 1fr 1fr; }
+  .hh .row2 .q:last-child { grid-column: 1 / -1; }
+  .hh .plans { grid-template-columns: minmax(0, 1fr); }
+  .hh .days { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hh .receipt .price { font-size: 56px; }
+  .hh .mobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; gap: 10px; align-items: center; background: var(--hh-surface); border-top: 1px solid var(--hh-line); padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); box-shadow: 0 -10px 30px -10px rgba(14,26,51,.2); }
+  .hh .mobile-bar .mp { font-family: var(--hh-serif); font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .hh .mobile-bar small { display: block; font-size: 12px; color: var(--hh-muted); }
+  .hh .mobile-bar .btn { margin-left: auto; padding: 13px 16px; }
+  .hh .fine { padding-bottom: 96px; }
+}
+@media (prefers-reduced-motion: reduce) { .hh * { transition: none !important; animation: none !important; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="hh-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="hh-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="hh-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="hh-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+    <symbol id="hh-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+  </defs>
+</svg>
+
+<div class="hh" id="haven-pricing">
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Haven House Cleaning · Phoenix & Tucson</div>
+      <h1>See your price in <em>30 seconds.</em> No phone call needed.</h1>
+      <p class="lede">Honest, upfront pricing for every home. Pick your home size and the clean you want, and book a time that works for you. If anything's missed, we come back and make it right for free.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold" href="#hh-estimator">Get my price</a>
+        <a class="btn btn-line" href="#hh-book"><svg class="i"><use href="#hh-cal"/></svg>Pick a call time</a>
+      </div>
+      <div class="trust">
+        <span><span class="stars" aria-hidden="true">★★★★★</span><b>4.9</b> from 70 Google reviews</span>
+        <span><b>Thumbtack Top Pro</b> · 120+ reviews</span>
+        <span><svg class="i"><use href="#hh-shield"/></svg>Insured, background-checked cleaners</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ESTIMATOR -->
+  <div class="est" id="hh-estimator">
+    <div class="wrap est-grid">
+      <div class="card inputs">
+        <div style="display:grid;gap:6px">
+          <span class="eyebrow">Instant price</span>
+          <h2>Build your clean</h2>
+        </div>
+
+        <div class="q">
+          <span class="ql" id="q-service">What kind of clean?</span>
+          <div class="seg" role="group" aria-labelledby="q-service" id="services">
+            <button type="button" data-service="standard" aria-pressed="true"><strong>Standard</strong><small>Regular upkeep</small></button>
+            <button type="button" data-service="deep" aria-pressed="false"><strong>Deep</strong><small>Top-to-bottom reset</small></button>
+            <button type="button" data-service="move" aria-pressed="false"><strong>Move in / out</strong><small>Empty home</small></button>
+            <button type="button" data-service="airbnb" aria-pressed="false"><strong>Airbnb</strong><small>Guest turnover</small></button>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="q">
+            <span class="ql" id="q-beds">Bedrooms</span>
+            <div class="stepper" role="group" aria-labelledby="q-beds">
+              <button type="button" data-step="beds" data-d="-1" aria-label="Fewer bedrooms">−</button>
+              <output id="beds" aria-live="polite">3</output>
+              <button type="button" data-step="beds" data-d="1" aria-label="More bedrooms">+</button>
+            </div>
+          </div>
+          <div class="q">
+            <span class="ql" id="q-baths">Bathrooms</span>
+            <div class="stepper" role="group" aria-labelledby="q-baths">
+              <button type="button" data-step="baths" data-d="-1" aria-label="Fewer bathrooms">−</button>
+              <output id="baths" aria-live="polite">2</output>
+              <button type="button" data-step="baths" data-d="1" aria-label="More bathrooms">+</button>
+            </div>
+          </div>
+          <div class="q">
+            <label for="sqft">Square feet</label>
+            <select id="sqft">
+              <option value="0">Under 1,500</option>
+              <option value="1" selected>1,500 – 2,500</option>
+              <option value="2">2,500 – 3,500</option>
+              <option value="3">3,500 – 4,500</option>
+              <option value="4">Over 4,500</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="q">
+          <span class="ql" id="q-freq">How often?</span>
+          <div class="hint" id="freqHint">Recurring plans save up to 20% on every visit.</div>
+          <div class="freq" role="group" aria-labelledby="q-freq" id="freqs">
+            <button type="button" data-freq="once" aria-pressed="false"><strong>One time</strong><small>&nbsp;</small></button>
+            <button type="button" data-freq="monthly" aria-pressed="false"><strong>Monthly</strong><small>Save 10%</small></button>
+            <button type="button" data-freq="biweekly" aria-pressed="true"><span class="tag">Most popular</span><strong>Every 2 weeks</strong><small>Save 15%</small></button>
+            <button type="button" data-freq="weekly" aria-pressed="false"><strong>Weekly</strong><small>Save 20%</small></button>
+          </div>
+        </div>
+
+        <div class="q">
+          <span class="ql" id="q-addons">Add extras</span>
+          <div class="chips" role="group" aria-labelledby="q-addons" id="addons"></div>
+        </div>
+
+        <div class="q">
+          <label for="city">Your city</label>
+          <select id="city"></select>
+        </div>
+      </div>
+
+      <aside class="card receipt" aria-live="polite">
+        <div class="top">
+          <span class="lbl" id="rLabel">Every 2 weeks · Standard</span>
+          <div><span class="price" id="rPrice">$182</span><span class="was" id="rWas"></span></div>
+          <span class="per" id="rPer">per visit · about 2½ hours with a team of 2</span>
+        </div>
+        <div class="body">
+          <div class="custom" id="rCustom" hidden>Homes over 4,500 sq ft get a custom quote. Pick a time below and we'll walk you through it.</div>
+          <div class="lines" id="rLines"></div>
+          <div class="note" id="rNote"></div>
+          <div class="ctas" id="rCtas">
+            <a class="btn btn-gold" href="#hh-book" id="ctaBook"><svg class="i"><use href="#hh-cal"/></svg>Book this price, pick a time</a>
+            <button type="button" class="btn btn-line" id="ctaText"><svg class="i"><use href="#hh-chat"/></svg>Text me this quote</button>
+          </div>
+
+          <form class="qf" id="quoteForm" hidden novalidate>
+            <div class="two">
+              <label class="field">First name<input id="qfName" name="first_name" autocomplete="given-name" required></label>
+              <label class="field">Mobile phone<input id="qfPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></label>
+            </div>
+            <label class="field">Email (optional)<input id="qfEmail" name="email" type="email" autocomplete="email"></label>
+            <label class="consent"><input type="checkbox" id="qfConsent">I agree to receive texts from Haven House Cleaning about my quote and booking. Msg & data rates may apply. Reply STOP to opt out.</label>
+            <div class="err" id="qfErr" hidden></div>
+            <button type="submit" class="btn btn-navy">Send my quote</button>
+          </form>
+          <div class="ok" id="qfOk" hidden></div>
+
+          <div class="assure">
+            <span><svg class="i"><use href="#hh-check"/></svg>Flat price. No hourly surprises.</span>
+            <span><svg class="i"><use href="#hh-check"/></svg>We bring all supplies and equipment.</span>
+            <span><svg class="i"><use href="#hh-check"/></svg>100% satisfaction or we re-clean free.</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- PRICE CARDS -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Starting prices</span>
+        <h2>Simple pricing for every kind of clean</h2>
+        <p>Prices below are for a 1-bedroom, 1-bath home. Use the calculator above for your exact home.</p>
+      </div>
+      <div class="plans" id="plans"></div>
+    </div>
+  </section>
+
+  <!-- WHAT'S INCLUDED -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">What's included</span>
+        <h2>Know exactly what you're paying for</h2>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Task</th><th>Standard</th><th>Deep</th><th>Move in / out</th></tr></thead>
+          <tbody id="incl"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK -->
+  <section class="sec" id="hh-book">
+    <div class="wrap book">
+      <div class="card book-side">
+        <span class="eyebrow" style="color:var(--hh-gold)">Book in 2 minutes</span>
+        <h3>Pick a time. We'll take it from there.</h3>
+        <ol class="steps">
+          <li><span class="n">1</span><span><b>Choose a 10-minute call time.</b> We confirm your price and answer questions.</span></li>
+          <li><span class="n">2</span><span><b>We lock in your cleaning date.</b> Usually within the same week.</span></li>
+          <li><span class="n">3</span><span><b>Your team shows up on time</b> with everything they need.</span></li>
+        </ol>
+        <p>Rather call now? Mon–Sat, 8 AM–5 PM</p>
+        <div class="phone" id="phoneText">(602) 609-4447</div>
+      </div>
+
+      <div class="card cal" id="calBox">
+        <!-- If CONFIG.calendarEmbedUrl is set, the GoHighLevel calendar replaces this demo picker. -->
+        <div id="calDemo">
+          <div style="display:grid;gap:4px;margin-bottom:14px">
+            <span class="eyebrow">Choose a day</span>
+            <span style="font-size:14px;color:var(--hh-muted)">Phoenix time</span>
+          </div>
+          <div class="days" id="days"></div>
+          <div style="margin-top:18px" class="eyebrow">Choose a time</div>
+          <div class="slots" id="slots" style="margin-top:10px"></div>
+          <form class="qf" id="bookForm" style="margin-top:18px" novalidate>
+            <div class="two">
+              <label class="field">First name<input id="bfName" autocomplete="given-name" required></label>
+              <label class="field">Mobile phone<input id="bfPhone" type="tel" autocomplete="tel" inputmode="tel" required></label>
+            </div>
+            <label class="consent"><input type="checkbox" id="bfConsent">I agree to receive texts from Haven House Cleaning about my booking. Msg & data rates may apply. Reply STOP to opt out.</label>
+            <div class="err" id="bfErr" hidden></div>
+            <button type="submit" class="btn btn-gold" id="bfBtn">Request this call time</button>
+          </form>
+          <div class="ok" id="bfOk" hidden style="margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Questions</span><h2>Good to know</h2></div>
+      <div class="faq">
+        <details><summary>Is the price on this page the price I pay?</summary><p>For most homes, yes. The calculator uses the same rates we quote by phone. If your home needs much more or less work than usual, we'll tell you before the clean, never after.</p></details>
+        <details><summary>Why is my first recurring visit a deep clean?</summary><p>The first visit gets your home to a clean baseline. After that, regular visits keep it there in less time, which is why recurring visits cost less.</p></details>
+        <details><summary>Do I need to be home?</summary><p>No. Many clients give us a door code or leave a key. You'll get a text when your team is on the way and when they finish.</p></details>
+        <details><summary>What if I'm not happy with something?</summary><p>Tell us within 24 hours and we'll come back and re-clean that area for free.</p></details>
+        <details><summary>Do you bring supplies?</summary><p>Yes. We bring all supplies and equipment. If you prefer certain products, just let us know.</p></details>
+        <details><summary>Can I cancel or reschedule?</summary><p>Yes. Just give us 48 hours' notice. Recurring plans have no contract.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <div class="final">
+    <div class="wrap">
+      <h2>A cleaner home, without the back-and-forth</h2>
+      <p>Get your price now and pick a time. It takes about 2 minutes.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold" href="#hh-estimator">Get my price</a>
+        <a class="btn btn-line" href="#hh-book">Pick a call time</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap fine">Prices are estimates for typical homes and are confirmed before your clean. Heavy buildup, pet hair or post-construction work may change the price.</div>
+
+  <div class="mobile-bar" id="mobileBar">
+    <div><span class="mp" id="mPrice">$182</span><small id="mPer">per visit</small></div>
+    <a class="btn btn-gold" href="#hh-book">Book this price</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ================================================================
+     EDIT HERE: prices, add-ons, cities and GoHighLevel connections.
+     ================================================================ */
+  var CONFIG = {
+    phone: '(602) 609-4447',
+    // GoHighLevel: Automation > Workflows > trigger "Inbound Webhook" > copy the URL here.
+    // When set, both forms send the lead (with their quote) into your GHL contacts.
+    webhookUrl: '',
+    // GoHighLevel: Calendars > your calendar > Share > copy the booking widget link here.
+    // When set, your real GHL calendar replaces the demo time picker.
+    calendarEmbedUrl: '',
+    standard: { base: 129, perBed: 30, perBath: 25 },   // 1 bed / 1 bath standard = base
+    deepMultiplier: 1.5,
+    moveMultiplier: 1.75,
+    airbnb: { base: 95, perBed: 20, perBath: 15 },
+    sqftAdd: [0, 0, 40, 80, null],                       // per sq ft band; null = custom quote
+    discounts: { once: 0, monthly: 0.10, biweekly: 0.15, weekly: 0.20 },
+    firstVisitDeep: true,                               // first recurring visit billed as a deep clean
+    addons: [
+      { id: 'oven', name: 'Inside oven', price: 35 },
+      { id: 'fridge', name: 'Inside fridge', price: 35 },
+      { id: 'cabinets', name: 'Inside cabinets', price: 45 },
+      { id: 'windows', name: 'Interior windows', price: 45 },
+      { id: 'baseboards', name: 'Baseboard detail', price: 30 },
+      { id: 'laundry', name: 'Laundry, wash & fold', price: 25 },
+      { id: 'patio', name: 'Patio sweep', price: 25 },
+      { id: 'pets', name: 'Extra pet hair', price: 25 }
+    ],
+    cities: ['Phoenix', 'Scottsdale', 'Paradise Valley', 'Tempe', 'Mesa', 'Chandler', 'Gilbert', 'Glendale', 'Peoria', 'Surprise', 'Avondale', 'Goodyear', 'Tucson', 'Oro Valley']
+  };
+
+  var NAMES = { standard: 'Standard', deep: 'Deep', move: 'Move in / out', airbnb: 'Airbnb turnover' };
+  var FREQ = { once: 'One time', monthly: 'Monthly', biweekly: 'Every 2 weeks', weekly: 'Weekly' };
+  var state = { service: 'standard', beds: 3, baths: 2, sqft: 1, freq: 'biweekly', addons: {}, city: 'Phoenix' };
+  var $ = function (id) { return document.getElementById(id); };
+  var root = $('haven-pricing');
+
+  function money(v) { return '$' + Math.round(v).toLocaleString('en-US'); }
+
+  function basePrice(service, beds, baths, sqftBand) {
+    var add = CONFIG.sqftAdd[sqftBand];
+    if (add === null) return null;
+    var std = CONFIG.standard.base + CONFIG.standard.perBed * (beds - 1) + CONFIG.standard.perBath * (baths - 1) + add;
+    if (service === 'standard') return std;
+    if (service === 'deep') return Math.round(std * CONFIG.deepMultiplier);
+    if (service === 'move') return Math.round(std * CONFIG.moveMultiplier);
+    var a = CONFIG.airbnb;
+    return a.base + a.perBed * (beds - 1) + a.perBath * (baths - 1) + Math.round(add / 2);
+  }
+
+  function quote() {
+    var base = basePrice(state.service, state.beds, state.baths, state.sqft);
+    if (base === null) return null;
+    var recurring = state.service === 'standard' && state.freq !== 'once';
+    var disc = recurring ? Math.round(base * CONFIG.discounts[state.freq]) : 0;
+    var addons = CONFIG.addons.filter(function (a) { return state.addons[a.id]; });
+    var addTotal = addons.reduce(function (s, a) { return s + a.price; }, 0);
+    var total = base - disc + addTotal;
+    var first = recurring && CONFIG.firstVisitDeep ? basePrice('deep', state.beds, state.baths, state.sqft) + addTotal : null;
+    var hours = total / 90;
+    return { base: base, disc: disc, addons: addons, addTotal: addTotal, total: total, recurring: recurring, first: first, hours: hours };
+  }
+
+  function hoursText(h) {
+    var lo = Math.max(1.5, Math.round(h * 2) / 2), hi = lo + 0.5;
+    var f = function (x) { return (x % 1 ? Math.floor(x) + '½' : x); };
+    return 'about ' + f(lo) + '–' + f(hi) + ' hours with a team of 2';
+  }
+
+  function render() {
+    // inputs
+    root.querySelectorAll('[data-service]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.service === state.service ? 'true' : 'false'); });
+    root.querySelectorAll('[data-freq]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.freq === state.freq ? 'true' : 'false'); });
+    var freqs = $('freqs'), canRecur = state.service === 'standard';
+    freqs.classList.toggle('off', !canRecur);
+    $('freqHint').textContent = canRecur ? 'Recurring plans save up to 20% on every visit.' : (state.service === 'airbnb' ? 'Turnover cleans are priced per visit. Ask about volume pricing for multiple listings.' : 'This is a one-time clean. Recurring savings apply to standard cleans.');
+    $('beds').textContent = state.beds === 6 ? '6+' : state.beds;
+    $('baths').textContent = state.baths === 5 ? '5+' : state.baths;
+    root.querySelector('[data-step="beds"][data-d="-1"]').disabled = state.beds <= 1;
+    root.querySelector('[data-step="beds"][data-d="1"]').disabled = state.beds >= 6;
+    root.querySelector('[data-step="baths"][data-d="-1"]').disabled = state.baths <= 1;
+    root.querySelector('[data-step="baths"][data-d="1"]').disabled = state.baths >= 5;
+    root.querySelectorAll('[data-addon]').forEach(function (b) { b.setAttribute('aria-pressed', state.addons[b.dataset.addon] ? 'true' : 'false'); });
+
+    // receipt
+    var q = quote();
+    var freqName = canRecur ? FREQ[state.freq] : 'One time';
+    $('rLabel').textContent = freqName + ' · ' + NAMES[state.service];
+    $('rCustom').hidden = !!q;
+    $('rLines').hidden = !q;
+    $('rNote').hidden = !q;
+    if (!q) {
+      $('rPrice').textContent = 'Custom';
+      $('rWas').textContent = '';
+      $('rPer').textContent = 'quote for larger homes';
+      $('mPrice').textContent = 'Custom'; $('mPer').textContent = 'quote';
+      return;
+    }
+    $('rPrice').textContent = money(q.total);
+    $('rWas').textContent = q.disc ? money(q.base + q.addTotal) : '';
+    $('rPer').textContent = (q.recurring ? 'per visit · ' : 'one time · ') + hoursText(q.hours);
+    $('mPrice').textContent = money(q.total);
+    $('mPer').textContent = q.recurring ? 'per visit' : 'one time';
+
+    var homeDesc = (state.beds === 6 ? '6+' : state.beds) + ' bed, ' + (state.baths === 5 ? '5+' : state.baths) + ' bath';
+    var html = '<div class="l"><span>' + NAMES[state.service] + ' clean · ' + homeDesc + '</span><b>' + money(q.base) + '</b></div>';
+    if (q.disc) html += '<div class="l disc"><span>' + freqName + ' savings (' + Math.round(CONFIG.discounts[state.freq] * 100) + '%)</span><b>−' + money(q.disc) + '</b></div>';
+    q.addons.forEach(function (a) { html += '<div class="l"><span>' + a.name + '</span><b>+' + money(a.price) + '</b></div>'; });
+    html += '<hr><div class="l" style="font-weight:800;font-size:16px"><span>' + (q.recurring ? 'Each visit' : 'Total') + '</span><b>' + money(q.total) + '</b></div>';
+    $('rLines').innerHTML = html;
+
+    var note;
+    if (q.first) note = '<b>First visit: ' + money(q.first) + '.</b> It’s a deep clean so we start from a clean slate. Then ' + money(q.total) + ' per visit, with no contract.';
+    else if (state.service === 'move') note = '<b>Empty-home clean.</b> Inside cabinets, closets and appliances included. Great for getting your deposit back.';
+    else if (state.service === 'deep') note = '<b>Best for first-time clients</b> or homes that haven’t had a professional clean in 30+ days.';
+    else if (state.service === 'airbnb') note = '<b>Guest-ready every time.</b> Linen change, restock check and photo report after each turnover.';
+    else note = '<b>Want it to stay this clean?</b> Switch to every 2 weeks and save 15% on every visit.';
+    $('rNote').innerHTML = note;
+  }
+
+  function buildStatic() {
+    var chips = $('addons');
+    CONFIG.addons.forEach(function (a) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.dataset.addon = a.id; b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = a.name + ' <span>+' + money(a.price) + '</span>';
+      chips.appendChild(b);
+    });
+    var sel = $('city');
+    CONFIG.cities.concat(['Somewhere else']).forEach(function (c) {
+      var o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o);
+    });
+
+    var plans = [
+      { key: 'standard', title: 'Standard', blurb: 'Regular upkeep for a home that’s already in good shape.', feature: true,
+        items: ['Kitchen and bathrooms cleaned and sanitized', 'Dusting, vacuuming and mopping', 'Beds made, trash out', 'Save up to 20% with a recurring plan'] },
+      { key: 'deep', title: 'Deep', blurb: 'A top-to-bottom reset, room by room.',
+        items: ['Everything in Standard', 'Baseboards, doors and light switches', 'Cabinet fronts and appliance exteriors', 'Built-up grime in kitchen and bath'] },
+      { key: 'move', title: 'Move in / out', blurb: 'An empty-home clean that helps you get your deposit back.',
+        items: ['Everything in Deep', 'Inside cabinets, drawers and closets', 'Inside oven and fridge', 'Flat price, no surprises'] },
+      { key: 'airbnb', title: 'Airbnb', blurb: 'Fast, consistent turnovers between guests.',
+        items: ['Linen change and bed staging', 'Restock check and damage photos', 'Same-day turnovers', 'Volume pricing for multiple listings'] }
+    ];
+    $('plans').innerHTML = plans.map(function (p) {
+      return '<div class="card plan' + (p.feature ? ' feature' : '') + '">' +
+        '<h3>' + p.title + '</h3><div><div class="from">Starting at</div><div class="amt">' + money(basePrice(p.key, 1, 1, 0)) + '</div></div>' +
+        '<p>' + p.blurb + '</p><ul>' + p.items.map(function (i) { return '<li><svg class="i"><use href="#hh-check"/></svg><span>' + i + '</span></li>'; }).join('') + '</ul>' +
+        '<a class="btn ' + (p.feature ? 'btn-gold' : 'btn-line') + '" href="#hh-estimator" data-pick="' + p.key + '">Price my home</a></div>';
+    }).join('');
+
+    var rows = [
+      ['Dust surfaces, furniture and decor', 1, 1, 1], ['Vacuum and mop all floors', 1, 1, 1], ['Clean and sanitize bathrooms', 1, 1, 1],
+      ['Kitchen counters, sink and stovetop', 1, 1, 1], ['Wipe appliance exteriors', 1, 1, 1], ['Make beds and empty trash', 1, 1, 0],
+      ['Baseboards, doors and door frames', 0, 1, 1], ['Light switches and outlets', 0, 1, 1], ['Window sills and blinds', 0, 1, 1],
+      ['Cabinet fronts, hand-wiped', 0, 1, 1], ['Inside cabinets and drawers', 0, 0, 1], ['Inside oven and fridge', 0, 0, 1], ['Inside closets', 0, 0, 1]
+    ];
+    var Y = '<span class="y" aria-label="Included">✓</span>', N = '<span class="n" aria-label="Not included">—</span>';
+    $('incl').innerHTML = rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + (r[1] ? Y : N) + '</td><td>' + (r[2] ? Y : N) + '</td><td>' + (r[3] ? Y : N) + '</td></tr>'; }).join('');
+    $('phoneText').textContent = CONFIG.phone;
+  }
+
+  /* ---------- Booking ---------- */
+  var booking = { day: null, slot: null };
+  var SLOTS = ['9:00 AM', '10:30 AM', '12:00 PM', '1:30 PM', '3:00 PM', '4:30 PM'];
+  function buildCalendar() {
+    if (CONFIG.calendarEmbedUrl) {
+      $('calBox').innerHTML = '<iframe src="' + CONFIG.calendarEmbedUrl + '" title="Book a call with Haven House Cleaning" scrolling="no"></iframe>';
+      return;
+    }
+    var days = [], d = new Date();
+    d.setHours(12, 0, 0, 0);
+    while (days.length < 6) {
+      d = new Date(d.getTime() + 864e5);
+      if (d.getDay() !== 0) days.push(new Date(d));
+    }
+    var names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    $('days').innerHTML = days.map(function (x, i) {
+      var label = names[x.getDay()] + ' ' + months[x.getMonth()] + ' ' + x.getDate();
+      return '<button type="button" class="day" data-day="' + label + '" aria-pressed="' + (i === 0) + '"><small>' + names[x.getDay()] + '</small><b>' + x.getDate() + '</b><small>' + months[x.getMonth()] + '</small></button>';
+    }).join('');
+    booking.day = $('days').firstChild.dataset.day;
+    $('slots').innerHTML = SLOTS.map(function (s) { return '<button type="button" class="slot" data-slot="' + s + '" aria-pressed="false">' + s + '</button>'; }).join('');
+  }
+
+  /* ---------- Lead capture ---------- */
+  function quoteSummary() {
+    var q = quote();
+    var parts = [NAMES[state.service], (state.beds === 6 ? '6+' : state.beds) + ' bed / ' + (state.baths === 5 ? '5+' : state.baths) + ' bath', $('sqft').selectedOptions[0].textContent + ' sq ft'];
+    if (state.service === 'standard') parts.push(FREQ[state.freq]);
+    var adds = CONFIG.addons.filter(function (a) { return state.addons[a.id]; }).map(function (a) { return a.name; });
+    if (adds.length) parts.push('Extras: ' + adds.join(', '));
+    parts.push(q ? 'Quoted ' + money(q.total) + (q.recurring ? ' per visit' : '') + (q.first ? ', first visit ' + money(q.first) : '') : 'Custom quote');
+    return parts.join(' · ');
+  }
+
+  function sendLead(payload) {
+    if (!CONFIG.webhookUrl) return Promise.resolve('preview');
+    var body = JSON.stringify(payload);
+    return fetch(CONFIG.webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body })
+      .then(function () { return 'sent'; })
+      .catch(function () { return fetch(CONFIG.webhookUrl, { method: 'POST', mode: 'no-cors', body: body }).then(function () { return 'sent'; }); });
+  }
+
+  function validPhone(v) { return v.replace(/\D/g, '').length >= 10; }
+
+  function handleForm(prefix, extra, okText) {
+    var name = $(prefix + 'Name').value.trim(), phone = $(prefix + 'Phone').value.trim();
+    var err = $(prefix + 'Err');
+    if (!name) { err.textContent = 'Please add your first name.'; err.hidden = false; return; }
+    if (!validPhone(phone)) { err.textContent = 'Please enter a 10-digit mobile number.'; err.hidden = false; return; }
+    if (!$(prefix + 'Consent').checked) { err.textContent = 'Please check the box so we can text you.'; err.hidden = false; return; }
+    err.hidden = true;
+    var payload = Object.assign({ first_name: name, phone: phone, email: (prefix === 'qf' ? $('qfEmail').value.trim() : ''), city: state.city, quote: quoteSummary(), source: 'Website pricing page' }, extra);
+    sendLead(payload).then(function (r) {
+      var ok = $(prefix + 'Ok');
+      ok.textContent = r === 'preview' ? 'Preview only: once connected to GoHighLevel, this goes straight to your inbox.' : okText;
+      ok.hidden = false;
+      $(prefix === 'qf' ? 'quoteForm' : 'bookForm').hidden = true;
+    }, function () {
+      err.textContent = 'That didn’t go through. Please call or text ' + CONFIG.phone + '.'; err.hidden = false;
+    });
+  }
+
+  /* ---------- Events ---------- */
+  root.addEventListener('click', function (e) {
+    var el;
+    if ((el = e.target.closest('[data-service]'))) { state.service = el.dataset.service; render(); return; }
+    if ((el = e.target.closest('[data-freq]'))) { state.freq = el.dataset.freq; render(); return; }
+    if ((el = e.target.closest('[data-step]'))) {
+      var k = el.dataset.step, max = k === 'beds' ? 6 : 5;
+      state[k] = Math.min(max, Math.max(1, state[k] + +el.dataset.d)); render(); return;
+    }
+    if ((el = e.target.closest('[data-addon]'))) { state.addons[el.dataset.addon] = !state.addons[el.dataset.addon]; render(); return; }
+    if ((el = e.target.closest('[data-pick]'))) { state.service = el.dataset.pick; render(); return; }
+    if ((el = e.target.closest('#ctaText'))) { $('quoteForm').hidden = false; $('qfName').focus(); return; }
+    if ((el = e.target.closest('[data-day]'))) {
+      root.querySelectorAll('[data-day]').forEach(function (b) { b.setAttribute('aria-pressed', b === el ? 'true' : 'false'); });
+      booking.day = el.dataset.day; return;
+    }
+    if ((el = e.target.closest('[data-slot]'))) {
+      root.querySelectorAll('[data-slot]').forEach(function (b) { b.setAttribute('aria-pressed', b === el ? 'true' : 'false'); });
+      booking.slot = el.dataset.slot; $('bfBtn').textContent = 'Request ' + booking.day + ' at ' + booking.slot; return;
+    }
+  });
+  $('sqft').addEventListener('change', function () { state.sqft = +this.value; render(); });
+  $('city').addEventListener('change', function () { state.city = this.value; });
+  $('quoteForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    handleForm('qf', { request: 'Text me this quote' }, 'Sent! Ryan will text you within a few minutes during business hours.');
+  });
+  $('bookForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!booking.slot) { var er = $('bfErr'); er.textContent = 'Please pick a time above.'; er.hidden = false; return; }
+    handleForm('bf', { request: 'Call requested: ' + booking.day + ' at ' + booking.slot }, 'You’re set for ' + booking.day + ' at ' + booking.slot + '. We’ll text a confirmation shortly.');
+  });
+
+  buildStatic();
+  buildCalendar();
+  render();
+})();
+</script>
