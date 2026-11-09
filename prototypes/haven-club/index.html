@@ -31,6 +31,12 @@
   --map-road: #FFFFFF;
   --map-block: #E1E7EE;
   --shadow: 0 30px 60px -20px rgba(15, 27, 45, .35);
+  --pay-bg: #000000;
+  --pay-ink: #FFFFFF;
+  --call-bg: #0E1726;
+  --call-ink: #F3F6FB;
+  --call-muted: #9AA7BA;
+  --call-face: #1E2B40;
   --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-body: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
@@ -41,6 +47,7 @@
     --good: #4CC48A; --good-soft: #13301F; --warn: #E8B04F; --warn-soft: #33270F; --gold: #E5BE68;
     --card-a: #0F2448; --card-b: #1C4482; --card-ink: #F4F7FC; --bezel: #000000;
     --map-bg: #182231; --map-road: #24324A; --map-block: #1D2938; --shadow: 0 30px 60px -20px rgba(0,0,0,.7);
+    --pay-bg: #F3F6FB; --pay-ink: #0A0F18; --call-bg: #0E1726; --call-ink: #F3F6FB; --call-muted: #9AA7BA; --call-face: #1E2B40;
     color-scheme: dark;
   }
 }
@@ -50,6 +57,7 @@
   --good: #4CC48A; --good-soft: #13301F; --warn: #E8B04F; --warn-soft: #33270F; --gold: #E5BE68;
   --card-a: #0F2448; --card-b: #1C4482; --card-ink: #F4F7FC; --bezel: #000000;
   --map-bg: #182231; --map-road: #24324A; --map-block: #1D2938; --shadow: 0 30px 60px -20px rgba(0,0,0,.7);
+    --pay-bg: #F3F6FB; --pay-ink: #0A0F18; --call-bg: #0E1726; --call-ink: #F3F6FB; --call-muted: #9AA7BA; --call-face: #1E2B40;
   color-scheme: dark;
 }
 
@@ -279,6 +287,54 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
 .kv .l span:first-child { color: var(--muted); }
 .kv .l span:last-child { font-weight: 700; text-align: right; }
 
+/* Added features */
+button.avatar { border: 0; }
+.small { font-size: 13px; }
+.field { width: 100%; border-radius: 14px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 13px 14px; font: inherit; font-size: 15px; }
+.choice[aria-pressed="true"] { border-color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
+.choice .price { margin-left: auto; text-align: right; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.choice .price small { font-weight: 600; }
+.choice.video .ic { background: var(--good-soft); color: var(--good); }
+.btn.pay { background: var(--pay-bg); color: var(--pay-ink); }
+.call { background: var(--call-bg); color: var(--call-ink); border-radius: 24px; padding: 16px; display: grid; gap: 16px; position: relative; min-height: 430px; align-content: space-between; }
+.call .callee { display: grid; justify-items: center; gap: 6px; text-align: center; padding-top: 36px; }
+.call .callee .face { width: 96px; height: 96px; border-radius: 50%; background: var(--call-face); display: grid; place-items: center; font-family: var(--font-display); font-size: 32px; font-weight: 800; }
+.call .callee span { color: var(--call-muted); font-size: 13px; }
+.call .selfview { position: absolute; right: 16px; top: 56px; width: 64px; height: 88px; border-radius: 14px; background: var(--call-face); color: var(--call-muted); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+.call .tip { background: var(--call-face); border-radius: 14px; padding: 10px 12px; font-size: 14px; }
+.call-actions { display: flex; justify-content: center; gap: 18px; }
+.call-actions button { width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--call-face); color: var(--call-ink); display: grid; place-items: center; }
+.call-actions button.end { background: var(--signal); }
+.pill.live { background: var(--signal); color: var(--call-ink); }
+.guide-item { display: grid; gap: 10px; }
+.guide-item .head { display: flex; gap: 12px; align-items: center; }
+.guide-item .head .ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex: none; background: var(--signal-soft); color: var(--signal); }
+.guide-item p { margin: 0; font-size: 15px; }
+.guide-item .photo { height: 96px; border-radius: 14px; background: linear-gradient(135deg, var(--map-block), var(--line)); display: grid; place-items: center; color: var(--muted); font-size: 12px; font-weight: 700; }
+.warnbox { background: var(--signal-soft); color: var(--signal); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; font-weight: 700; }
+.tgl-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+.tgl-row:first-of-type { border-top: 0; padding-top: 2px; }
+.tgl-row strong { display: block; font-size: 15px; }
+.tgl-row small { display: block; color: var(--muted); font-size: 13px; }
+.tgl { margin-left: auto; flex: none; width: 52px; height: 30px; border-radius: 99px; border: 0; background: var(--line); position: relative; }
+.tgl::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: left .2s; }
+.tgl[aria-checked="true"] { background: var(--good); }
+.tgl[aria-checked="true"]::after { left: 25px; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px; padding: 4px; }
+.seg button { border: 0; background: none; border-radius: 10px; padding: 10px; font-weight: 700; }
+.seg button[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.12); color: var(--brand); }
+.sms { display: grid; gap: 8px; }
+.bubble { max-width: 86%; border-radius: 18px; padding: 10px 14px; font-size: 14px; line-height: 1.4; }
+.bubble.in { background: var(--surface); border: 1px solid var(--line); border-bottom-left-radius: 6px; }
+.bubble.out { background: var(--brand); color: var(--brand-ink); justify-self: end; border-bottom-right-radius: 6px; font-weight: 800; }
+.ic-s { width: 40px; height: 40px; border-radius: 12px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; flex: none; }
+.ic-s.good { background: var(--good-soft); color: var(--good); }
+.ic-s.hot { background: var(--signal-soft); color: var(--signal); }
+.device.big .view { zoom: 1.14; }
+.device.simple [data-extra] { display: none !important; }
+.device.simple .sos { padding: 28px 20px; }
+.device.simple .sos h3 { font-size: 28px; }
+
 /* Toast */
 .toast {
   position: absolute; left: 18px; right: 18px; bottom: 92px; background: var(--ink); color: var(--surface);
@@ -327,6 +383,16 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
     <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
     <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.5 21 7.5v9l-5.5-3"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19.5c.9-3.2 3.4-5 6.5-5s5.6 1.8 6.5 5"/><path d="M15.5 5.2a3.5 3.5 0 0 1 0 6.6M17.5 14.8c2 .6 3.3 2.2 4 4.7"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2.5h8l4.5 4.5v14.5H6z"/><path d="M14 2.5V7h4.5M9 12h6M9 16h6"/></symbol>
+    <symbol id="i-sensor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M5 5a10 10 0 0 0 0 14M19 5a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16.5 6.5l2.5 2.5M14 9l2 2"/></symbol>
+    <symbol id="i-gas" viewBox="0 0 24 24"><path d="M12 21c-3.6 0-6-2.4-6-5.6 0-3.6 3-5.4 3.6-9.4 2.6 1.6 3.4 4 3.2 6 1-.6 1.8-1.8 2-3 1.6 1.6 3.2 3.8 3.2 6.4 0 3.2-2.4 5.6-6 5.6z"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3.5 7.5h15a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-15z"/><path d="M3.5 7.5V6a2 2 0 0 1 2-2H16v3.5M15.5 14h2"/></symbol>
     <symbol id="i-heater" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M12 14.5c-1.2-1-1.6-2.2-.6-3.6.4 1 1.4 1.3 1.4 2.4a1 1 0 0 1-.8 1.2zM9.5 6h5"/></symbol>
   </defs>
 </svg>
@@ -337,13 +403,18 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
     <h1>Haven Club<span>.</span></h1>
     <p class="lede">One membership. One tap. A vetted, licensed pro at your door within 4 hours, or your next month is free.</p>
     <ol class="walk" id="walk">
-      <li><button data-go="home"><span class="n">1</span><span><strong>Member home</strong><small>The emergency button, included visits, alerts and savings on one screen.</small></span></button></li>
-      <li><button data-go="help-type"><span class="n">2</span><span><strong>Report a problem in 30 seconds</strong><small>Pick the trade, the urgency, add a photo. No calling around.</small></span></button></li>
-      <li><button data-go="tracking" data-demo="ac"><span class="n">3</span><span><strong>Live dispatch</strong><small>A nearby network pro accepts, and the member tracks them like a ride.</small></span></button></li>
-      <li><button data-go="estimate"><span class="n">4</span><span><strong>Approve repairs at member pricing</strong><small>Trip fee waived, 15% off. Nothing starts without the member's OK.</small></span></button></li>
-      <li><button data-go="visits"><span class="n">5</span><span><strong>Included yearly visits</strong><small>Tune-ups and inspections that prevent the next emergency.</small></span></button></li>
-      <li><button data-go="record"><span class="n">6</span><span><strong>Home health record</strong><small>Every system's age and condition, so nothing is a surprise.</small></span></button></li>
-      <li><button data-go="card"><span class="n">7</span><span><strong>Member card</strong><small>The AAA-style card, with the 24/7 line and plan details.</small></span></button></li>
+      <li><button data-go="join"><span class="n">1</span><span><strong>Join in 60 seconds</strong><small>Address lookup, pick a plan, pay with Apple Pay. Done.</small></span></button></li>
+      <li><button data-go="home"><span class="n">2</span><span><strong>Member home</strong><small>One big help button, a "call a person" button, and a heat-wave alert.</small></span></button></li>
+      <li><button data-go="help-type"><span class="n">3</span><span><strong>Report a problem in 30 seconds</strong><small>Pick the trade, the urgency, add a photo. No calling around.</small></span></button></li>
+      <li><button data-go="video"><span class="n">4</span><span><strong>Video call a pro</strong><small>Free video help fixes small problems in minutes, with no truck needed.</small></span></button></li>
+      <li><button data-go="tracking" data-demo="ac"><span class="n">5</span><span><strong>Live dispatch with a door code</strong><small>Track the pro like a ride. A code at the door confirms who they are.</small></span></button></li>
+      <li><button data-go="estimate"><span class="n">6</span><span><strong>Approve in the app or by text</strong><small>Member pricing, and a simple "reply YES" for people who don't use apps.</small></span></button></li>
+      <li><button data-go="guide"><span class="n">7</span><span><strong>Emergency shut-off guide</strong><small>Where the water, gas and power shut-offs are, with photos from the inspection.</small></span></button></li>
+      <li><button data-go="record"><span class="n">8</span><span><strong>Home health, devices and documents</strong><small>System ages, leak sensors, receipts and warranties, and replacement planning.</small></span></button></li>
+      <li><button data-go="visits"><span class="n">9</span><span><strong>Included yearly visits</strong><small>Tune-ups and inspections that prevent the next emergency.</small></span></button></li>
+      <li><button data-go="family"><span class="n">10</span><span><strong>Family, parents and rentals</strong><small>Look after Mom's house or a rental, with a spending limit and text updates.</small></span></button></li>
+      <li><button data-go="settings"><span class="n">11</span><span><strong>Easy mode</strong><small>Larger text, a simpler home screen and Español in one tap.</small></span></button></li>
+      <li><button data-go="card"><span class="n">12</span><span><strong>Member card</strong><small>The AAA-style card, in Apple or Google Wallet.</small></span></button></li>
     </ol>
     <p class="footnote">Prototype with sample data. The member, contractor companies, prices and phone number are illustrative. "Haven Club" is a working name. See the <a href="https://claude.ai/artifact/KXzrGouoBxFGrgNscTqgP6" target="_blank" rel="noopener" style="color:var(--brand);font-weight:700">contractor app prototype</a>.</p>
   </section>
@@ -361,19 +432,35 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
         <!-- HOME -->
         <section class="screen" data-screen="home">
           <div class="hello">
-            <div><div class="who">Gilbert, AZ · Complete member</div><div class="name">Hi, Maria</div></div>
-            <div class="avatar" aria-hidden="true">MR</div>
+            <div><div class="who" data-es="Gilbert, AZ · Miembro Completo">Gilbert, AZ · Complete member</div><div class="name" data-es="Hola, Maria">Hi, Maria</div></div>
+            <button class="avatar" data-go="settings" aria-label="Settings, text size and language">MR</button>
           </div>
 
           <div class="sos">
             <div>
-              <h3>Something wrong at home?</h3>
-              <p>A vetted pro within 4 hours, guaranteed. No trip fee.</p>
+              <h3 data-es="¿Algo anda mal en casa?">Something wrong at home?</h3>
+              <p data-es="Un profesional verificado en 4 horas, garantizado. Sin cargo de visita.">A vetted pro within 4 hours, guaranteed. No trip fee.</p>
             </div>
-            <button class="btn" data-go="help-type"><svg class="i"><use href="#i-alert"/></svg>Get help now</button>
+            <button class="btn" data-go="help-type"><svg class="i"><use href="#i-alert"/></svg><span data-es="Pedir ayuda ahora">Get help now</span></button>
           </div>
 
-          <div class="cats">
+          <button class="btn ghost" data-toast="Call us 24/7: (602) 555-0142. A real person answers."><svg class="i"><use href="#i-phone"/></svg><span data-es="Prefiero hablar con una persona">I'd rather talk to a person</span></button>
+
+          <div class="panel alert">
+            <span class="ic"><svg class="i"><use href="#i-sun"/></svg></span>
+            <span style="display:grid;gap:8px">
+              <span><strong style="display:block" data-es="Alerta de calor el jueves: 114°F">Heat warning Thursday: 114°F</strong><span class="muted small" data-es="Su aire acondicionado tiene 11 años. Una revisión gratis puede evitar una falla.">Your AC is 11 years old. A free check now can prevent a breakdown.</span></span>
+              <button class="btn primary small" style="justify-self:start" data-toast="Free AC check booked for Wednesday, 8–10 AM"><span data-es="Reservar revisión gratis">Book free check</span></button>
+            </span>
+          </div>
+
+          <button class="panel row" data-go="guide" style="text-align:left;width:100%">
+            <span class="ic-s hot"><svg class="i"><use href="#i-drop"/></svg></span>
+            <span class="grow"><strong style="display:block" data-es="Guía de emergencia">Emergency shut-off guide</strong><span class="muted small" data-es="Dónde cerrar el agua, el gas y la luz">Where to turn off water, gas and power</span></span>
+            <svg class="i" style="color:var(--muted)"><use href="#i-chev"/></svg>
+          </button>
+
+          <div class="cats" data-extra>
             <button class="cat" data-issue="ac"><span class="ic"><svg class="i"><use href="#i-ac"/></svg></span>AC & heat</button>
             <button class="cat" data-issue="plumbing"><span class="ic"><svg class="i"><use href="#i-drop"/></svg></span>Plumbing</button>
             <button class="cat" data-issue="electrical"><span class="ic"><svg class="i"><use href="#i-bolt"/></svg></span>Electrical</button>
@@ -382,7 +469,7 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
             <button class="cat" data-issue="handyman"><span class="ic"><svg class="i"><use href="#i-wrench"/></svg></span>Handyman</button>
           </div>
 
-          <div class="stack">
+          <div class="stack" data-extra>
             <div class="sec-h"><span class="label">Next included visit</span><button class="linkbtn" data-go="visits">All visits</button></div>
             <div class="panel row">
               <div class="date-chip"><span>Mar</span><b>17</b></div>
@@ -394,12 +481,7 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
             </div>
           </div>
 
-          <button class="panel alert" data-go="record" style="text-align:left;width:100%">
-            <span class="ic"><svg class="i"><use href="#i-alert"/></svg></span>
-            <span><strong style="display:block">Your AC is 11 years old</strong><span class="muted" style="font-size:13px">Arizona units last about 10–15 years. See your home health record.</span></span>
-          </button>
-
-          <div class="panel saved">
+          <div class="panel saved" data-extra>
             <div><div class="label">Saved this year</div><div class="muted" style="font-size:13px">Waived trip fees and member pricing</div></div>
             <div class="big num">$412</div>
           </div>
@@ -424,6 +506,7 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
           <div class="topbar"><button class="back" data-go="help-type" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t" data-bind="issueName">AC or heating</span><span class="steps-mini">Step 2 of 3</span></div>
           <h2 class="h">How urgent is it?</h2>
           <div class="list">
+            <button class="choice video" data-go="video"><span class="ic"><svg class="i"><use href="#i-video"/></svg></span><span><strong>Not sure? Video call a pro now</strong><small>Free. Many problems are fixed in minutes.</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
             <button class="choice hot" data-urgency="emergency"><span class="ic"><svg class="i"><use href="#i-alert"/></svg></span><span><strong>Emergency, send someone now</strong><small>A pro arrives within 4 hours, guaranteed</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
             <button class="choice" data-urgency="soon"><span class="ic"><svg class="i"><use href="#i-clock"/></svg></span><span><strong>Today or tomorrow</strong><small>Pick a 2-hour arrival window</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
             <button class="choice" data-urgency="schedule"><span class="ic"><svg class="i"><use href="#i-cal"/></svg></span><span><strong>Schedule a visit</strong><small>Any day that works for you</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
@@ -489,6 +572,17 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
           </div>
           <div class="guarantee"><svg class="i"><use href="#i-shield"/></svg><span id="guaranteeText">Guaranteed by 8:02 PM or your next month is free</span></div>
 
+          <div class="panel row">
+            <span class="ic-s"><svg class="i"><use href="#i-lock"/></svg></span>
+            <div class="grow"><strong>Door code: 2718</strong><div class="muted small">Your pro will say this code at the door. We also texted your son Daniel.</div></div>
+          </div>
+
+          <button class="panel row" data-go="guide" style="text-align:left;width:100%">
+            <span class="ic-s hot"><svg class="i"><use href="#i-drop"/></svg></span>
+            <span class="grow"><strong style="display:block">While you wait</strong><span class="muted small">How to shut off water, gas or power</span></span>
+            <svg class="i" style="color:var(--muted)"><use href="#i-chev"/></svg>
+          </button>
+
           <div class="panel" id="proBox">
             <div class="searching"><span class="spinner"></span>Finding the closest available pro…</div>
           </div>
@@ -529,6 +623,11 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
             <div class="l total"><span>You pay</span><b>$213.35</b></div>
           </div>
           <div class="assure"><svg class="i"><use href="#i-shield"/></svg><span>Price set from the member price book. Work is covered by the Haven Club 90-day workmanship guarantee.</span></div>
+          <div class="sms">
+            <div class="label">No app? Approve by text</div>
+            <div class="bubble in">Haven Club: Marcus's estimate for your AC repair is $213.35. Reply YES to approve, or CALL to talk to us.</div>
+            <div class="bubble out">YES</div>
+          </div>
           <button class="btn primary" data-go="complete" id="approve">Approve and start repair</button>
           <button class="btn ghost" data-toast="Message sent to Marcus">Ask Marcus a question</button>
         </section>
@@ -601,7 +700,7 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
             <div><strong>Good shape, one system to plan for</strong><div class="muted" style="font-size:13px">Based on 4 inspections by Haven Club pros</div></div>
           </div>
           <div class="panel">
-            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-ac"/></svg></span><div class="grow"><strong>AC / heat pump</strong><small>Trane 3.5 ton · 11 years old</small></div><span class="pill warn">Plan ahead</span></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-ac"/></svg></span><div class="grow"><strong>AC / heat pump</strong><small>Trane 3.5 ton · 11 years old</small></div><button class="pill warn" style="border:0" data-go="replace">Plan ahead ›</button></div>
             <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-heater"/></svg></span><div class="grow"><strong>Water heater</strong><small>50 gal gas · 6 years · flushed Oct 2026</small></div><span class="pill good">Good</span></div>
             <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-roof"/></svg></span><div class="grow"><strong>Roof</strong><small>Concrete tile · underlayment 17 years</small></div><span class="pill good">Good</span></div>
             <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-bolt"/></svg></span><div class="grow"><strong>Electrical panel</strong><small>200 amp · no issues found</small></div><span class="pill good">Good</span></div>
@@ -615,6 +714,18 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
               <li><time>Oct 2026</time><span><strong>Fall HVAC tune-up</strong> · included</span></li>
               <li><time>Jul 2026</time><span><strong>Joined Haven Club</strong> · founding member</span></li>
             </ul>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:6px">Connected devices</div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-sensor"/></svg></span><div class="grow"><strong>Leak sensor, kitchen sink</strong><small>Dry · if it gets wet, we call you and can send a plumber</small></div><span class="pill good">OK</span></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-ac"/></svg></span><div class="grow"><strong>Smart thermostat</strong><small>Inside 76°F · we get an alert if cooling stops</small></div><span class="pill good">OK</span></div>
+            <button class="btn ghost small" style="margin-top:8px" data-toast="We'll walk you through it, or a pro can set it up at your next visit">Connect a device</button>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:6px">Receipts and warranties</div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-doc"/></svg></span><div class="grow"><strong>AC repair receipt</strong><small>Nov 2026 · $213.35 · 90-day guarantee</small></div></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-doc"/></svg></span><div class="grow"><strong>Water heater warranty</strong><small>Tank covered until Mar 2029</small></div></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-doc"/></svg></span><div class="grow"><strong>Whole-home inspection report</strong><small>Oct 2026 · 14 pages with photos</small></div></div>
           </div>
         </section>
 
@@ -636,6 +747,12 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
             <button class="btn primary" data-go="help-type"><svg class="i"><use href="#i-alert"/></svg>Get help</button>
             <button class="btn ghost" id="copyLine"><svg class="i"><use href="#i-phone"/></svg>Copy number</button>
           </div>
+          <button class="btn pay" data-toast="Added to Wallet"><svg class="i"><use href="#i-wallet"/></svg>Add to Apple Wallet</button>
+          <button class="panel row" data-go="family" style="text-align:left;width:100%">
+            <span class="ic-s"><svg class="i"><use href="#i-users"/></svg></span>
+            <span class="grow"><strong style="display:block">Family and homes</strong><span class="muted small">Mom's house, a rental, and who can approve repairs</span></span>
+            <svg class="i" style="color:var(--muted)"><use href="#i-chev"/></svg>
+          </button>
           <div class="panel kv">
             <div class="l"><span>Plan</span><span>Complete · $49/mo</span></div>
             <div class="l"><span>Founding rate</span><span>Locked for life</span></div>
@@ -649,13 +766,146 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
             <button class="btn primary small" data-toast="Invite link ready to share">Invite</button>
           </div>
         </section>
+
+        <!-- JOIN -->
+        <section class="screen" data-screen="join" hidden>
+          <div class="topbar"><span class="t">Join Haven Club</span><span class="steps-mini">About 60 seconds</span></div>
+          <h2 class="h">Protect your home today</h2>
+          <label class="label" for="addr">Your home address</label>
+          <input id="addr" class="field" value="2418 E Palo Verde Dr" autocomplete="off">
+          <div class="panel row">
+            <span class="ic-s"><svg class="i"><use href="#i-pin"/></svg></span>
+            <div class="grow"><strong>2418 E Palo Verde Dr</strong><div class="muted small">Gilbert, AZ 85234 · built 2009 · 2,140 sq ft</div></div>
+            <span class="pill good">Covered</span>
+          </div>
+          <div class="label">Choose a plan</div>
+          <div class="list">
+            <button class="choice plan" data-plan="essential" aria-pressed="false"><span><strong>Essential</strong><small>AC, heating and plumbing · 3 visits a year</small></span><span class="price">$29<small>/mo</small></span></button>
+            <button class="choice plan" data-plan="complete" aria-pressed="true"><span><strong>Complete <span class="pill brand" style="margin-left:4px">Most popular</span></strong><small>The whole home · 5 visits a year</small></span><span class="price">$49<small>/mo</small></span></button>
+          </div>
+          <div class="assure"><svg class="i"><use href="#i-check"/></svg><span>Cancel anytime online. Founding members keep this price for life.</span></div>
+          <button class="btn pay" id="joinPay">Pay with Apple Pay</button>
+          <button class="btn ghost" id="joinCard">Pay with a card</button>
+          <div class="demo-note">Emergency service starts after 30 days. Tune-ups can be booked right away.</div>
+        </section>
+
+        <!-- VIDEO CALL -->
+        <section class="screen" data-screen="video" hidden>
+          <div class="call">
+            <div class="row"><span class="pill live"><span class="dot"></span>Live · <span class="num" id="callTime">0:00</span></span></div>
+            <div class="selfview">You</div>
+            <div class="callee">
+              <div class="face">JS</div>
+              <strong>Jasmine, HVAC pro</strong>
+              <span>Haven Club video help · free for members</span>
+            </div>
+            <div class="tip">"Let's check the breaker first. In your garage panel, is the switch labeled AC pushed to the middle?"</div>
+            <div class="call-actions">
+              <button aria-label="Mute" data-toast="Muted"><svg class="i"><use href="#i-mic"/></svg></button>
+              <button aria-label="Flip camera" data-toast="Camera flipped"><svg class="i"><use href="#i-cam"/></svg></button>
+              <button class="end" aria-label="End call" data-go="home"><svg class="i"><use href="#i-phone"/></svg></button>
+            </div>
+          </div>
+          <div class="duo">
+            <button class="btn ghost" id="fixedIt">It's fixed</button>
+            <button class="btn signal" data-go="help-details">Send a pro</button>
+          </div>
+          <div class="demo-note">Video help doesn't use up any of your included visits.</div>
+        </section>
+
+        <!-- EMERGENCY GUIDE -->
+        <section class="screen" data-screen="guide" hidden>
+          <div class="topbar"><button class="back" data-go="home" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t">Emergency guide</span></div>
+          <h2 class="h">Stop the damage while help is on the way</h2>
+          <p class="sub">Marked at your home by your inspector, Oct 2026</p>
+          <div class="panel guide-item">
+            <div class="head"><span class="ic"><svg class="i"><use href="#i-drop"/></svg></span><div><strong>Water main</strong><div class="muted small">Front yard, by the sidewalk</div></div></div>
+            <div class="photo">Photo: blue box marked WATER</div>
+            <p>Lift the lid. Turn the handle a quarter turn so it crosses the pipe.</p>
+          </div>
+          <div class="panel guide-item">
+            <div class="head"><span class="ic"><svg class="i"><use href="#i-bolt"/></svg></span><div><strong>Power</strong><div class="muted small">Garage, left wall, gray panel</div></div></div>
+            <div class="photo">Photo: breaker panel</div>
+            <p>The large switch at the top turns off power to the whole house.</p>
+          </div>
+          <div class="panel guide-item">
+            <div class="head"><span class="ic"><svg class="i"><use href="#i-gas"/></svg></span><div><strong>Gas</strong><div class="muted small">East side of the house, by the meter</div></div></div>
+            <div class="warnbox">Smell gas? Leave the house first, then call 911 from outside.</div>
+          </div>
+          <div class="panel guide-item">
+            <div class="head"><span class="ic"><svg class="i"><use href="#i-ac"/></svg></span><div><strong>AC power</strong><div class="muted small">Gray box on the wall by the outdoor unit</div></div></div>
+            <p>Pull the handle out to turn off the AC if it's smoking or making a loud noise.</p>
+          </div>
+          <button class="btn signal" data-go="help-type"><svg class="i"><use href="#i-alert"/></svg>Get help now</button>
+        </section>
+
+        <!-- FAMILY & HOMES -->
+        <section class="screen" data-screen="family" hidden>
+          <div class="topbar"><button class="back" data-go="card" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t">Family and homes</span></div>
+          <h2 class="h">Homes you look after</h2>
+          <div class="panel">
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-home"/></svg></span><div class="grow"><strong>My home</strong><small>Gilbert · Complete plan</small></div><span class="pill brand">You</span></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-users"/></svg></span><div class="grow"><strong>Mom's home</strong><small>Rosa Reyes · Sun City · Complete plan</small></div><span class="pill good">Family</span></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-key"/></svg></span><div class="grow"><strong>Rental, 1186 W Juniper Ave</strong><small>Mesa · Landlord plan · tenant J. Carter</small></div><span class="pill warn">Rental</span></div>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:6px">Mom's home</div>
+            <div class="tgl-row"><div><strong>Text me when a pro is on the way</strong><small>You and Daniel both get updates</small></div><button class="tgl" role="switch" aria-checked="true" aria-label="Text me when a pro is on the way"></button></div>
+            <div class="tgl-row"><div><strong>Mom can call instead of using the app</strong><small>Her phone number is linked to her membership</small></div><button class="tgl" role="switch" aria-checked="true" aria-label="Mom can call instead of using the app"></button></div>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:6px">Rental</div>
+            <div class="tgl-row"><div><strong>Tenant can request help</strong><small>J. Carter reports problems directly</small></div><button class="tgl" role="switch" aria-checked="true" aria-label="Tenant can request help"></button></div>
+            <div class="tgl-row"><div><strong>Approve repairs under $300 automatically</strong><small>Anything more needs your OK</small></div><button class="tgl" role="switch" aria-checked="true" aria-label="Approve repairs under $300 automatically"></button></div>
+            <div class="tgl-row"><div><strong>Photos of every job</strong><small>Before and after, sent to you</small></div><button class="tgl" role="switch" aria-checked="true" aria-label="Photos of every job"></button></div>
+          </div>
+          <button class="btn ghost" data-toast="Invite sent. They'll get a text to finish setup.">Add a home or a family member</button>
+        </section>
+
+        <!-- SETTINGS / EASY MODE -->
+        <section class="screen" data-screen="settings" hidden>
+          <div class="topbar"><button class="back" data-go="home" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t" data-es="Ajustes">Settings</span></div>
+          <h2 class="h" data-es="Que sea fácil de usar">Make it easy to use</h2>
+          <div class="panel">
+            <div class="tgl-row"><div><strong data-es="Letra más grande">Larger text</strong><small data-es="Todo en la app se ve más grande">Everything in the app gets bigger</small></div><button class="tgl" id="bigText" role="switch" aria-checked="false" aria-label="Larger text"></button></div>
+            <div class="tgl-row"><div><strong data-es="Pantalla de inicio simple">Simple home screen</strong><small data-es="Solo los botones grandes">Just the big buttons</small></div><button class="tgl" id="simpleMode" role="switch" aria-checked="false" aria-label="Simple home screen"></button></div>
+          </div>
+          <div class="panel" style="display:grid;gap:10px">
+            <div class="label" data-es="Idioma">Language</div>
+            <div class="seg"><button data-lang="en" aria-pressed="true">English</button><button data-lang="es" aria-pressed="false">Español</button></div>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:6px" data-es="Cómo le avisamos">How we reach you</div>
+            <div class="tgl-row"><div><strong data-es="Mensajes de texto">Text messages</strong><small data-es="Aprobar reparaciones respondiendo SÍ">Approve repairs by replying YES</small></div><button class="tgl" role="switch" aria-checked="true" aria-label="Text messages"></button></div>
+            <div class="tgl-row"><div><strong data-es="Llamada el día antes">Reminder call the day before</strong><small data-es="Una persona real le llama">A real person calls you</small></div><button class="tgl" role="switch" aria-checked="true" aria-label="Reminder call the day before"></button></div>
+          </div>
+          <div class="panel row">
+            <span class="ic-s good"><svg class="i"><use href="#i-phone"/></svg></span>
+            <div class="grow"><strong data-es="¿Necesita ayuda con la app?">Need help with the app?</strong><div class="muted small">(602) 555-0142, anytime</div></div>
+          </div>
+        </section>
+
+        <!-- AC REPLACEMENT -->
+        <section class="screen" data-screen="replace" hidden>
+          <div class="topbar"><button class="back" data-go="record" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t">Plan your AC replacement</span></div>
+          <h2 class="h">Your AC has about 1–3 years left</h2>
+          <p class="sub">11 years old. Phoenix units usually last 10–15 years. Planning ahead avoids a rushed summer replacement.</p>
+          <div class="list">
+            <button class="choice plan" data-plan="good" aria-pressed="false"><span><strong>Good</strong><small>14.3 SEER2, 3.5 ton</small></span><span class="price">$8,900<small style="display:block">or $139/mo</small></span></button>
+            <button class="choice plan" data-plan="better" aria-pressed="true"><span><strong>Better <span class="pill brand" style="margin-left:4px">Most chosen</span></strong><small>15.2 SEER2, two-stage, quieter</small></span><span class="price">$10,900<small style="display:block">or $169/mo</small></span></button>
+            <button class="choice plan" data-plan="best" aria-pressed="false"><span><strong>Best</strong><small>17 SEER2, variable speed</small></span><span class="price">$13,400<small style="display:block">or $209/mo</small></span></button>
+          </div>
+          <div class="assure"><svg class="i"><use href="#i-shield"/></svg><span>Member prices from Haven Club network installers, with 10-year parts and labor. Monthly payments subject to approval.</span></div>
+          <button class="btn primary" data-toast="A pro will call to schedule a free in-home quote">Get a free in-home quote</button>
+          <button class="btn ghost" data-toast="We'll remind you next spring">Remind me next spring</button>
+        </section>
       </div>
 
       <nav class="tabbar" aria-label="App sections">
-        <button data-tab="home" aria-selected="true"><svg class="i"><use href="#i-home"/></svg>Home</button>
-        <button data-tab="visits"><svg class="i"><use href="#i-cal"/></svg>Visits</button>
-        <button data-tab="record"><svg class="i"><use href="#i-house"/></svg>My home</button>
-        <button data-tab="card"><svg class="i"><use href="#i-card"/></svg>Card</button>
+        <button data-tab="home" aria-selected="true"><svg class="i"><use href="#i-home"/></svg><span data-es="Inicio">Home</span></button>
+        <button data-tab="visits"><svg class="i"><use href="#i-cal"/></svg><span data-es="Visitas">Visits</span></button>
+        <button data-tab="record"><svg class="i"><use href="#i-house"/></svg><span data-es="Mi casa">My home</span></button>
+        <button data-tab="card"><svg class="i"><use href="#i-card"/></svg><span data-es="Tarjeta">Card</span></button>
       </nav>
 
       <div class="toast" id="toast" role="status" aria-live="polite"><svg class="i"><use href="#i-check"/></svg><span id="toastText">Done</span></div>
@@ -686,8 +936,23 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
     appliance: 'Refrigerator stopped cooling. Freezer is still cold.',
     handyman: 'Back gate latch is broken and the gate won’t close.'
   };
-  var TAB_OF = { home: 'home', 'help-type': 'home', 'help-urgency': 'home', 'help-details': 'home', tracking: 'home', estimate: 'home', complete: 'home', visits: 'visits', record: 'record', card: 'card' };
-  var WALK_OF = { home: 'home', 'help-type': 'help-type', 'help-urgency': 'help-type', 'help-details': 'help-type', tracking: 'tracking', estimate: 'estimate', complete: 'estimate', visits: 'visits', record: 'record', card: 'card' };
+  var TAB_OF = { home: 'home', 'help-type': 'home', 'help-urgency': 'home', 'help-details': 'home', tracking: 'home', estimate: 'home', complete: 'home', visits: 'visits', record: 'record', card: 'card', join: 'home', video: 'home', guide: 'home', settings: 'home', family: 'card', replace: 'record' };
+  var WALK_OF = { home: 'home', 'help-type': 'help-type', 'help-urgency': 'help-type', 'help-details': 'help-type', tracking: 'tracking', estimate: 'estimate', complete: 'estimate', visits: 'visits', record: 'record', card: 'card', join: 'join', video: 'video', guide: 'guide', settings: 'settings', family: 'family', replace: 'record' };
+  var device = document.querySelector('.device');
+  var callTimer = null;
+
+  function startCall() {
+    var s = 0, el = document.getElementById('callTime');
+    el.textContent = '0:00';
+    callTimer = setInterval(function () { s += 1; el.textContent = Math.floor(s / 60) + ':' + (s % 60 < 10 ? '0' : '') + (s % 60); }, 1000);
+  }
+  function setLang(l) {
+    document.querySelectorAll('[data-es]').forEach(function (el) {
+      if (el.dataset.en === undefined) el.dataset.en = el.textContent;
+      el.textContent = l === 'es' ? el.dataset.es : el.dataset.en;
+    });
+    document.querySelectorAll('[data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lang === l ? 'true' : 'false'); });
+  }
 
   function fmt(d) {
     var h = d.getHours(), m = d.getMinutes();
@@ -712,6 +977,8 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
 
   function go(id) {
     if (id !== 'tracking') clearTimers();
+    if (callTimer) { clearInterval(callTimer); callTimer = null; }
+    if (id === 'video') startCall();
     screens.forEach(function (s) { s.hidden = s.dataset.screen !== id; });
     view.scrollTop = 0;
     var tab = TAB_OF[id];
@@ -806,6 +1073,20 @@ textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px;
       toast(n >= 4 ? 'Thanks! Marcus will see your rating.' : 'Thanks. Our team will follow up today.'); return;
     }
     if (e.target.closest('#sendPro')) { go('tracking'); return; }
+    if ((el = e.target.closest('.tgl'))) {
+      var on = el.getAttribute('aria-checked') !== 'true';
+      el.setAttribute('aria-checked', on ? 'true' : 'false');
+      if (el.id === 'bigText') device.classList.toggle('big', on);
+      if (el.id === 'simpleMode') device.classList.toggle('simple', on);
+      return;
+    }
+    if ((el = e.target.closest('[data-lang]'))) { setLang(el.dataset.lang); return; }
+    if ((el = e.target.closest('.plan'))) {
+      el.parentElement.querySelectorAll('.plan').forEach(function (b) { b.setAttribute('aria-pressed', b === el ? 'true' : 'false'); });
+      return;
+    }
+    if (e.target.closest('#joinPay') || e.target.closest('#joinCard')) { go('home'); toast('Welcome to Haven Club, Maria'); return; }
+    if (e.target.closest('#fixedIt')) { go('home'); toast('Glad it’s fixed. No visit used.'); return; }
     if (e.target.closest('#copyLine')) {
       var num = '(602) 555-0142';
       try {
