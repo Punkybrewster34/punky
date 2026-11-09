@@ -1,0 +1,822 @@
+<title>Haven Club App</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: investor walkthrough on the left, a live phone prototype on the right; stacks on narrow screens. */
+:root {
+  --page: #E9EDF3;
+  --surface: #FFFFFF;
+  --surface-2: #F4F6F9;
+  --ink: #0F1B2D;
+  --muted: #5A6577;
+  --line: #DDE3EB;
+  --brand: #17407E;
+  --brand-ink: #FFFFFF;
+  --brand-soft: #E4ECF8;
+  --signal: #E2512F;
+  --signal-ink: #FFFFFF;
+  --signal-soft: #FCE9E3;
+  --good: #1C8A57;
+  --good-soft: #E1F3E9;
+  --warn: #B7791F;
+  --warn-soft: #FBF0DC;
+  --gold: #D9AE4F;
+  --card-a: #102B57;
+  --card-b: #1D4E96;
+  --card-ink: #F4F7FC;
+  --bezel: #0C1320;
+  --map-bg: #EEF2F6;
+  --map-road: #FFFFFF;
+  --map-block: #E1E7EE;
+  --shadow: 0 30px 60px -20px rgba(15, 27, 45, .35);
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0A0F18; --surface: #141C29; --surface-2: #0F1622; --ink: #E7ECF3; --muted: #95A1B3; --line: #263246;
+    --brand: #6E9CF0; --brand-ink: #0A0F18; --brand-soft: #1A2A45; --signal: #FF7552; --signal-ink: #1A0D08; --signal-soft: #3A1E17;
+    --good: #4CC48A; --good-soft: #13301F; --warn: #E8B04F; --warn-soft: #33270F; --gold: #E5BE68;
+    --card-a: #0F2448; --card-b: #1C4482; --card-ink: #F4F7FC; --bezel: #000000;
+    --map-bg: #182231; --map-road: #24324A; --map-block: #1D2938; --shadow: 0 30px 60px -20px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0A0F18; --surface: #141C29; --surface-2: #0F1622; --ink: #E7ECF3; --muted: #95A1B3; --line: #263246;
+  --brand: #6E9CF0; --brand-ink: #0A0F18; --brand-soft: #1A2A45; --signal: #FF7552; --signal-ink: #1A0D08; --signal-soft: #3A1E17;
+  --good: #4CC48A; --good-soft: #13301F; --warn: #E8B04F; --warn-soft: #33270F; --gold: #E5BE68;
+  --card-a: #0F2448; --card-b: #1C4482; --card-ink: #F4F7FC; --bezel: #000000;
+  --map-bg: #182231; --map-road: #24324A; --map-block: #1D2938; --shadow: 0 30px 60px -20px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { min-height: 100%; }
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+.stage {
+  max-width: 1080px; margin: 0 auto;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 56px; align-items: start;
+}
+
+/* ---------- Investor narrative ---------- */
+.story { padding-top: 24px; min-width: 0; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.story h1 {
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(40px, 5vw, 60px);
+  line-height: 1; letter-spacing: -.02em; margin: 12px 0 14px; text-wrap: balance;
+}
+.story h1 span { color: var(--signal); }
+.story .lede { font-size: 18px; color: var(--muted); max-width: 30em; margin: 0 0 32px; }
+.walk { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-width: 460px; counter-reset: step; }
+.walk button {
+  width: 100%; text-align: left; border: 1px solid transparent; background: transparent; border-radius: 14px;
+  padding: 12px 14px; display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 12px; align-items: start;
+}
+.walk button:hover { background: var(--surface); }
+.walk button[aria-current="step"] { background: var(--surface); border-color: var(--line); }
+.walk .n {
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 13px; font-weight: 800; background: var(--brand-soft); color: var(--brand); font-variant-numeric: tabular-nums;
+}
+.walk button[aria-current="step"] .n { background: var(--brand); color: var(--brand-ink); }
+.walk strong { display: block; font-size: 15px; }
+.walk small { display: block; color: var(--muted); font-size: 13.5px; line-height: 1.45; margin-top: 2px; }
+.footnote { margin-top: 28px; font-size: 12.5px; color: var(--muted); max-width: 34em; }
+
+/* ---------- Phone ---------- */
+.phone {
+  width: 384px; height: 800px; border-radius: 52px; padding: 11px; background: var(--bezel);
+  box-shadow: var(--shadow); position: sticky; top: calc(24px + env(safe-area-inset-top, 0px));
+}
+.device {
+  height: 100%; border-radius: 42px; overflow: hidden; background: var(--surface-2);
+  display: flex; flex-direction: column; position: relative;
+}
+.statusbar {
+  flex: none; height: 46px; padding: 14px 28px 0; display: flex; justify-content: space-between;
+  font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.statusbar .notch { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); width: 110px; height: 30px; background: var(--bezel); border-radius: 20px; }
+.statusbar .sys { display: flex; gap: 6px; align-items: center; }
+.statusbar .sys i { display: block; background: var(--ink); border-radius: 2px; }
+.view { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+.view::-webkit-scrollbar { display: none; }
+.screen { padding: 8px 18px 28px; display: grid; gap: 16px; }
+
+.tabbar {
+  flex: none; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line);
+  background: var(--surface); padding: 8px 6px 18px;
+}
+.tabbar button { border: 0; background: none; display: grid; justify-items: center; gap: 3px; font-size: 11px; font-weight: 700; color: var(--muted); padding: 4px 0; }
+.tabbar button svg { width: 22px; height: 22px; }
+.tabbar button[aria-selected="true"] { color: var(--brand); }
+
+/* ---------- Shared UI ---------- */
+svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.topbar { display: flex; align-items: center; gap: 10px; min-height: 40px; }
+.back { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; }
+.topbar .t { font-weight: 700; font-size: 15px; }
+.steps-mini { margin-left: auto; font-size: 12px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+h2.h { font-family: var(--font-display); font-weight: 700; font-size: 26px; line-height: 1.12; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: -8px 0 0; font-size: 14px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; }
+.label { font-size: 11.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.row { display: flex; align-items: center; gap: 12px; }
+.row > .grow { flex: 1; min-width: 0; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.pill.good { background: var(--good-soft); color: var(--good); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.brand { background: var(--brand-soft); color: var(--brand); }
+.pill .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.btn { border: 0; border-radius: 16px; padding: 15px 18px; font-weight: 800; font-size: 16px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.btn.primary { background: var(--brand); color: var(--brand-ink); }
+.btn.signal { background: var(--signal); color: var(--signal-ink); }
+.btn.ghost { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
+.btn.small { padding: 10px 14px; font-size: 14px; border-radius: 12px; width: auto; }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Home */
+.hello { display: flex; justify-content: space-between; align-items: center; }
+.hello .who { font-size: 13px; color: var(--muted); font-weight: 600; }
+.hello .name { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.1; }
+.avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; font-weight: 800; }
+.sos {
+  border-radius: 24px; padding: 20px; color: var(--signal-ink); background: var(--signal);
+  display: grid; gap: 14px; position: relative; overflow: hidden;
+}
+.sos::after { content: ""; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; border: 22px solid currentColor; opacity: .09; }
+.sos h3 { margin: 0; font-family: var(--font-display); font-size: 24px; line-height: 1.1; font-weight: 800; }
+.sos p { margin: 4px 0 0; font-size: 14px; opacity: .92; }
+.sos .btn { background: var(--signal-ink); color: var(--signal); }
+.cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.cat { border: 1px solid var(--line); background: var(--surface); border-radius: 16px; padding: 12px 6px; display: grid; justify-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; }
+.cat .ic { width: 38px; height: 38px; border-radius: 12px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; }
+.sec-h { display: flex; justify-content: space-between; align-items: baseline; }
+.sec-h a, .linkbtn { font-size: 13px; font-weight: 700; color: var(--brand); background: none; border: 0; padding: 0; }
+.date-chip { width: 50px; flex: none; border-radius: 14px; background: var(--brand-soft); color: var(--brand); text-align: center; padding: 6px 0; line-height: 1.1; }
+.date-chip b { display: block; font-size: 20px; font-family: var(--font-display); }
+.date-chip span { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.alert { display: flex; gap: 12px; align-items: flex-start; }
+.alert .ic { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--warn-soft); color: var(--warn); flex: none; }
+.saved { display: flex; justify-content: space-between; align-items: center; }
+.saved .big { font-family: var(--font-display); font-weight: 800; font-size: 28px; color: var(--good); line-height: 1; }
+
+/* Help flow */
+.choice { width: 100%; text-align: left; border: 1.5px solid var(--line); background: var(--surface); border-radius: 18px; padding: 14px; display: flex; align-items: center; gap: 14px; }
+.choice:hover { border-color: var(--brand); }
+.choice .ic { width: 44px; height: 44px; border-radius: 14px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; flex: none; }
+.choice.hot .ic { background: var(--signal-soft); color: var(--signal); }
+.choice strong { display: block; font-size: 15.5px; }
+.choice small { display: block; color: var(--muted); font-size: 13px; line-height: 1.4; }
+.choice .chev { margin-left: auto; color: var(--muted); }
+.list { display: grid; gap: 10px; }
+textarea { width: 100%; min-height: 96px; resize: vertical; border-radius: 14px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 12px 14px; font: inherit; font-size: 14.5px; }
+.photos { display: flex; gap: 10px; }
+.thumb { width: 72px; height: 72px; border-radius: 14px; flex: none; background: linear-gradient(135deg, var(--map-block), var(--line)); display: grid; place-items: center; color: var(--muted); font-size: 11px; font-weight: 700; text-align: center; }
+.addphoto { width: 72px; height: 72px; border-radius: 14px; border: 1.5px dashed var(--line); background: none; display: grid; place-items: center; color: var(--muted); }
+.lines { display: grid; gap: 10px; font-size: 14px; }
+.lines .l { display: flex; justify-content: space-between; gap: 12px; }
+.lines .l b { font-variant-numeric: tabular-nums; }
+.lines .strike { text-decoration: line-through; color: var(--muted); font-weight: 500; margin-right: 6px; }
+.lines hr { border: 0; border-top: 1px solid var(--line); margin: 2px 0; }
+.lines .total { font-size: 17px; font-weight: 800; }
+.lines .disc { color: var(--good); }
+.assure { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); }
+.assure svg { color: var(--good); }
+
+/* Tracking */
+.map { border-radius: 20px; overflow: hidden; border: 1px solid var(--line); background: var(--map-bg); }
+.map svg { display: block; width: 100%; height: auto; }
+.eta { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.eta .when { font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1; font-variant-numeric: tabular-nums; }
+.guarantee { display: flex; gap: 10px; align-items: center; background: var(--good-soft); color: var(--good); border-radius: 14px; padding: 10px 12px; font-size: 13px; font-weight: 700; }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.timeline li { display: grid; grid-template-columns: 24px minmax(0,1fr) auto; gap: 12px; align-items: start; position: relative; padding-bottom: 14px; font-size: 14px; }
+.timeline li:last-child { padding-bottom: 0; }
+.timeline li::before { content: ""; position: absolute; left: 11px; top: 22px; bottom: -2px; width: 2px; background: var(--line); }
+.timeline li:last-child::before { display: none; }
+.timeline .dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); display: grid; place-items: center; position: relative; z-index: 1; }
+.timeline li.done .dot { background: var(--good); border-color: var(--good); color: var(--surface); }
+.timeline li.now .dot { border-color: var(--brand); }
+.timeline li.now .dot::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); animation: pulse 1.4s ease-in-out infinite; }
+.timeline li.done::before { background: var(--good); }
+.timeline .tt { font-weight: 700; }
+.timeline li:not(.done):not(.now) .tt { color: var(--muted); font-weight: 600; }
+.timeline time { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+@keyframes pulse { 0%,100% { transform: scale(.7); opacity: .6 } 50% { transform: scale(1); opacity: 1 } }
+.pro { display: flex; gap: 14px; align-items: center; }
+.pro .face { width: 54px; height: 54px; border-radius: 18px; background: var(--brand); color: var(--brand-ink); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 20px; flex: none; }
+.pro .meta { font-size: 13px; color: var(--muted); }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.searching { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; font-weight: 600; }
+.spinner { width: 22px; height: 22px; border-radius: 50%; border: 3px solid var(--line); border-top-color: var(--brand); animation: spin .9s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg) } }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.demo-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: -6px; }
+
+/* Complete */
+.hero-ok { text-align: center; display: grid; justify-items: center; gap: 10px; padding-top: 10px; }
+.hero-ok .ring { width: 76px; height: 76px; border-radius: 50%; background: var(--good-soft); color: var(--good); display: grid; place-items: center; }
+.hero-ok .ring svg { width: 38px; height: 38px; stroke-width: 2.4; }
+.stars { display: flex; gap: 6px; justify-content: center; }
+.stars button { border: 0; background: none; padding: 2px; color: var(--line); }
+.stars button svg { width: 34px; height: 34px; fill: currentColor; stroke: none; }
+.stars button.on { color: var(--gold); }
+
+/* Visits */
+.meter { display: grid; gap: 6px; }
+.meter .bar { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; border: 1px solid var(--line); }
+.meter .bar i { display: block; height: 100%; background: var(--brand); border-radius: 99px; }
+.meter .top { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; gap: 10px; }
+.meter .top span { color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.stack { display: grid; gap: 14px; }
+
+/* Home record */
+.sys-row { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.sys-row:first-of-type { border-top: 0; padding-top: 4px; }
+.sys-row .ic { width: 40px; height: 40px; border-radius: 12px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; flex: none; }
+.sys-row strong { display: block; font-size: 14.5px; }
+.sys-row small { display: block; font-size: 12.5px; color: var(--muted); }
+.hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.hist li { display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 10px; font-size: 13.5px; }
+.hist time { color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; font-size: 12.5px; padding-top: 1px; }
+.score { display: flex; align-items: center; gap: 16px; }
+.score .gauge { width: 76px; height: 76px; flex: none; }
+
+/* Member card */
+.mcard {
+  border-radius: 24px; padding: 20px; color: var(--card-ink); aspect-ratio: 1.586; max-width: 100%;
+  background: radial-gradient(120% 90% at 100% 0%, var(--card-b), var(--card-a));
+  display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+}
+.mcard::before { content: ""; position: absolute; right: -60px; bottom: -80px; width: 220px; height: 220px; border-radius: 50%; border: 28px solid var(--gold); opacity: .18; }
+.mcard .brandline { display: flex; justify-content: space-between; align-items: center; }
+.mcard .logo { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -.01em; display: flex; gap: 8px; align-items: center; }
+.mcard .tier { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.mcard .mname { font-size: 18px; font-weight: 700; }
+.mcard .mid { font-size: 13px; opacity: .8; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+.mcard .hotline { font-size: 12px; opacity: .85; }
+.mcard .hotline b { font-size: 15px; opacity: 1; display: block; font-variant-numeric: tabular-nums; }
+.kv { display: grid; gap: 10px; font-size: 14px; }
+.kv .l { display: flex; justify-content: space-between; gap: 10px; }
+.kv .l span:first-child { color: var(--muted); }
+.kv .l span:last-child { font-weight: 700; text-align: right; }
+
+/* Toast */
+.toast {
+  position: absolute; left: 18px; right: 18px; bottom: 92px; background: var(--ink); color: var(--surface);
+  border-radius: 14px; padding: 12px 14px; font-size: 14px; font-weight: 700; display: flex; gap: 10px; align-items: center;
+  transform: translateY(16px); opacity: 0; pointer-events: none; transition: .25s ease;
+}
+.toast.show { transform: none; opacity: 1; }
+
+@media (max-width: 900px) {
+  .stage { grid-template-columns: minmax(0, 1fr); gap: 28px; justify-items: center; }
+  .story { padding-top: 0; max-width: 560px; width: 100%; }
+  .phone { position: relative; top: 0; }
+  .walk { max-width: none; }
+}
+@media (max-width: 440px) {
+  body { padding-block: 20px; }
+  .phone { width: 100%; height: 760px; border-radius: 40px; padding: 8px; }
+  .device { border-radius: 33px; }
+  .story .lede { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-6h4v6"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H4z"/><path d="M9.5 15.5h5"/><path d="M9.5 12.5h5"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h4"/></symbol>
+    <symbol id="i-ac" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M9.5 4.5 12 6.5l2.5-2M9.5 19.5 12 17.5l2.5 2"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12z"/></symbol>
+    <symbol id="i-roof" viewBox="0 0 24 24"><path d="M2.5 12 12 4.5l9.5 7.5"/><path d="M6 9.3V6h3v.9"/><path d="M5.5 12.5v7h13v-7"/><path d="M2.5 15.5h4M17.5 15.5h4"/></symbol>
+    <symbol id="i-appl" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><circle cx="12" cy="13.5" r="4"/><path d="M8 6h.01M11 6h.01"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5a4 4 0 0 1-2-2z"/><path d="M14.5 6.5a4 4 0 0 1 5-3l-2.5 2.5.5 2 2 .5 2.5-2.5a4 4 0 0 1-3 5"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4M12 17h.01"/></symbol>
+    <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2.5h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></symbol>
+    <symbol id="i-heater" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M12 14.5c-1.2-1-1.6-2.2-.6-3.6.4 1 1.4 1.3 1.4 2.4a1 1 0 0 1-.8 1.2zM9.5 6h5"/></symbol>
+  </defs>
+</svg>
+
+<main class="stage">
+  <section class="story" aria-label="Walkthrough">
+    <div class="eyebrow">Investor prototype · Phoenix pilot</div>
+    <h1>Haven Club<span>.</span></h1>
+    <p class="lede">One membership. One tap. A vetted, licensed pro at your door within 4 hours, or your next month is free.</p>
+    <ol class="walk" id="walk">
+      <li><button data-go="home"><span class="n">1</span><span><strong>Member home</strong><small>The emergency button, included visits, alerts and savings on one screen.</small></span></button></li>
+      <li><button data-go="help-type"><span class="n">2</span><span><strong>Report a problem in 30 seconds</strong><small>Pick the trade, the urgency, add a photo. No calling around.</small></span></button></li>
+      <li><button data-go="tracking" data-demo="ac"><span class="n">3</span><span><strong>Live dispatch</strong><small>A nearby network pro accepts, and the member tracks them like a ride.</small></span></button></li>
+      <li><button data-go="estimate"><span class="n">4</span><span><strong>Approve repairs at member pricing</strong><small>Trip fee waived, 15% off. Nothing starts without the member's OK.</small></span></button></li>
+      <li><button data-go="visits"><span class="n">5</span><span><strong>Included yearly visits</strong><small>Tune-ups and inspections that prevent the next emergency.</small></span></button></li>
+      <li><button data-go="record"><span class="n">6</span><span><strong>Home health record</strong><small>Every system's age and condition, so nothing is a surprise.</small></span></button></li>
+      <li><button data-go="card"><span class="n">7</span><span><strong>Member card</strong><small>The AAA-style card, with the 24/7 line and plan details.</small></span></button></li>
+    </ol>
+    <p class="footnote">Prototype with sample data. The member, contractor companies, prices and phone number are illustrative. "Haven Club" is a working name.</p>
+  </section>
+
+  <div class="phone">
+    <div class="device">
+      <div class="statusbar" aria-hidden="true">
+        <span class="num" id="clock">4:02</span>
+        <span class="notch"></span>
+        <span class="sys"><i style="width:3px;height:6px"></i><i style="width:3px;height:9px"></i><i style="width:3px;height:12px"></i><i style="width:22px;height:11px;border-radius:3px;margin-left:4px"></i></span>
+      </div>
+
+      <div class="view" id="view">
+
+        <!-- HOME -->
+        <section class="screen" data-screen="home">
+          <div class="hello">
+            <div><div class="who">Gilbert, AZ · Complete member</div><div class="name">Hi, Maria</div></div>
+            <div class="avatar" aria-hidden="true">MR</div>
+          </div>
+
+          <div class="sos">
+            <div>
+              <h3>Something wrong at home?</h3>
+              <p>A vetted pro within 4 hours, guaranteed. No trip fee.</p>
+            </div>
+            <button class="btn" data-go="help-type"><svg class="i"><use href="#i-alert"/></svg>Get help now</button>
+          </div>
+
+          <div class="cats">
+            <button class="cat" data-issue="ac"><span class="ic"><svg class="i"><use href="#i-ac"/></svg></span>AC & heat</button>
+            <button class="cat" data-issue="plumbing"><span class="ic"><svg class="i"><use href="#i-drop"/></svg></span>Plumbing</button>
+            <button class="cat" data-issue="electrical"><span class="ic"><svg class="i"><use href="#i-bolt"/></svg></span>Electrical</button>
+            <button class="cat" data-issue="roof"><span class="ic"><svg class="i"><use href="#i-roof"/></svg></span>Roof</button>
+            <button class="cat" data-issue="appliance"><span class="ic"><svg class="i"><use href="#i-appl"/></svg></span>Appliance</button>
+            <button class="cat" data-issue="handyman"><span class="ic"><svg class="i"><use href="#i-wrench"/></svg></span>Handyman</button>
+          </div>
+
+          <div class="stack">
+            <div class="sec-h"><span class="label">Next included visit</span><button class="linkbtn" data-go="visits">All visits</button></div>
+            <div class="panel row">
+              <div class="date-chip"><span>Mar</span><b>17</b></div>
+              <div class="grow">
+                <strong>Spring AC tune-up</strong>
+                <div class="muted" style="font-size:13px">Tue · 8–10 AM · Desert Air Heating & Cooling</div>
+              </div>
+              <span class="pill good">Included</span>
+            </div>
+          </div>
+
+          <button class="panel alert" data-go="record" style="text-align:left;width:100%">
+            <span class="ic"><svg class="i"><use href="#i-alert"/></svg></span>
+            <span><strong style="display:block">Your AC is 11 years old</strong><span class="muted" style="font-size:13px">Arizona units last about 10–15 years. See your home health record.</span></span>
+          </button>
+
+          <div class="panel saved">
+            <div><div class="label">Saved this year</div><div class="muted" style="font-size:13px">Waived trip fees and member pricing</div></div>
+            <div class="big num">$412</div>
+          </div>
+        </section>
+
+        <!-- HELP: TYPE -->
+        <section class="screen" data-screen="help-type" hidden>
+          <div class="topbar"><button class="back" data-go="home" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="steps-mini">Step 1 of 3</span></div>
+          <h2 class="h">What needs help?</h2>
+          <div class="list">
+            <button class="choice" data-issue="ac"><span class="ic"><svg class="i"><use href="#i-ac"/></svg></span><span><strong>AC or heating</strong><small>Not cooling, not turning on, strange noises</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+            <button class="choice" data-issue="plumbing"><span class="ic"><svg class="i"><use href="#i-drop"/></svg></span><span><strong>Plumbing or leak</strong><small>Leaks, clogs, water heater, no hot water</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+            <button class="choice" data-issue="electrical"><span class="ic"><svg class="i"><use href="#i-bolt"/></svg></span><span><strong>Electrical</strong><small>Outages, breakers tripping, sparking outlets</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+            <button class="choice" data-issue="roof"><span class="ic"><svg class="i"><use href="#i-roof"/></svg></span><span><strong>Roof</strong><small>Active leak, storm damage, missing tiles</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+            <button class="choice" data-issue="appliance"><span class="ic"><svg class="i"><use href="#i-appl"/></svg></span><span><strong>Appliance</strong><small>Fridge, washer, dryer, dishwasher, oven</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+            <button class="choice" data-issue="handyman"><span class="ic"><svg class="i"><use href="#i-wrench"/></svg></span><span><strong>Something else</strong><small>Doors, fixtures, small repairs</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+          </div>
+        </section>
+
+        <!-- HELP: URGENCY -->
+        <section class="screen" data-screen="help-urgency" hidden>
+          <div class="topbar"><button class="back" data-go="help-type" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t" data-bind="issueName">AC or heating</span><span class="steps-mini">Step 2 of 3</span></div>
+          <h2 class="h">How urgent is it?</h2>
+          <div class="list">
+            <button class="choice hot" data-urgency="emergency"><span class="ic"><svg class="i"><use href="#i-alert"/></svg></span><span><strong>Emergency, send someone now</strong><small>A pro arrives within 4 hours, guaranteed</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+            <button class="choice" data-urgency="soon"><span class="ic"><svg class="i"><use href="#i-clock"/></svg></span><span><strong>Today or tomorrow</strong><small>Pick a 2-hour arrival window</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+            <button class="choice" data-urgency="schedule"><span class="ic"><svg class="i"><use href="#i-cal"/></svg></span><span><strong>Schedule a visit</strong><small>Any day that works for you</small></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+          </div>
+          <div class="panel assure"><svg class="i"><use href="#i-shield"/></svg><span>Emergency response is included in your membership. If we miss the 4-hour window, your next month is free.</span></div>
+        </section>
+
+        <!-- HELP: DETAILS -->
+        <section class="screen" data-screen="help-details" hidden>
+          <div class="topbar"><button class="back" data-go="help-urgency" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t" data-bind="issueName">AC or heating</span><span class="steps-mini">Step 3 of 3</span></div>
+          <h2 class="h">Tell us what's happening</h2>
+          <label class="label" for="desc">Describe the problem</label>
+          <textarea id="desc">AC is running but blowing warm air. House is 88° and climbing.</textarea>
+          <div class="photos">
+            <div class="thumb">Photo of<br>thermostat</div>
+            <div class="thumb">Photo of<br>outdoor unit</div>
+            <button class="addphoto" aria-label="Add photo"><svg class="i"><use href="#i-cam"/></svg></button>
+          </div>
+          <div class="panel row">
+            <svg class="i" style="color:var(--brand)"><use href="#i-pin"/></svg>
+            <div class="grow"><strong>Home</strong><div class="muted" style="font-size:13px">2418 E Palo Verde Dr, Gilbert</div></div>
+          </div>
+          <div class="panel lines">
+            <div class="l"><span>Trip and diagnostic fee</span><b><span class="strike">$89</span>$0</b></div>
+            <div class="l"><span>Repairs</span><b>15% member discount</b></div>
+            <div class="l"><span>Arrival</span><b data-bind="urgencyLabel">Within 4 hours</b></div>
+            <hr>
+            <div class="assure"><svg class="i"><use href="#i-check"/></svg><span>You approve every price before any work starts.</span></div>
+          </div>
+          <button class="btn signal" id="sendPro">Send a pro</button>
+        </section>
+
+        <!-- TRACKING -->
+        <section class="screen" data-screen="tracking" hidden>
+          <div class="topbar"><button class="back" data-go="home" aria-label="Back to home"><svg class="i"><use href="#i-back"/></svg></button><span class="t">Help is on the way</span></div>
+          <div class="map">
+            <svg viewBox="0 0 340 170" role="img" aria-label="Map showing the pro's route to your home">
+              <rect width="340" height="170" fill="var(--map-bg)"/>
+              <g fill="var(--map-block)">
+                <rect x="10" y="10" width="70" height="40" rx="6"/><rect x="100" y="10" width="90" height="40" rx="6"/><rect x="210" y="10" width="120" height="40" rx="6"/>
+                <rect x="10" y="70" width="70" height="40" rx="6"/><rect x="100" y="70" width="50" height="40" rx="6"/><rect x="170" y="70" width="70" height="40" rx="6"/><rect x="260" y="70" width="70" height="40" rx="6"/>
+                <rect x="10" y="130" width="130" height="34" rx="6"/><rect x="160" y="130" width="80" height="34" rx="6"/><rect x="260" y="130" width="70" height="34" rx="6"/>
+              </g>
+              <g stroke="var(--map-road)" stroke-width="10" fill="none">
+                <path d="M0 60H340M0 120H340M90 0V170M250 0V170"/>
+              </g>
+              <path id="route" d="M30 120H90V60H250V100" fill="none" stroke="var(--brand)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 8"/>
+              <g transform="translate(250 104)">
+                <circle r="14" fill="var(--signal)" opacity=".18"/>
+                <circle r="7" fill="var(--signal)"/>
+              </g>
+              <g id="truck" hidden>
+                <circle r="9" fill="var(--brand)"/>
+                <circle r="3.5" fill="var(--surface)"/>
+                <animateMotion id="truckMove" dur="14s" repeatCount="indefinite" path="M30 120H90V60H250V100"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="eta">
+            <div><div class="label" id="etaLabel">Estimated arrival</div><div class="when" id="etaTime">--:--</div></div>
+            <span class="pill brand" id="etaPill"><span class="dot"></span>Matching</span>
+          </div>
+          <div class="guarantee"><svg class="i"><use href="#i-shield"/></svg><span id="guaranteeText">Guaranteed by 8:02 PM or your next month is free</span></div>
+
+          <div class="panel" id="proBox">
+            <div class="searching"><span class="spinner"></span>Finding the closest available pro…</div>
+          </div>
+
+          <div class="panel">
+            <ol class="timeline" id="timeline">
+              <li class="done"><span class="dot"><svg class="i" style="width:14px;height:14px;stroke-width:3"><use href="#i-check"/></svg></span><span class="tt">Request received</span><time id="t0"></time></li>
+              <li class="now"><span class="dot"></span><span class="tt">Pro assigned</span><time id="t1"></time></li>
+              <li><span class="dot"></span><span class="tt">On the way</span><time id="t2"></time></li>
+              <li><span class="dot"></span><span class="tt">Arrived and diagnosing</span><time id="t3"></time></li>
+            </ol>
+          </div>
+
+          <button class="btn primary" data-go="estimate">Demo: pro arrives and diagnoses</button>
+          <div class="demo-note">Investor demo control. Skips ahead to the estimate.</div>
+        </section>
+
+        <!-- ESTIMATE -->
+        <section class="screen" data-screen="estimate" hidden>
+          <div class="topbar"><button class="back" data-go="tracking" aria-label="Back"><svg class="i"><use href="#i-back"/></svg></button><span class="t">Repair estimate</span></div>
+          <div class="pro panel">
+            <div class="face">MT</div>
+            <div class="grow">
+              <strong>Marcus found the problem</strong>
+              <div class="meta">Arrived at <span id="arrivedAt">4:58 PM</span> · 56 min after your request</div>
+            </div>
+          </div>
+          <h2 class="h">Failed capacitor and contactor on the outdoor unit</h2>
+          <p class="sub">Common in Phoenix heat. The compressor itself is fine. Repair takes about an hour.</p>
+          <div class="panel lines">
+            <div class="l"><span>Run capacitor (part)</span><b>$68.00</b></div>
+            <div class="l"><span>Contactor (part)</span><b>$54.00</b></div>
+            <div class="l"><span>Labor, 1 hour</span><b>$129.00</b></div>
+            <div class="l"><span>Trip and diagnostic</span><b><span class="strike">$89.00</span>$0.00</b></div>
+            <hr>
+            <div class="l"><span>Subtotal</span><b>$251.00</b></div>
+            <div class="l disc"><span>Member discount (15%)</span><b>−$37.65</b></div>
+            <div class="l total"><span>You pay</span><b>$213.35</b></div>
+          </div>
+          <div class="assure"><svg class="i"><use href="#i-shield"/></svg><span>Price set from the member price book. Work is covered by the Haven Club 90-day workmanship guarantee.</span></div>
+          <button class="btn primary" data-go="complete" id="approve">Approve and start repair</button>
+          <button class="btn ghost" data-toast="Message sent to Marcus">Ask Marcus a question</button>
+        </section>
+
+        <!-- COMPLETE -->
+        <section class="screen" data-screen="complete" hidden>
+          <div class="hero-ok">
+            <div class="ring"><svg class="i"><use href="#i-check"/></svg></div>
+            <h2 class="h">Your AC is running again</h2>
+            <p class="sub" style="margin:0">Cooling started at 5:51 PM. Paid $213.35 with your card on file.</p>
+          </div>
+          <div class="panel lines">
+            <div class="l"><span>Request to arrival</span><b>56 min</b></div>
+            <div class="l"><span>You saved</span><b class="disc">$126.65</b></div>
+            <div class="l"><span>Workmanship guarantee</span><b>Until Feb 7, 2027</b></div>
+          </div>
+          <div class="panel" style="text-align:center;display:grid;gap:10px">
+            <strong>How did Marcus do?</strong>
+            <div class="stars" id="stars">
+              <button aria-label="1 star" data-star="1"><svg class="i"><use href="#i-star"/></svg></button>
+              <button aria-label="2 stars" data-star="2"><svg class="i"><use href="#i-star"/></svg></button>
+              <button aria-label="3 stars" data-star="3"><svg class="i"><use href="#i-star"/></svg></button>
+              <button aria-label="4 stars" data-star="4"><svg class="i"><use href="#i-star"/></svg></button>
+              <button aria-label="5 stars" data-star="5"><svg class="i"><use href="#i-star"/></svg></button>
+            </div>
+            <span class="muted" style="font-size:12.5px">Ratings keep every pro in our network accountable.</span>
+          </div>
+          <button class="btn primary" data-go="home">Done</button>
+        </section>
+
+        <!-- VISITS -->
+        <section class="screen" data-screen="visits" hidden>
+          <h2 class="h" style="padding-top:8px">Your included visits</h2>
+          <p class="sub">Complete plan · resets Jan 1, 2027</p>
+          <div class="panel stack">
+            <div class="meter"><div class="top">HVAC tune-ups <span>1 of 2 used</span></div><div class="bar"><i style="width:50%"></i></div></div>
+            <div class="meter"><div class="top">Plumbing check <span>0 of 1 used</span></div><div class="bar"><i style="width:0%"></i></div></div>
+            <div class="meter"><div class="top">Whole-home inspection <span>1 of 1 used</span></div><div class="bar"><i style="width:100%"></i></div></div>
+            <div class="meter"><div class="top">Handyman hour <span>0 of 1 used</span></div><div class="bar"><i style="width:0%"></i></div></div>
+          </div>
+          <div class="label">Upcoming</div>
+          <div class="panel row">
+            <div class="date-chip"><span>Mar</span><b>17</b></div>
+            <div class="grow"><strong>Spring AC tune-up</strong><div class="muted" style="font-size:13px">8–10 AM · Desert Air Heating & Cooling</div></div>
+            <button class="btn ghost small" data-toast="Reschedule options sent">Change</button>
+          </div>
+          <div class="label">Book what's left</div>
+          <div class="panel row">
+            <span class="ic" style="width:40px;height:40px;border-radius:12px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center"><svg class="i"><use href="#i-drop"/></svg></span>
+            <div class="grow"><strong>Plumbing check</strong><div class="muted" style="font-size:13px">Water heater flush, leak and pressure test</div></div>
+            <button class="btn primary small" data-book>Book</button>
+          </div>
+          <div class="panel row">
+            <span class="ic" style="width:40px;height:40px;border-radius:12px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center"><svg class="i"><use href="#i-wrench"/></svg></span>
+            <div class="grow"><strong>Handyman hour</strong><div class="muted" style="font-size:13px">Save up small jobs for one visit</div></div>
+            <button class="btn primary small" data-book>Book</button>
+          </div>
+        </section>
+
+        <!-- HOME RECORD -->
+        <section class="screen" data-screen="record" hidden>
+          <h2 class="h" style="padding-top:8px">Home health</h2>
+          <p class="sub">2418 E Palo Verde Dr · built 2009 · 2,140 sq ft</p>
+          <div class="panel score">
+            <svg class="gauge" viewBox="0 0 80 80" aria-hidden="true">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="var(--line)" stroke-width="8"/>
+              <circle cx="40" cy="40" r="32" fill="none" stroke="var(--good)" stroke-width="8" stroke-linecap="round" stroke-dasharray="160.8 201" transform="rotate(-90 40 40)"/>
+              <text x="40" y="46" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)" font-family="Bricolage Grotesque, sans-serif">80</text>
+            </svg>
+            <div><strong>Good shape, one system to plan for</strong><div class="muted" style="font-size:13px">Based on 4 inspections by Haven Club pros</div></div>
+          </div>
+          <div class="panel">
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-ac"/></svg></span><div class="grow"><strong>AC / heat pump</strong><small>Trane 3.5 ton · 11 years old</small></div><span class="pill warn">Plan ahead</span></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-heater"/></svg></span><div class="grow"><strong>Water heater</strong><small>50 gal gas · 6 years · flushed Oct 2026</small></div><span class="pill good">Good</span></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-roof"/></svg></span><div class="grow"><strong>Roof</strong><small>Concrete tile · underlayment 17 years</small></div><span class="pill good">Good</span></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-bolt"/></svg></span><div class="grow"><strong>Electrical panel</strong><small>200 amp · no issues found</small></div><span class="pill good">Good</span></div>
+            <div class="sys-row"><span class="ic"><svg class="i"><use href="#i-drop"/></svg></span><div class="grow"><strong>Plumbing</strong><small>Water pressure 74 psi</small></div><span class="pill good">Good</span></div>
+          </div>
+          <div class="panel">
+            <div class="label" style="margin-bottom:12px">Service history</div>
+            <ul class="hist">
+              <li><time>Nov 2026</time><span><strong>AC repair</strong> · capacitor and contactor replaced · $213.35</span></li>
+              <li><time>Oct 2026</time><span><strong>Whole-home inspection</strong> · included</span></li>
+              <li><time>Oct 2026</time><span><strong>Fall HVAC tune-up</strong> · included</span></li>
+              <li><time>Jul 2026</time><span><strong>Joined Haven Club</strong> · founding member</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- MEMBER CARD -->
+        <section class="screen" data-screen="card" hidden>
+          <h2 class="h" style="padding-top:8px">Member card</h2>
+          <div class="mcard">
+            <div class="brandline">
+              <div class="logo"><svg class="i" style="width:22px;height:22px"><use href="#i-shield"/></svg>Haven Club</div>
+              <div class="tier">Complete</div>
+            </div>
+            <div>
+              <div class="mname">Maria Reyes</div>
+              <div class="mid">HC 0042 1187 · Founding member</div>
+            </div>
+            <div class="hotline">24/7 member line<b>(602) 555-0142</b></div>
+          </div>
+          <div class="duo">
+            <button class="btn primary" data-go="help-type"><svg class="i"><use href="#i-alert"/></svg>Get help</button>
+            <button class="btn ghost" id="copyLine"><svg class="i"><use href="#i-phone"/></svg>Copy number</button>
+          </div>
+          <div class="panel kv">
+            <div class="l"><span>Plan</span><span>Complete · $49/mo</span></div>
+            <div class="l"><span>Founding rate</span><span>Locked for life</span></div>
+            <div class="l"><span>Next charge</span><span>Dec 1, 2026</span></div>
+            <div class="l"><span>Emergency window</span><span>4 hours</span></div>
+            <div class="l"><span>Member discount</span><span>15% on repairs</span></div>
+            <div class="l"><span>Member since</span><span>July 2026</span></div>
+          </div>
+          <div class="panel row">
+            <div class="grow"><strong>Give a month, get a month</strong><div class="muted" style="font-size:13px">Neighbors who join with your code get their first month free, and so do you.</div></div>
+            <button class="btn primary small" data-toast="Invite link ready to share">Invite</button>
+          </div>
+        </section>
+      </div>
+
+      <nav class="tabbar" aria-label="App sections">
+        <button data-tab="home" aria-selected="true"><svg class="i"><use href="#i-home"/></svg>Home</button>
+        <button data-tab="visits"><svg class="i"><use href="#i-cal"/></svg>Visits</button>
+        <button data-tab="record"><svg class="i"><use href="#i-house"/></svg>My home</button>
+        <button data-tab="card"><svg class="i"><use href="#i-card"/></svg>Card</button>
+      </nav>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"><svg class="i"><use href="#i-check"/></svg><span id="toastText">Done</span></div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  var view = document.getElementById('view');
+  var screens = Array.prototype.slice.call(document.querySelectorAll('[data-screen]'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-tab]'));
+  var walk = Array.prototype.slice.call(document.querySelectorAll('#walk button'));
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timers = [];
+  var state = { issue: 'ac', urgency: 'emergency' };
+
+  var ISSUES = {
+    ac: 'AC or heating', plumbing: 'Plumbing or leak', electrical: 'Electrical',
+    roof: 'Roof', appliance: 'Appliance', handyman: 'Something else'
+  };
+  var URGENCY = { emergency: 'Within 4 hours', soon: 'Today, 6–8 PM', schedule: 'You pick the day' };
+  var DESCS = {
+    ac: 'AC is running but blowing warm air. House is 88° and climbing.',
+    plumbing: 'Water leaking under the kitchen sink, cabinet floor is soaked.',
+    electrical: 'Breaker for the kitchen keeps tripping when the microwave runs.',
+    roof: 'Water stain spreading on the bedroom ceiling after last night’s storm.',
+    appliance: 'Refrigerator stopped cooling. Freezer is still cold.',
+    handyman: 'Back gate latch is broken and the gate won’t close.'
+  };
+  var TAB_OF = { home: 'home', 'help-type': 'home', 'help-urgency': 'home', 'help-details': 'home', tracking: 'home', estimate: 'home', complete: 'home', visits: 'visits', record: 'record', card: 'card' };
+  var WALK_OF = { home: 'home', 'help-type': 'help-type', 'help-urgency': 'help-type', 'help-details': 'help-type', tracking: 'tracking', estimate: 'estimate', complete: 'estimate', visits: 'visits', record: 'record', card: 'card' };
+
+  function fmt(d) {
+    var h = d.getHours(), m = d.getMinutes();
+    var ap = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ap;
+  }
+  function plus(mins) { return new Date(Date.now() + mins * 60000); }
+
+  function tickClock() {
+    var d = new Date(), h = d.getHours() % 12 || 12, m = d.getMinutes();
+    document.getElementById('clock').textContent = h + ':' + (m < 10 ? '0' : '') + m;
+  }
+  tickClock(); setInterval(tickClock, 30000);
+
+  function bind() {
+    document.querySelectorAll('[data-bind="issueName"]').forEach(function (el) { el.textContent = ISSUES[state.issue]; });
+    document.querySelectorAll('[data-bind="urgencyLabel"]').forEach(function (el) { el.textContent = URGENCY[state.urgency]; });
+  }
+
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+  function go(id) {
+    if (id !== 'tracking') clearTimers();
+    screens.forEach(function (s) { s.hidden = s.dataset.screen !== id; });
+    view.scrollTop = 0;
+    var tab = TAB_OF[id];
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.tab === tab ? 'true' : 'false'); });
+    var w = WALK_OF[id];
+    walk.forEach(function (b) { if (b.dataset.go === w) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    bind();
+    if (id === 'tracking') startTracking();
+    if (id === 'estimate') document.getElementById('arrivedAt').textContent = fmt(plus(0));
+  }
+
+  function setStep(n) {
+    var lis = document.querySelectorAll('#timeline li');
+    lis.forEach(function (li, i) {
+      li.classList.toggle('done', i < n);
+      li.classList.toggle('now', i === n);
+      var dot = li.querySelector('.dot');
+      dot.innerHTML = i < n ? '<svg class="i" style="width:14px;height:14px;stroke-width:3"><use href="#i-check"/></svg>' : '';
+    });
+  }
+
+  function startTracking() {
+    clearTimers();
+    var started = new Date();
+    var issueShort = { ac: 'HVAC', plumbing: 'Plumbing', electrical: 'Electrical', roof: 'Roofing', appliance: 'Appliance', handyman: 'Handyman' }[state.issue];
+    document.getElementById('t0').textContent = fmt(started);
+    ['t1', 't2', 't3'].forEach(function (id) { document.getElementById(id).textContent = ''; });
+    document.getElementById('etaTime').textContent = '--:--';
+    document.getElementById('etaLabel').textContent = 'Estimated arrival';
+    var pill = document.getElementById('etaPill');
+    pill.className = 'pill brand'; pill.innerHTML = '<span class="dot"></span>Matching';
+    document.getElementById('guaranteeText').textContent = 'Guaranteed by ' + fmt(plus(240)) + ' or your next month is free';
+    document.getElementById('proBox').innerHTML = '<div class="searching"><span class="spinner"></span>Finding the closest available ' + issueShort.toLowerCase() + ' pro…</div>';
+    document.getElementById('truck').hidden = true;
+    setStep(1);
+
+    timers.push(setTimeout(function () {
+      document.getElementById('t1').textContent = fmt(new Date());
+      document.getElementById('proBox').innerHTML =
+        '<div class="pro"><div class="face">MT</div><div class="grow" style="min-width:0">' +
+        '<strong>Marcus T.</strong><div class="meta">Desert Air Heating & Cooling</div>' +
+        '<div class="badges"><span class="pill good"><svg class="i" style="width:14px;height:14px"><use href="#i-star"/></svg>4.9 · 312 jobs</span><span class="pill brand">Licensed & insured</span></div>' +
+        '</div></div>' +
+        '<div class="duo" style="margin-top:14px"><button class="btn ghost small" style="width:100%" data-toast="Message sent to Marcus"><svg class="i"><use href="#i-chat"/></svg>Message</button><button class="btn ghost small" style="width:100%" data-toast="Calling through the member line"><svg class="i"><use href="#i-phone"/></svg>Call</button></div>';
+      document.getElementById('etaTime').textContent = fmt(plus(56));
+      pill.className = 'pill good'; pill.innerHTML = '<span class="dot"></span>Accepted';
+      setStep(2);
+    }, 1800));
+
+    timers.push(setTimeout(function () {
+      document.getElementById('t2').textContent = fmt(new Date());
+      pill.className = 'pill good'; pill.innerHTML = '<span class="dot"></span>On the way · 56 min';
+      var truck = document.getElementById('truck');
+      truck.hidden = false;
+      if (reduced) { var mv = document.getElementById('truckMove'); if (mv) mv.remove(); truck.setAttribute('transform', 'translate(90 60)'); }
+      setStep(2);
+      var lis = document.querySelectorAll('#timeline li');
+      lis[2].classList.add('now');
+    }, 4200));
+  }
+
+  var toastTimer;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    document.getElementById('toastText').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2200);
+  }
+
+  document.addEventListener('click', function (e) {
+    var el;
+    if ((el = e.target.closest('[data-issue]'))) {
+      state.issue = el.dataset.issue;
+      document.getElementById('desc').value = DESCS[state.issue];
+      go('help-urgency'); return;
+    }
+    if ((el = e.target.closest('[data-urgency]'))) { state.urgency = el.dataset.urgency; go('help-details'); return; }
+    if ((el = e.target.closest('[data-tab]'))) { go(el.dataset.tab); return; }
+    if ((el = e.target.closest('[data-go]'))) {
+      if (el.dataset.demo) { state.issue = el.dataset.demo; state.urgency = 'emergency'; }
+      go(el.dataset.go); return;
+    }
+    if ((el = e.target.closest('[data-toast]'))) { toast(el.dataset.toast); return; }
+    if ((el = e.target.closest('[data-book]'))) {
+      el.textContent = 'Booked'; el.className = 'btn ghost small'; el.disabled = true;
+      toast('Booked. A pro will confirm a time within 1 hour.'); return;
+    }
+    if ((el = e.target.closest('[data-star]'))) {
+      var n = +el.dataset.star;
+      document.querySelectorAll('#stars button').forEach(function (b) { b.classList.toggle('on', +b.dataset.star <= n); });
+      toast(n >= 4 ? 'Thanks! Marcus will see your rating.' : 'Thanks. Our team will follow up today.'); return;
+    }
+    if (e.target.closest('#sendPro')) { go('tracking'); return; }
+    if (e.target.closest('#copyLine')) {
+      var num = '(602) 555-0142';
+      try {
+        navigator.clipboard.writeText(num).then(function () { toast('Member line copied'); }, function () { toast('Member line: ' + num); });
+      } catch (err) { toast('Member line: ' + num); }
+      return;
+    }
+  });
+
+  document.querySelector('.addphoto').addEventListener('click', function () { toast('Photo added'); });
+
+  go('home');
+})();
+</script>
