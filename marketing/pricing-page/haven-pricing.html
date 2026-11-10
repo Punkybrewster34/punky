@@ -228,12 +228,30 @@ body { background: var(--hh-bg); margin: 0; }
   </defs>
 </svg>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "Haven House Cleaning",
+  "url": "https://havenshousecleaning.com/",
+  "telephone": "+1-602-609-4447",
+  "priceRange": "$$",
+  "openingHours": "Mo-Sa 08:00-17:00",
+  "areaServed": ["Phoenix AZ", "Scottsdale AZ", "Paradise Valley AZ", "Tempe AZ", "Mesa AZ", "Chandler AZ", "Gilbert AZ", "Glendale AZ", "Peoria AZ", "Surprise AZ", "Avondale AZ", "Goodyear AZ", "Tucson AZ", "Oro Valley AZ"],
+  "makesOffer": [
+    { "@type": "Offer", "name": "Standard house cleaning", "price": "129", "priceCurrency": "USD", "description": "Starting price for a 1 bed, 1 bath home" },
+    { "@type": "Offer", "name": "Deep cleaning", "price": "194", "priceCurrency": "USD", "description": "Starting price for a 1 bed, 1 bath home" },
+    { "@type": "Offer", "name": "Move in / move out cleaning", "price": "226", "priceCurrency": "USD", "description": "Starting price for a 1 bed, 1 bath home" }
+  ]
+}
+</script>
+
 <div class="hh" id="haven-pricing">
 
   <header class="hero">
     <div class="wrap">
       <div class="eyebrow">Haven House Cleaning · Phoenix & Tucson</div>
-      <h1>See your price in <em>30 seconds.</em> No phone call needed.</h1>
+      <h1>House cleaning prices, upfront. See yours in <em>30 seconds.</em></h1>
       <p class="lede">Honest, upfront pricing for every home. Pick your home size and the clean you want, and book a time that works for you. If anything's missed, we come back and make it right for free.</p>
       <div class="hero-ctas">
         <a class="btn btn-gold" href="#hh-estimator">Get my price</a>
@@ -362,7 +380,24 @@ body { background: var(--hh-bg); margin: 0; }
         <h2>Simple pricing for every kind of clean</h2>
         <p>Prices below are for a 1-bedroom, 1-bath home. Use the calculator above for your exact home.</p>
       </div>
-      <div class="plans" id="plans"></div>
+      <div class="plans" id="plans"><div class="card plan feature"><h3>Standard</h3><div><div class="from">Starting at</div><div class="amt">$129</div></div><p>Regular upkeep for a home that’s already in good shape.</p><ul><li><svg class="i"><use href="#hh-check"/></svg><span>Kitchen and bathrooms cleaned and sanitized</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Dusting, vacuuming and mopping</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Beds made, trash out</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Save up to 20% with a recurring plan</span></li></ul><a class="btn btn-gold" href="#hh-estimator" data-pick="standard">Price my home</a></div><div class="card plan"><h3>Deep</h3><div><div class="from">Starting at</div><div class="amt">$194</div></div><p>A top-to-bottom reset, room by room.</p><ul><li><svg class="i"><use href="#hh-check"/></svg><span>Everything in Standard</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Baseboards, doors and light switches</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Cabinet fronts and appliance exteriors</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Built-up grime in kitchen and bath</span></li></ul><a class="btn btn-line" href="#hh-estimator" data-pick="deep">Price my home</a></div><div class="card plan"><h3>Move in / out</h3><div><div class="from">Starting at</div><div class="amt">$226</div></div><p>An empty-home clean that helps you get your deposit back.</p><ul><li><svg class="i"><use href="#hh-check"/></svg><span>Everything in Deep</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Inside cabinets, drawers and closets</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Inside oven and fridge</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Flat price, no surprises</span></li></ul><a class="btn btn-line" href="#hh-estimator" data-pick="move">Price my home</a></div><div class="card plan"><h3>Airbnb</h3><div><div class="from">Starting at</div><div class="amt">$95</div></div><p>Fast, consistent turnovers between guests.</p><ul><li><svg class="i"><use href="#hh-check"/></svg><span>Linen change and bed staging</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Restock check and damage photos</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Same-day turnovers</span></li><li><svg class="i"><use href="#hh-check"/></svg><span>Volume pricing for multiple listings</span></li></ul><a class="btn btn-line" href="#hh-estimator" data-pick="airbnb">Price my home</a></div></div>
+    </div>
+  </section>
+
+  <!-- PRICE BY HOME SIZE (static text so Google can read every price) -->
+  <section class="sec" id="hh-sizes">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Price by home size</span>
+        <h2>How much does house cleaning cost in Phoenix?</h2>
+        <p>Our prices for homes up to 2,500 sq ft. Homes from 2,500 to 4,500 sq ft add $40 to $80. Extras like inside the oven or fridge are added on top.</p>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Home size</th><th>Standard, one time</th><th>Every 2 weeks</th><th>Deep clean</th><th>Move in / out</th></tr></thead>
+          <tbody id="sizeRows"><tr><td>1 bed, 1 bath</td><td>$129</td><td>$110</td><td>$194</td><td>$226</td></tr><tr><td>2 bed, 1 bath</td><td>$159</td><td>$135</td><td>$239</td><td>$278</td></tr><tr><td>2 bed, 2 bath</td><td>$184</td><td>$156</td><td>$276</td><td>$322</td></tr><tr><td>3 bed, 2 bath</td><td>$214</td><td>$182</td><td>$321</td><td>$375</td></tr><tr><td>3 bed, 3 bath</td><td>$239</td><td>$203</td><td>$359</td><td>$418</td></tr><tr><td>4 bed, 2 bath</td><td>$244</td><td>$207</td><td>$366</td><td>$427</td></tr><tr><td>4 bed, 3 bath</td><td>$269</td><td>$229</td><td>$404</td><td>$471</td></tr><tr><td>5 bed, 3 bath</td><td>$299</td><td>$254</td><td>$449</td><td>$523</td></tr><tr><td>5 bed, 4 bath</td><td>$324</td><td>$275</td><td>$486</td><td>$567</td></tr></tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -376,7 +411,7 @@ body { background: var(--hh-bg); margin: 0; }
       <div class="tbl-wrap">
         <table>
           <thead><tr><th>Task</th><th>Standard</th><th>Deep</th><th>Move in / out</th></tr></thead>
-          <tbody id="incl"></tbody>
+          <tbody id="incl"><tr><td>Dust surfaces, furniture and decor</td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Vacuum and mop all floors</td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Clean and sanitize bathrooms</td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Kitchen counters, sink and stovetop</td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Wipe appliance exteriors</td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Make beds and empty trash</td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="n" aria-label="Not included">—</span></td></tr><tr><td>Baseboards, doors and door frames</td><td><span class="n" aria-label="Not included">—</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Light switches and outlets</td><td><span class="n" aria-label="Not included">—</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Window sills and blinds</td><td><span class="n" aria-label="Not included">—</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Cabinet fronts, hand-wiped</td><td><span class="n" aria-label="Not included">—</span></td><td><span class="y" aria-label="Included">✓</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Inside cabinets and drawers</td><td><span class="n" aria-label="Not included">—</span></td><td><span class="n" aria-label="Not included">—</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Inside oven and fridge</td><td><span class="n" aria-label="Not included">—</span></td><td><span class="n" aria-label="Not included">—</span></td><td><span class="y" aria-label="Included">✓</span></td></tr><tr><td>Inside closets</td><td><span class="n" aria-label="Not included">—</span></td><td><span class="n" aria-label="Not included">—</span></td><td><span class="y" aria-label="Included">✓</span></td></tr></tbody>
         </table>
       </div>
     </div>
@@ -616,6 +651,23 @@ body { background: var(--hh-bg); margin: 0; }
     var Y = '<span class="y" aria-label="Included">✓</span>', N = '<span class="n" aria-label="Not included">—</span>';
     $('incl').innerHTML = rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + (r[1] ? Y : N) + '</td><td>' + (r[2] ? Y : N) + '</td><td>' + (r[3] ? Y : N) + '</td></tr>'; }).join('');
     $('phoneText').textContent = CONFIG.phone;
+
+    var sizes = [[1, 1], [2, 1], [2, 2], [3, 2], [3, 3], [4, 2], [4, 3], [5, 3], [5, 4]];
+    $('sizeRows').innerHTML = sizes.map(function (z) {
+      var s = basePrice('standard', z[0], z[1], 1);
+      return '<tr><td>' + z[0] + ' bed, ' + z[1] + ' bath</td><td>' + money(s) + '</td><td>' + money(s - Math.round(s * CONFIG.discounts.biweekly)) + '</td><td>' + money(basePrice('deep', z[0], z[1], 1)) + '</td><td>' + money(basePrice('move', z[0], z[1], 1)) + '</td></tr>';
+    }).join('');
+  }
+
+  /* Prefill from the homepage mini calculator: /pricing?type=deep&beds=3&baths=2 */
+  function readParams() {
+    try {
+      var q = new URLSearchParams(window.location.search);
+      if (NAMES[q.get('type')]) state.service = q.get('type');
+      var b = parseInt(q.get('beds'), 10), ba = parseInt(q.get('baths'), 10);
+      if (b >= 1 && b <= 6) state.beds = b;
+      if (ba >= 1 && ba <= 5) state.baths = ba;
+    } catch (e) { /* no params */ }
   }
 
   /* ---------- Booking ---------- */
@@ -714,6 +766,7 @@ body { background: var(--hh-bg); margin: 0; }
     handleForm('bf', { request: 'Call requested: ' + booking.day + ' at ' + booking.slot }, 'You’re set for ' + booking.day + ' at ' + booking.slot + '. We’ll text a confirmation shortly.');
   });
 
+  readParams();
   buildStatic();
   buildCalendar();
   render();

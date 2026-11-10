@@ -1,0 +1,374 @@
+<title>Haven House Homepage</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: one clear path. Hero with headline + mini price calculator, trust strip, 3 services,
+   3 steps, real reviews, price snapshot, short FAQ, cities, final CTA. Light look matching the Haven House site.
+   Scoped under .hp so it can be pasted into a GoHighLevel custom code element. */
+:root {
+  --hp-navy: #12307D;
+  --hp-navy-deep: #0B1F55;
+  --hp-navy-soft: #E9EEF9;
+  --hp-ink: #0E1A33;
+  --hp-muted: #56627A;
+  --hp-line: #E2E7F0;
+  --hp-bg: #F6F7FB;
+  --hp-surface: #FFFFFF;
+  --hp-gold: #F4B81C;
+  --hp-gold-ink: #3A2A00;
+  --hp-good: #1E7A4C;
+  --hp-on-navy: #FFFFFF;
+  --hp-on-navy-muted: #B9C6E6;
+  --hp-serif: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --hp-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+body { background: var(--hp-bg); margin: 0; }
+.hp { background: var(--hp-bg); color: var(--hp-ink); font-family: var(--hp-sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+.hp *, .hp *::before, .hp *::after { box-sizing: border-box; }
+.hp button { font: inherit; color: inherit; cursor: pointer; }
+.hp :focus-visible { outline: 3px solid var(--hp-gold); outline-offset: 2px; }
+.hp .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.hp h1, .hp h2, .hp h3 { font-family: var(--hp-serif); font-weight: 400; letter-spacing: -.01em; line-height: 1.08; margin: 0; text-wrap: balance; }
+.hp .eyebrow { font-size: 12.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--hp-navy); }
+.hp .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 14px; padding: 16px 22px; font-weight: 800; font-size: 16px; text-decoration: none; line-height: 1.2; }
+.hp .btn-gold { background: var(--hp-gold); color: var(--hp-gold-ink); }
+.hp .btn-line { background: transparent; color: var(--hp-navy); border: 1.5px solid var(--hp-line); }
+.hp a.link { color: var(--hp-navy); font-weight: 700; }
+.hp svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* Hero */
+.hp .hero { background: radial-gradient(120% 140% at 85% 0%, var(--hp-navy) 0%, var(--hp-navy-deep) 70%); color: var(--hp-on-navy); padding-block: 64px 72px; position: relative; overflow: hidden; }
+.hp .hero::after { content: ""; position: absolute; right: -140px; bottom: -180px; width: 440px; height: 440px; border-radius: 50%; border: 56px solid var(--hp-gold); opacity: .07; }
+.hp .hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 48px; align-items: center; position: relative; z-index: 1; }
+.hp .hero .eyebrow { color: var(--hp-gold); }
+.hp .hero h1 { font-size: clamp(38px, 5.6vw, 62px); margin-top: 14px; }
+.hp .hero h1 em { font-style: italic; color: var(--hp-gold); }
+.hp .hero p.lede { font-size: clamp(17px, 2vw, 19px); color: var(--hp-on-navy-muted); margin: 18px 0 26px; max-width: 32em; }
+.hp .hero .btn-line { color: var(--hp-on-navy); border-color: rgba(255,255,255,.35); }
+.hp .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.hp .stars { color: var(--hp-gold); letter-spacing: 1px; }
+.hp .rating { margin-top: 26px; font-size: 14px; color: var(--hp-on-navy-muted); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.hp .rating b { color: var(--hp-on-navy); }
+
+/* Mini calculator */
+.hp .mini { background: var(--hp-surface); color: var(--hp-ink); border-radius: 24px; padding: 24px; display: grid; gap: 18px; box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .45); }
+.hp .mini h2 { font-size: 26px; }
+.hp .mini .eyebrow { color: var(--hp-navy); }
+.hp .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.hp .seg button { border: 1.5px solid var(--hp-line); background: var(--hp-surface); border-radius: 12px; padding: 11px 6px; font-weight: 700; font-size: 14px; }
+.hp .seg button[aria-pressed="true"] { border-color: var(--hp-navy); background: var(--hp-navy-soft); color: var(--hp-navy); box-shadow: inset 0 0 0 1px var(--hp-navy); }
+.hp .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.hp .ql { font-weight: 800; font-size: 14px; display: block; margin-bottom: 8px; }
+.hp .stepper { display: flex; align-items: center; border: 1.5px solid var(--hp-line); border-radius: 12px; overflow: hidden; }
+.hp .stepper button { width: 44px; height: 46px; border: 0; background: var(--hp-bg); font-size: 20px; font-weight: 700; color: var(--hp-navy); }
+.hp .stepper button:disabled { color: var(--hp-line); cursor: not-allowed; }
+.hp .stepper output { flex: 1; text-align: center; font-weight: 800; font-size: 17px; font-variant-numeric: tabular-nums; }
+.hp .result { border-top: 1px dashed var(--hp-line); padding-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.hp .result .big { font-family: var(--hp-serif); font-size: 52px; line-height: 1; color: var(--hp-navy); font-variant-numeric: tabular-nums; }
+.hp .result small { display: block; color: var(--hp-muted); font-size: 13px; }
+.hp .result .alt { text-align: right; font-size: 13.5px; color: var(--hp-good); font-weight: 700; max-width: 12em; }
+.hp .mini .btn { width: 100%; }
+.hp .mini .fine { font-size: 12.5px; color: var(--hp-muted); text-align: center; margin-top: -8px; }
+
+/* Trust strip */
+.hp .trust { background: var(--hp-surface); border-bottom: 1px solid var(--hp-line); }
+.hp .trust .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding-block: 20px; }
+.hp .trust div { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--hp-muted); }
+.hp .trust b { color: var(--hp-ink); display: block; }
+.hp .trust svg { color: var(--hp-navy); width: 24px; height: 24px; }
+
+/* Sections */
+.hp section.sec { padding-block: 80px 0; }
+.hp .sec-head { display: grid; gap: 12px; max-width: 40em; margin-bottom: 32px; }
+.hp .sec-head h2 { font-size: clamp(30px, 4.2vw, 44px); }
+.hp .sec-head p { color: var(--hp-muted); margin: 0; font-size: 17px; }
+.hp .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.hp .card { background: var(--hp-surface); border: 1px solid var(--hp-line); border-radius: 22px; padding: 24px; display: grid; gap: 12px; align-content: start; }
+.hp .card h3 { font-size: 26px; }
+.hp .card .from { font-size: 14px; color: var(--hp-muted); }
+.hp .card .from b { font-family: var(--hp-serif); font-weight: 400; font-size: 30px; color: var(--hp-navy); font-variant-numeric: tabular-nums; }
+.hp .card p { margin: 0; color: var(--hp-muted); font-size: 15px; }
+.hp .card .row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 4px; font-size: 14.5px; }
+.hp .also { margin-top: 18px; color: var(--hp-muted); font-size: 15px; }
+
+.hp .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: s; }
+.hp .step { display: grid; gap: 10px; }
+.hp .step .n { width: 40px; height: 40px; border-radius: 50%; background: var(--hp-navy); color: var(--hp-on-navy); display: grid; place-items: center; font-weight: 800; }
+.hp .step h3 { font-size: 22px; }
+.hp .step p { margin: 0; color: var(--hp-muted); }
+
+.hp .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.hp .review { background: var(--hp-surface); border: 1px solid var(--hp-line); border-radius: 22px; padding: 24px; display: grid; gap: 14px; align-content: start; }
+.hp .review blockquote { margin: 0; font-family: var(--hp-serif); font-size: 21px; line-height: 1.3; }
+.hp .review .who { font-size: 14px; color: var(--hp-muted); }
+.hp .review .who b { color: var(--hp-ink); }
+.hp .review .tag { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--hp-navy); }
+
+.hp .tbl-wrap { overflow-x: auto; border-radius: 22px; border: 1px solid var(--hp-line); background: var(--hp-surface); }
+.hp table { width: 100%; border-collapse: collapse; min-width: 560px; font-size: 15.5px; }
+.hp th, .hp td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--hp-line); font-variant-numeric: tabular-nums; }
+.hp th:first-child, .hp td:first-child { text-align: left; }
+.hp thead th { background: var(--hp-navy-soft); color: var(--hp-navy); font-size: 14px; font-weight: 800; }
+.hp tbody tr:last-child td { border-bottom: 0; }
+.hp .after-tbl { margin-top: 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; color: var(--hp-muted); font-size: 14.5px; }
+
+.hp .faq { display: grid; gap: 10px; max-width: 820px; }
+.hp details { background: var(--hp-surface); border: 1px solid var(--hp-line); border-radius: 18px; padding: 4px 20px; }
+.hp summary { cursor: pointer; list-style: none; font-weight: 800; padding: 16px 0; display: flex; justify-content: space-between; gap: 16px; }
+.hp summary::-webkit-details-marker { display: none; }
+.hp summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--hp-navy); }
+.hp details[open] summary::after { content: "–"; }
+.hp details p { margin: 0 0 18px; color: var(--hp-muted); }
+
+.hp .cities { display: flex; flex-wrap: wrap; gap: 8px; }
+.hp .cities a { border: 1px solid var(--hp-line); background: var(--hp-surface); border-radius: 99px; padding: 8px 14px; color: var(--hp-ink); text-decoration: none; font-size: 14px; font-weight: 600; }
+.hp .cities a:hover { border-color: var(--hp-navy); color: var(--hp-navy); }
+
+.hp .final { margin-top: 80px; padding-block: 64px; background: var(--hp-navy-deep); color: var(--hp-on-navy); text-align: center; }
+.hp .final h2 { font-size: clamp(30px, 4.2vw, 44px); }
+.hp .final p { color: var(--hp-on-navy-muted); margin: 14px auto 26px; max-width: 32em; }
+.hp .final .ctas { justify-content: center; }
+.hp .final .btn-line { color: var(--hp-on-navy); border-color: rgba(255,255,255,.35); }
+.hp .final .phone { margin-top: 20px; font-size: 15px; color: var(--hp-on-navy-muted); }
+.hp .final .phone b { color: var(--hp-gold); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 920px) {
+  .hp .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .hp .cards, .hp .reviews, .hp .steps { grid-template-columns: minmax(0, 1fr); }
+  .hp .trust .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .hp .hero { padding-block: 44px 48px; }
+  .hp .mini { padding: 18px; }
+  .hp .result .big { font-size: 44px; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="hp-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></symbol>
+    <symbol id="hp-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></symbol>
+    <symbol id="hp-repeat" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></symbol>
+    <symbol id="hp-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l9.5 9.5-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></symbol>
+    <symbol id="hp-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  </defs>
+</svg>
+
+<div class="hp" id="haven-home">
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Haven House Cleaning · Phoenix & Tucson</div>
+        <h1>Phoenix house cleaning, with the <em>price up front.</em></h1>
+        <p class="lede">Vetted, insured cleaners who show up on time. See your price in seconds, book online, and if anything's missed we come back and make it right for free.</p>
+        <div class="ctas">
+          <a class="btn btn-gold" id="heroPrice" href="https://havenshousecleaning.com/pricing">See all prices</a>
+          <a class="btn btn-line" href="https://havenshousecleaning.com/pricing#hh-book"><svg class="i"><use href="#hp-cal"/></svg>Book a time</a>
+        </div>
+        <div class="rating"><span class="stars" aria-hidden="true">★★★★★</span><span><b>4.9</b> from 70 Google reviews</span><span aria-hidden="true">·</span><span><b>Thumbtack Top Pro</b></span></div>
+      </div>
+
+      <div class="mini" aria-label="Quick price">
+        <div style="display:grid;gap:4px"><span class="eyebrow">Quick price</span><h2>What would my clean cost?</h2></div>
+        <div>
+          <span class="ql" id="m-type">Type of clean</span>
+          <div class="seg" role="group" aria-labelledby="m-type">
+            <button type="button" data-type="standard" aria-pressed="true">Standard</button>
+            <button type="button" data-type="deep" aria-pressed="false">Deep</button>
+            <button type="button" data-type="move" aria-pressed="false">Move out</button>
+          </div>
+        </div>
+        <div class="two">
+          <div><span class="ql" id="m-beds">Bedrooms</span>
+            <div class="stepper" role="group" aria-labelledby="m-beds"><button type="button" data-k="beds" data-d="-1" aria-label="Fewer bedrooms">−</button><output id="mBeds">3</output><button type="button" data-k="beds" data-d="1" aria-label="More bedrooms">+</button></div></div>
+          <div><span class="ql" id="m-baths">Bathrooms</span>
+            <div class="stepper" role="group" aria-labelledby="m-baths"><button type="button" data-k="baths" data-d="-1" aria-label="Fewer bathrooms">−</button><output id="mBaths">2</output><button type="button" data-k="baths" data-d="1" aria-label="More bathrooms">+</button></div></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <div><span class="big" id="mPrice">$214</span><small id="mPer">one-time standard clean</small></div>
+          <div class="alt" id="mAlt">$182 per visit every 2 weeks</div>
+        </div>
+        <a class="btn btn-gold" id="mGo" href="https://havenshousecleaning.com/pricing">Book this price</a>
+        <div class="fine">Homes up to 2,500 sq ft. No phone call needed.</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="trust">
+    <div class="wrap">
+      <div><svg class="i"><use href="#hp-star"/></svg><span><b>4.9 on Google</b>70 reviews</span></div>
+      <div><svg class="i"><use href="#hp-shield"/></svg><span><b>Insured & vetted</b>Background-checked cleaners</span></div>
+      <div><svg class="i"><use href="#hp-repeat"/></svg><span><b>Re-clean guarantee</b>Missed something? Free fix.</span></div>
+      <div><svg class="i"><use href="#hp-tag"/></svg><span><b>Upfront pricing</b>No hourly surprises</span></div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Services</span><h2>Pick the clean your home needs</h2></div>
+      <div class="cards">
+        <div class="card">
+          <h3>Recurring cleaning</h3>
+          <div class="from">From <b>$110</b> per visit</div>
+          <p>Weekly, every 2 weeks or monthly. Same trusted team, and you save up to 20%.</p>
+          <div class="row"><a class="link" href="https://havenshousecleaning.com/maid-services">Learn more</a><a class="link" href="https://havenshousecleaning.com/pricing?type=standard">See prices</a></div>
+        </div>
+        <div class="card">
+          <h3>Deep cleaning</h3>
+          <div class="from">From <b>$194</b></div>
+          <p>Baseboards, switches, cabinet fronts and built-up grime. Best for a first clean.</p>
+          <div class="row"><a class="link" href="https://havenshousecleaning.com/deep-cleaning">Learn more</a><a class="link" href="https://havenshousecleaning.com/pricing?type=deep">See prices</a></div>
+        </div>
+        <div class="card">
+          <h3>Move in / move out</h3>
+          <div class="from">From <b>$226</b></div>
+          <p>Inside cabinets, closets, oven and fridge. Built to pass a landlord's checklist.</p>
+          <div class="row"><a class="link" href="https://havenshousecleaning.com/move-in-move-out-cleaning">Learn more</a><a class="link" href="https://havenshousecleaning.com/pricing?type=move">See prices</a></div>
+        </div>
+      </div>
+      <p class="also">Also: <a class="link" href="https://havenshousecleaning.com/airbnb-cleaning">Airbnb turnovers</a>, <a class="link" href="https://havenshousecleaning.com/post-construction-cleaning">post-construction</a> and <a class="link" href="https://havenshousecleaning.com/commercial-cleaning">office and commercial cleaning</a>.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">How it works</span><h2>Booked in 2 minutes</h2></div>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><h3>See your price</h3><p>Pick your home size and type of clean. Your price shows instantly.</p></div>
+        <div class="step"><span class="n">2</span><h3>Pick a time</h3><p>Choose a date online, or a quick call if you have questions.</p></div>
+        <div class="step"><span class="n">3</span><h3>Come home to clean</h3><p>We text when we're on the way and when we're done.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Reviews</span><h2>What Phoenix clients say</h2></div>
+      <div class="reviews">
+        <figure class="review" style="margin:0"><span class="tag">Recurring cleaning</span><blockquote>"Ryan and his team are amazing. I offer my highest recommendation."</blockquote><figcaption class="who"><b>Jeanette W.</b></figcaption></figure>
+        <figure class="review" style="margin:0"><span class="tag">Move-out clean</span><blockquote>"Mary and her team did an excellent job on my move out cleaning!"</blockquote><figcaption class="who"><b>Paula K.</b></figcaption></figure>
+        <figure class="review" style="margin:0"><span class="tag">House cleaning</span><blockquote>"Yadira does an amazing job and left my place looking and feeling so clean."</blockquote><figcaption class="who"><b>Jasmine A.</b></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Prices</span><h2>House cleaning prices in Phoenix</h2><p>Common home sizes, up to 2,500 sq ft.</p></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Home size</th><th>Standard</th><th>Every 2 weeks</th><th>Deep</th><th>Move in / out</th></tr></thead>
+          <tbody>
+            <tr><td>2 bed, 2 bath</td><td>$184</td><td>$156</td><td>$276</td><td>$322</td></tr>
+            <tr><td>3 bed, 2 bath</td><td>$214</td><td>$182</td><td>$321</td><td>$375</td></tr>
+            <tr><td>4 bed, 3 bath</td><td>$269</td><td>$229</td><td>$404</td><td>$471</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="after-tbl"><a class="btn btn-gold" href="https://havenshousecleaning.com/pricing">Get your exact price</a><span>All sizes, extras and recurring savings on the pricing page.</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Questions</span><h2>Good to know</h2></div>
+      <div class="faq">
+        <details><summary>How much does house cleaning cost in Phoenix?</summary><p>Our standard clean starts at $129 for a 1 bed, 1 bath home, and a 3 bed, 2 bath home is $214. Every-2-weeks plans save 15%. See every size on our pricing page.</p></details>
+        <details><summary>Do I need to be home?</summary><p>No. Many clients leave a door code or key. We text when we're on the way and when we finish.</p></details>
+        <details><summary>Are your cleaners insured and background-checked?</summary><p>Yes. Every cleaner is vetted, background-checked and insured.</p></details>
+        <details><summary>What if I'm not happy?</summary><p>Tell us within 24 hours and we'll come back and re-clean that area for free.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="eyebrow">Service areas</span><h2>Cleaning across the Valley and Tucson</h2></div>
+      <nav class="cities" aria-label="Service areas">
+        <a href="https://havenshousecleaning.com/house-cleaning-phoenix-az">Phoenix</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-scottsdale-az">Scottsdale</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-paradise-valley-az">Paradise Valley</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-tempe-az">Tempe</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-mesa-az">Mesa</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-chandler-az">Chandler</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-gilbert-az">Gilbert</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-glendale-az">Glendale</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-peoria-az">Peoria</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-surprise-az">Surprise</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-avondale-az">Avondale</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-goodyear-az">Goodyear</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-tucson-az">Tucson</a>
+        <a href="https://havenshousecleaning.com/house-cleaning-oro-valley-az">Oro Valley</a>
+      </nav>
+    </div>
+  </section>
+
+  <div class="final">
+    <div class="wrap">
+      <h2>Your price is 30 seconds away</h2>
+      <p>No forms to wait on and no sales call. See it, book it, done.</p>
+      <div class="ctas">
+        <a class="btn btn-gold" href="https://havenshousecleaning.com/pricing">See my price</a>
+        <a class="btn btn-line" href="https://havenshousecleaning.com/pricing#hh-book">Book a time</a>
+      </div>
+      <div class="phone">Prefer to talk? Call or text <b>(602) 609-4447</b> · Mon–Sat, 8 AM–5 PM</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* Keep these in sync with the CONFIG on the pricing page. */
+  var PRICING_URL = 'https://havenshousecleaning.com/pricing';
+  var P = { base: 129, perBed: 30, perBath: 25, deep: 1.5, move: 1.75, biweekly: 0.15 };
+  var s = { type: 'standard', beds: 3, baths: 2 };
+  var root = document.getElementById('haven-home');
+  var $ = function (id) { return document.getElementById(id); };
+  var money = function (v) { return '$' + Math.round(v).toLocaleString('en-US'); };
+
+  function render() {
+    var std = P.base + P.perBed * (s.beds - 1) + P.perBath * (s.baths - 1);
+    var price = s.type === 'deep' ? Math.round(std * P.deep) : s.type === 'move' ? Math.round(std * P.move) : std;
+    $('mPrice').textContent = money(price);
+    $('mPer').textContent = { standard: 'one-time standard clean', deep: 'one-time deep clean', move: 'move in / out clean' }[s.type];
+    $('mAlt').textContent = s.type === 'standard' ? money(std - Math.round(std * P.biweekly)) + ' per visit every 2 weeks' : 'Flat price, no surprises';
+    $('mBeds').textContent = s.beds === 6 ? '6+' : s.beds;
+    $('mBaths').textContent = s.baths === 5 ? '5+' : s.baths;
+    root.querySelector('[data-k="beds"][data-d="-1"]').disabled = s.beds <= 1;
+    root.querySelector('[data-k="beds"][data-d="1"]').disabled = s.beds >= 6;
+    root.querySelector('[data-k="baths"][data-d="-1"]').disabled = s.baths <= 1;
+    root.querySelector('[data-k="baths"][data-d="1"]').disabled = s.baths >= 5;
+    root.querySelectorAll('[data-type]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.type === s.type ? 'true' : 'false'); });
+    var url = PRICING_URL + '?type=' + s.type + '&beds=' + s.beds + '&baths=' + s.baths + '#hh-estimator';
+    $('mGo').href = url;
+    $('heroPrice').href = url;
+  }
+
+  root.addEventListener('click', function (e) {
+    var el;
+    if ((el = e.target.closest('[data-type]'))) { s.type = el.dataset.type; render(); return; }
+    if ((el = e.target.closest('[data-k]'))) {
+      var k = el.dataset.k, max = k === 'beds' ? 6 : 5;
+      s[k] = Math.min(max, Math.max(1, s[k] + +el.dataset.d)); render();
+    }
+  });
+  render();
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "Haven House Cleaning",
+  "url": "https://havenshousecleaning.com/",
+  "telephone": "+1-602-609-4447",
+  "priceRange": "$$",
+  "openingHours": "Mo-Sa 08:00-17:00",
+  "areaServed": ["Phoenix AZ", "Scottsdale AZ", "Paradise Valley AZ", "Tempe AZ", "Mesa AZ", "Chandler AZ", "Gilbert AZ", "Glendale AZ", "Peoria AZ", "Surprise AZ", "Avondale AZ", "Goodyear AZ", "Tucson AZ", "Oro Valley AZ"]
+}
+</script>
