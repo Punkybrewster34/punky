@@ -213,7 +213,7 @@ body { background: var(--hp-bg); margin: 0; }
       <div class="cards">
         <div class="card">
           <h3>Recurring cleaning</h3>
-          <div class="from">From <b>$110</b> per visit</div>
+          <div class="from">From <b>$129</b> per visit</div>
           <p>Weekly, every 2 weeks or monthly. Same trusted team, and you save up to 20%.</p>
           <div class="row"><a class="link" href="https://havenshousecleaning.com/maid-services">Learn more</a><a class="link" href="https://havenshousecleaning.com/pricing?type=standard">See prices</a></div>
         </div>
@@ -324,7 +324,7 @@ body { background: var(--hp-bg); margin: 0; }
 (function () {
   /* Keep these in sync with the CONFIG on the pricing page. */
   var PRICING_URL = 'https://havenshousecleaning.com/pricing';
-  var P = { base: 129, perBed: 30, perBath: 25, deep: 1.5, move: 1.75, biweekly: 0.15 };
+  var P = { base: 129, perBed: 30, perBath: 25, deep: 1.5, move: 1.75, biweekly: 0.15, min: 129 };
   var s = { type: 'standard', beds: 3, baths: 2 };
   var root = document.getElementById('haven-home');
   var $ = function (id) { return document.getElementById(id); };
@@ -335,7 +335,7 @@ body { background: var(--hp-bg); margin: 0; }
     var price = s.type === 'deep' ? Math.round(std * P.deep) : s.type === 'move' ? Math.round(std * P.move) : std;
     $('mPrice').textContent = money(price);
     $('mPer').textContent = { standard: 'one-time standard clean', deep: 'one-time deep clean', move: 'move in / out clean' }[s.type];
-    $('mAlt').textContent = s.type === 'standard' ? money(std - Math.round(std * P.biweekly)) + ' per visit every 2 weeks' : 'Flat price, no surprises';
+    $('mAlt').textContent = s.type === 'standard' ? money(Math.max(P.min, std - Math.round(std * P.biweekly))) + ' per visit every 2 weeks' : 'Flat price, no surprises';
     $('mBeds').textContent = s.beds === 6 ? '6+' : s.beds;
     $('mBaths').textContent = s.baths === 5 ? '5+' : s.baths;
     root.querySelector('[data-k="beds"][data-d="-1"]').disabled = s.beds <= 1;
