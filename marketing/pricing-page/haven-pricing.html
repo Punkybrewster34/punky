@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: navy hero with price promise, then a two-column estimator (inputs + sticky price receipt),
    price cards, what's-included table, booking, FAQ. Single light look to match the Haven House site.
@@ -16,15 +16,15 @@
   --hh-line: #E2E7F0;
   --hh-bg: #F6F7FB;
   --hh-surface: #FFFFFF;
-  --hh-gold: #F4B81C;
+  --hh-gold: #F5B301;
   --hh-gold-ink: #3A2A00;
   --hh-gold-soft: #FFF5D9;
   --hh-good: #1E7A4C;
   --hh-good-soft: #E3F3EA;
   --hh-on-navy: #FFFFFF;
   --hh-on-navy-muted: #B9C6E6;
-  --hh-serif: "DM Serif Display", Georgia, "Times New Roman", serif;
-  --hh-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --hh-serif: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --hh-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   color-scheme: light;
 }
 body { background: var(--hh-bg); margin: 0; }
@@ -35,7 +35,7 @@ body { background: var(--hh-bg); margin: 0; }
 .hh button { cursor: pointer; }
 .hh :focus-visible { outline: 3px solid var(--hh-gold); outline-offset: 2px; }
 .hh .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.hh h1, .hh h2, .hh h3 { font-family: var(--hh-serif); font-weight: 400; letter-spacing: -.01em; line-height: 1.08; margin: 0; text-wrap: balance; }
+.hh h1, .hh h2, .hh h3 { font-family: var(--hh-serif); font-weight: 700; letter-spacing: -.02em; line-height: 1.08; margin: 0; text-wrap: balance; }
 .hh .eyebrow { font-size: 12.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--hh-navy); }
 .hh .num { font-variant-numeric: tabular-nums; }
 .hh .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 14px; padding: 16px 22px; font-weight: 800; font-size: 16px; text-decoration: none; line-height: 1.2; }
@@ -50,8 +50,8 @@ body { background: var(--hh-bg); margin: 0; }
 .hh .hero { background: radial-gradient(120% 140% at 85% 0%, var(--hh-navy) 0%, var(--hh-navy-deep) 70%); color: var(--hh-on-navy); padding-block: 64px 120px; position: relative; overflow: hidden; }
 .hh .hero::after { content: ""; position: absolute; right: -120px; top: -140px; width: 420px; height: 420px; border-radius: 50%; border: 56px solid var(--hh-gold); opacity: .08; }
 .hh .hero .eyebrow { color: var(--hh-gold); }
-.hh .hero h1 { font-size: clamp(38px, 6vw, 64px); margin-top: 14px; max-width: 14em; }
-.hh .hero h1 em { font-style: italic; color: var(--hh-gold); }
+.hh .hero h1 { font-size: clamp(34px, 5vw, 54px); margin-top: 14px; max-width: 14em; }
+.hh .hero h1 em { font-style: normal; color: var(--hh-gold); }
 .hh .hero p.lede { font-size: clamp(17px, 2vw, 19px); color: var(--hh-on-navy-muted); max-width: 36em; margin: 18px 0 28px; }
 .hh .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
 .hh .hero .btn-line { background: transparent; color: var(--hh-on-navy); border-color: rgba(255,255,255,.35); }
@@ -97,7 +97,7 @@ body { background: var(--hh-bg); margin: 0; }
 .hh .receipt { position: sticky; top: 16px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(14, 26, 51, .3); }
 .hh .receipt .top { background: var(--hh-navy); color: var(--hh-on-navy); padding: 24px; display: grid; gap: 4px; }
 .hh .receipt .top .lbl { font-size: 12.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--hh-gold); }
-.hh .receipt .price { font-family: var(--hh-serif); font-size: 64px; line-height: 1; font-variant-numeric: tabular-nums; }
+.hh .receipt .price { font-family: var(--hh-serif); font-weight: 700; font-size: 64px; line-height: 1; font-variant-numeric: tabular-nums; }
 .hh .receipt .per { font-size: 15px; color: var(--hh-on-navy-muted); }
 .hh .receipt .was { text-decoration: line-through; color: var(--hh-on-navy-muted); font-size: 18px; margin-left: 8px; font-family: var(--hh-sans); }
 .hh .receipt .body { padding: 22px 24px 24px; display: grid; gap: 16px; }
@@ -135,7 +135,7 @@ body { background: var(--hh-bg); margin: 0; }
 .hh .plan.feature::before { content: "Most booked"; position: absolute; top: -12px; left: 24px; background: var(--hh-gold); color: var(--hh-gold-ink); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 99px; }
 .hh .plan h3 { font-size: 26px; }
 .hh .plan .from { font-size: 13px; color: var(--hh-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
-.hh .plan .amt { font-family: var(--hh-serif); font-size: 44px; line-height: 1; color: var(--hh-navy); font-variant-numeric: tabular-nums; }
+.hh .plan .amt { font-family: var(--hh-serif); font-weight: 700; font-size: 44px; line-height: 1; color: var(--hh-navy); font-variant-numeric: tabular-nums; }
 .hh .plan p { margin: 0; color: var(--hh-muted); font-size: 14.5px; }
 .hh .plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 14.5px; }
 .hh .plan li { display: flex; gap: 8px; align-items: flex-start; }
@@ -146,7 +146,7 @@ body { background: var(--hh-bg); margin: 0; }
 .hh table { width: 100%; border-collapse: collapse; min-width: 620px; font-size: 15px; }
 .hh th, .hh td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--hh-line); }
 .hh th:first-child, .hh td:first-child { text-align: left; }
-.hh thead th { font-family: var(--hh-serif); font-weight: 400; font-size: 20px; background: var(--hh-navy-soft); color: var(--hh-navy); }
+.hh thead th { font-family: var(--hh-serif); font-weight: 700; font-size: 20px; background: var(--hh-navy-soft); color: var(--hh-navy); }
 .hh tbody tr:last-child td { border-bottom: 0; }
 .hh td .y { color: var(--hh-good); font-weight: 800; }
 .hh td .n { color: var(--hh-line); font-weight: 800; }
@@ -159,7 +159,7 @@ body { background: var(--hh-bg); margin: 0; }
 .hh .book-side .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .hh .book-side .steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start; }
 .hh .book-side .steps .n { width: 34px; height: 34px; border-radius: 50%; background: var(--hh-gold); color: var(--hh-gold-ink); display: grid; place-items: center; font-weight: 800; }
-.hh .book-side .phone { font-family: var(--hh-serif); font-size: 30px; color: var(--hh-gold); font-variant-numeric: tabular-nums; }
+.hh .book-side .phone { font-family: var(--hh-serif); font-weight: 700; font-size: 30px; color: var(--hh-gold); font-variant-numeric: tabular-nums; }
 .hh .cal { padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 .hh .cal > *, .hh .book > * { min-width: 0; }
 .hh .cal iframe { width: 100%; min-height: 680px; border: 0; }
@@ -210,7 +210,7 @@ body { background: var(--hh-bg); margin: 0; }
   .hh .days { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .hh .receipt .price { font-size: 56px; }
   .hh .mobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; gap: 10px; align-items: center; background: var(--hh-surface); border-top: 1px solid var(--hh-line); padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); box-shadow: 0 -10px 30px -10px rgba(14,26,51,.2); }
-  .hh .mobile-bar .mp { font-family: var(--hh-serif); font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .hh .mobile-bar .mp { font-family: var(--hh-serif); font-weight: 700; font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
   .hh .mobile-bar small { display: block; font-size: 12px; color: var(--hh-muted); }
   .hh .mobile-bar .btn { margin-left: auto; padding: 13px 16px; }
   .hh .fine { padding-bottom: 96px; }

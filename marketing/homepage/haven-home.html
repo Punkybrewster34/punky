@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: one clear path. Hero with headline + mini price calculator, trust strip, 3 services,
    3 steps, real reviews, price snapshot, short FAQ, cities, final CTA. Light look matching the Haven House site.
@@ -16,13 +16,13 @@
   --hp-line: #E2E7F0;
   --hp-bg: #F6F7FB;
   --hp-surface: #FFFFFF;
-  --hp-gold: #F4B81C;
+  --hp-gold: #F5B301;
   --hp-gold-ink: #3A2A00;
   --hp-good: #1E7A4C;
   --hp-on-navy: #FFFFFF;
   --hp-on-navy-muted: #B9C6E6;
-  --hp-serif: "DM Serif Display", Georgia, "Times New Roman", serif;
-  --hp-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --hp-serif: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --hp-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   color-scheme: light;
 }
 body { background: var(--hp-bg); margin: 0; }
@@ -31,7 +31,7 @@ body { background: var(--hp-bg); margin: 0; }
 .hp button { font: inherit; color: inherit; cursor: pointer; }
 .hp :focus-visible { outline: 3px solid var(--hp-gold); outline-offset: 2px; }
 .hp .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.hp h1, .hp h2, .hp h3 { font-family: var(--hp-serif); font-weight: 400; letter-spacing: -.01em; line-height: 1.08; margin: 0; text-wrap: balance; }
+.hp h1, .hp h2, .hp h3 { font-family: var(--hp-serif); font-weight: 700; letter-spacing: -.02em; line-height: 1.08; margin: 0; text-wrap: balance; }
 .hp .eyebrow { font-size: 12.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--hp-navy); }
 .hp .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 14px; padding: 16px 22px; font-weight: 800; font-size: 16px; text-decoration: none; line-height: 1.2; }
 .hp .btn-gold { background: var(--hp-gold); color: var(--hp-gold-ink); }
@@ -45,7 +45,7 @@ body { background: var(--hp-bg); margin: 0; }
 .hp .hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 48px; align-items: center; position: relative; z-index: 1; }
 .hp .hero .eyebrow { color: var(--hp-gold); }
 .hp .hero h1 { font-size: clamp(38px, 5.6vw, 62px); margin-top: 14px; }
-.hp .hero h1 em { font-style: italic; color: var(--hp-gold); }
+.hp .hero h1 em { font-style: normal; color: var(--hp-gold); }
 .hp .hero p.lede { font-size: clamp(17px, 2vw, 19px); color: var(--hp-on-navy-muted); margin: 18px 0 26px; max-width: 32em; }
 .hp .hero .btn-line { color: var(--hp-on-navy); border-color: rgba(255,255,255,.35); }
 .hp .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -67,7 +67,7 @@ body { background: var(--hp-bg); margin: 0; }
 .hp .stepper button:disabled { color: var(--hp-line); cursor: not-allowed; }
 .hp .stepper output { flex: 1; text-align: center; font-weight: 800; font-size: 17px; font-variant-numeric: tabular-nums; }
 .hp .result { border-top: 1px dashed var(--hp-line); padding-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
-.hp .result .big { font-family: var(--hp-serif); font-size: 52px; line-height: 1; color: var(--hp-navy); font-variant-numeric: tabular-nums; }
+.hp .result .big { font-family: var(--hp-serif); font-weight: 700; font-size: 52px; line-height: 1; color: var(--hp-navy); font-variant-numeric: tabular-nums; }
 .hp .result small { display: block; color: var(--hp-muted); font-size: 13px; }
 .hp .result .alt { text-align: right; font-size: 13.5px; color: var(--hp-good); font-weight: 700; max-width: 12em; }
 .hp .mini .btn { width: 100%; }
@@ -89,7 +89,7 @@ body { background: var(--hp-bg); margin: 0; }
 .hp .card { background: var(--hp-surface); border: 1px solid var(--hp-line); border-radius: 22px; padding: 24px; display: grid; gap: 12px; align-content: start; }
 .hp .card h3 { font-size: 26px; }
 .hp .card .from { font-size: 14px; color: var(--hp-muted); }
-.hp .card .from b { font-family: var(--hp-serif); font-weight: 400; font-size: 30px; color: var(--hp-navy); font-variant-numeric: tabular-nums; }
+.hp .card .from b { font-family: var(--hp-serif); font-weight: 700; font-size: 30px; color: var(--hp-navy); font-variant-numeric: tabular-nums; }
 .hp .card p { margin: 0; color: var(--hp-muted); font-size: 15px; }
 .hp .card .row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 4px; font-size: 14.5px; }
 .hp .also { margin-top: 18px; color: var(--hp-muted); font-size: 15px; }
@@ -102,7 +102,7 @@ body { background: var(--hp-bg); margin: 0; }
 
 .hp .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .hp .review { background: var(--hp-surface); border: 1px solid var(--hp-line); border-radius: 22px; padding: 24px; display: grid; gap: 14px; align-content: start; }
-.hp .review blockquote { margin: 0; font-family: var(--hp-serif); font-size: 21px; line-height: 1.3; }
+.hp .review blockquote { margin: 0; font-family: var(--hp-serif); font-weight: 700; font-size: 21px; line-height: 1.3; }
 .hp .review .who { font-size: 14px; color: var(--hp-muted); }
 .hp .review .who b { color: var(--hp-ink); }
 .hp .review .tag { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--hp-navy); }
@@ -207,7 +207,7 @@ body { background: var(--hp-bg); margin: 0; }
     </div>
   </div>
 
-  <section class="sec">
+  <section class="sec" id="services">
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Services</span><h2>Pick the clean your home needs</h2></div>
       <div class="cards">
@@ -245,7 +245,7 @@ body { background: var(--hp-bg); margin: 0; }
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="reviews">
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Reviews</span><h2>What Phoenix clients say</h2></div>
       <div class="reviews">
@@ -256,7 +256,7 @@ body { background: var(--hp-bg); margin: 0; }
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="prices">
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Prices</span><h2>House cleaning prices in Phoenix</h2><p>Common home sizes, up to 2,500 sq ft.</p></div>
       <div class="tbl-wrap">
@@ -285,7 +285,7 @@ body { background: var(--hp-bg); margin: 0; }
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="areas">
     <div class="wrap">
       <div class="sec-head"><span class="eyebrow">Service areas</span><h2>Cleaning across the Valley and Tucson</h2></div>
       <nav class="cities" aria-label="Service areas">

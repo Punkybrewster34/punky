@@ -1,0 +1,48 @@
+<!-- Haven House price block for city and service pages.
+     Before pasting: replace every [CITY] with the page's city (e.g. Gilbert) and
+     set data-type on the button to standard, deep or move. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;600;700&display=swap">
+<style>
+.hb { --hb-navy: #12307D; --hb-soft: #E9EEF9; --hb-ink: #0E1A33; --hb-muted: #56627A; --hb-line: #E2E7F0; --hb-gold: #F5B301; --hb-gold-ink: #3A2A00;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif; color: var(--hb-ink); background: #FFFFFF; border: 1px solid var(--hb-line); border-radius: 22px; padding: 28px; max-width: 1080px; margin: 0 auto; box-sizing: border-box; }
+.hb *, .hb *::before, .hb *::after { box-sizing: border-box; }
+.hb .eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--hb-navy); }
+.hb h2 { font-family: "Poppins", "Segoe UI", sans-serif; font-weight: 700; letter-spacing: -.02em; font-size: clamp(26px, 3.6vw, 36px); line-height: 1.12; margin: 8px 0 8px; color: var(--hb-ink); }
+.hb p { margin: 0 0 18px; color: var(--hb-muted); font-size: 16px; line-height: 1.55; }
+.hb .tw { overflow-x: auto; border: 1px solid var(--hb-line); border-radius: 16px; }
+.hb table { width: 100%; border-collapse: collapse; min-width: 520px; font-size: 15.5px; }
+.hb th, .hb td { padding: 13px 16px; text-align: center; border-bottom: 1px solid var(--hb-line); font-variant-numeric: tabular-nums; }
+.hb th:first-child, .hb td:first-child { text-align: left; }
+.hb thead th { background: var(--hb-soft); color: var(--hb-navy); font-size: 13.5px; font-weight: 700; }
+.hb tbody tr:last-child td { border-bottom: 0; }
+.hb .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 18px; }
+.hb .btn { display: inline-flex; align-items: center; justify-content: center; background: var(--hb-gold); color: var(--hb-gold-ink); border-radius: 14px; padding: 15px 22px; font-weight: 800; font-size: 16px; text-decoration: none; }
+.hb .note { font-size: 14px; color: var(--hb-muted); }
+@media (max-width: 560px) { .hb { padding: 20px; border-radius: 18px; } .hb .btn { width: 100%; } }
+</style>
+<div class="hb">
+  <span class="eyebrow">Upfront pricing</span>
+  <h2>House cleaning prices in [CITY]</h2>
+  <p>Flat prices for [CITY] homes up to 2,500 sq ft. Every-2-weeks plans save 15%. Minimum visit $129.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Home size</th><th>Standard</th><th>Every 2 weeks</th><th>Deep</th><th>Move in / out</th></tr></thead>
+      <tbody>
+        <tr><td>2 bed, 2 bath</td><td>$184</td><td>$156</td><td>$276</td><td>$322</td></tr>
+        <tr><td>3 bed, 2 bath</td><td>$214</td><td>$182</td><td>$321</td><td>$375</td></tr>
+        <tr><td>4 bed, 3 bath</td><td>$269</td><td>$229</td><td>$404</td><td>$471</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <a class="btn" data-type="standard" href="https://havenshousecleaning.com/pricing">Get my exact price</a>
+    <span class="note">See your price in 30 seconds. No phone call needed.</span>
+  </div>
+</div>
+<script>
+(function () {
+  document.querySelectorAll('.hb .btn[data-type]').forEach(function (a) {
+    a.href = 'https://havenshousecleaning.com/pricing?type=' + a.getAttribute('data-type') + '#hh-estimator';
+  });
+})();
+</script>
